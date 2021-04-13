@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_notes">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_notes"
         android:name="com.example.my_notes.ui.home.HomeFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_notes"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_calendar"
         android:name="com.example.my_notes.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_calendar"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
