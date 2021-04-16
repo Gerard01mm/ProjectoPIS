@@ -1,5 +1,7 @@
 package Notes;
 
+import android.graphics.Color;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,10 +13,12 @@ public class NoteFolder implements Serializable {
     //Constants
     private final String DEFAULT_NAME = "Titol per defecte";
     private final String NOTE_NOT_FOUND = "La nota que vols eliminar no es troba a la carpeta";
+    private final int DEFAULT_COLOR = Color.WHITE;
 
     //Atributs
     private ArrayList<Note> list;
     private String title;
+    private int color;
 
     /**
      * Constructor principal de la classe. Inicialitzarà l'arrayList de notes on emmagatzarem les
@@ -23,6 +27,7 @@ public class NoteFolder implements Serializable {
     public NoteFolder(){
         this.list = new ArrayList<>();
         this.title = this.DEFAULT_NAME;
+        this.color = this.DEFAULT_COLOR;
     }
 
 
@@ -34,9 +39,39 @@ public class NoteFolder implements Serializable {
      *
      * @param title titol de la carpeta
      */
-    public NoteFolder(String title){
+    public NoteFolder(String title) {
         this.list = new ArrayList<>();
         this.title = title;
+        this.color = this.DEFAULT_COLOR;
+    }
+
+
+    /**
+     * Constructor de la clase.
+     *
+     * Rep un enter que s'asignara al color per poder afegir el color de fons
+     * @param color Color que volem per a la carpeta
+     */
+    public NoteFolder(int color){
+        this.list = new ArrayList<>();
+        this.title = this.DEFAULT_NAME;
+        this.color = color;
+    }
+
+
+    /**
+     * Constructor de la classe.
+     *
+     * Rep com a parametres un titol per a la carpeta i despres un enter que servira per
+     * assignar el color de la carpeta.
+     *
+     * @param title Titul de la carpeta.
+     * @param color Color de la carpeta
+     */
+    public NoteFolder(String title, int color){
+        this.list = new ArrayList<>();
+        this.title = title;
+        this.color = color;
     }
 
 

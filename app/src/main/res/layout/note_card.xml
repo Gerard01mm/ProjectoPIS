@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/NoteCardView"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!--TextView que mostrarà el titol de la nota-->
+                <TextView
+                    android:id="@+id/NoteTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="default title"
+                    android:textStyle="bold"
+                    android:textSize="14dp"
+                    android:padding="5dp">
+                </TextView>
+
+                <!--TextView que mostrarà la data de creació del fitxer-->
+                <TextView
+                    android:id="@+id/CreationDate"
+                    android:text="12/12/21"
+                    android:textSize="10dp"
+                    android:paddingLeft="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+
+                <!--TextView que mostrarà les primeres linies del document-->
+                <TextView
+                    android:id="@+id/FirstLines"
+                    android:text="ESTO ES UNA PRUEBA PARA COMPROBAR QUE LO DE LAS LINIAS FUNCIONA CORRECTAMENTE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="normal"
+                    android:padding="5dp">
+                </TextView>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

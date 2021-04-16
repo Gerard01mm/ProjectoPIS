@@ -26,7 +26,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
     /**
      * Clase viewHolder interna
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView folder_title;
 
 
@@ -83,6 +83,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
 
         //Coje el elemento dels aaray localDataSer en position i reemplaza el contenido de la view
         viewHolder.getTextView().setText(localDataSet.get(position).get_Title());
+
     }
 
 
