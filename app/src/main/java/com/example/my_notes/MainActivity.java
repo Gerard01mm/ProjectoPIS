@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import Notes.NoteFolder;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private AppBarConfiguration mAppBarConfiguration;
 

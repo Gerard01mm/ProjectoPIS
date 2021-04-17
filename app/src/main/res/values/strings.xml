@@ -10,4 +10,20 @@
     <string name="menu_notes">Notas</string>
     <string name="menu_calendar">Calendario</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <!---ESTELA Strings de las layouts login_user y register_user-->
+    <string name="app_name_mayus"><font color='red'>MY NOTES</font></string>
+    <string name="layout_log_in">Sign up</string>
+    <string name="label_email">Email</string>
+    <string name="editText_Email">example: mariareta@hotmail.es</string>
+    <string name="label_name">Name</string>
+    <string name="label_password">Password</string>
+    <string name="checkBox_privacity">I agree to the <font color='blue'>Terms of Services</font> and <font color='blue'>Privacy Policy</font></string>
+    <string name="button_continue">Continue</string>
+    <string name="label_have_acount">Have An Account? <font color='blue'>Sign in</font> </string>
+    <!--Log in-->
+    <string name="log_in">Log in</string>
+    <string name="see_you">Hi there! Nice to see you again.</string>
+    <string name="button_login">Log in</string>
+    <string name="forgot_password">Forgot password? <font color='red'>Sign in</font></string>
 </resources>
