@@ -14,11 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.My_notes">
+        <activity android:name=".LoginUserActivity"></activity>
         <activity android:name=".NoteListActivity" />
-        <activity android:name=".MainActivity" android:theme="@style/Theme.My_notes.NoActionBar"></activity>
-        <activity android:name=".RegisterUserActivity"></activity>
         <activity
-            android:name=".LoginUserActivity"
+            android:name=".MainActivity"
+            android:theme="@style/Theme.My_notes.NoActionBar" />
+        <activity android:name=".RegisterUserActivity"
+            android:theme="@style/Theme.RegisterUser" />
+        <activity
+            android:name=".LoginUserActivity2"
             android:label="@string/app_name"
             android:theme="@style/Theme.My_notes.NoActionBar">
             <intent-filter>

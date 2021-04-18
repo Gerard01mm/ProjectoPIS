@@ -10,92 +10,124 @@
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_margin="40dip"
-      android:orientation="vertical"
-      tools:layout_editor_absoluteX="80dp"
-      tools:layout_editor_absoluteY="80dp">
+      android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/nomApp"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="left"
-        android:paddingBottom="30dip"
-        android:text="@string/layout_log_in"
-        android:textAllCaps="false"
-        android:textSize="36sp"
-        android:textStyle="bold" />
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
 
-    <TextView
-        android:id="@+id/label_email"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_email" />
+        android:layout_height="792dp"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
 
-    <EditText
-        android:id="@+id/editText_Email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="email"
-        android:ems="10"
-        android:inputType="textEmailAddress"/>
-
-    <TextView
-        android:id="@+id/label_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_name" />
-
-    <EditText
-        android:id="@+id/editText_Name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="username"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/label_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_password" />
-
-    <EditText
-        android:id="@+id/editText_Password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="password"
-        android:ems="10"
-        android:inputType="textPassword" />
-
-    <CheckBox
-        android:id="@+id/checkBox_privacity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dip"
-        android:text="@string/checkBox_privacity" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="275dp"
-        android:gravity="bottom">
-
-      <Button
-          android:id="@+id/button_register"
+      <LinearLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/button_continue" />
+          android:layout_height="match_parent"
+          android:layout_margin="40dip"
+          android:orientation="vertical">
 
-      <TextView
-          android:id="@+id/label_haveaccount"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/button_register"
-          android:layout_gravity="bottom"
-          android:gravity="center_horizontal"
-          android:paddingBottom="20dp"
-          android:text="@string/label_have_acount" />
-    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/nomApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="left"
+            android:paddingBottom="30dip"
+            android:text="@string/layout_log_in"
+            android:textAllCaps="false"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:errorEnabled="true"
+            app:startIconDrawable="@android:drawable/sym_action_email">
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/reg_email_edit_text"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:errorEnabled="true">
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/reg_name_edit_text"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:inputType="text"
+              android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:hint="@string/label_password"
+            app:errorEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:passwordToggleEnabled="true">
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/reg_password_edit_text"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/checkBox_privacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dip"
+            android:layout_marginBottom="30dip"
+            android:text="@string/checkBox_privacity" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+          <com.google.android.material.button.MaterialButton
+              android:id="@+id/continue_button"
+              style="@style/Widget.Shrine.Button"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentEnd="true"
+              android:layout_alignParentRight="false"
+              android:gravity="top"
+              android:text="@string/button_continue" />
+
+          <TextView
+              android:id="@+id/label_haveaccount"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/continue_button"
+              android:layout_alignParentBottom="true"
+              android:layout_gravity="bottom"
+              android:layout_marginTop="80dp"
+              android:gravity="center"
+              android:text="@string/label_have_acount" />
+        </RelativeLayout>
+      </LinearLayout>
+    </LinearLayout>
   </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

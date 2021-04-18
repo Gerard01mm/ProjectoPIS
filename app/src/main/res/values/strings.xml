@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My_notes</string>
+    <string name="app_name">MY NOTES</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -16,7 +16,7 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <!---ESTELA Strings de las layouts login_user y register_user-->
-    <string name="app_name_mayus"><font color='red'>MY NOTES</font></string>
+    <string name="app_name_mayus">MY NOTES</string>
     <string name="layout_log_in">Sign up</string>
     <string name="label_email">Email</string>
     <string name="editText_Email">example: mariareta@hotmail.es</string>

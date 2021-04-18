@@ -17,13 +17,13 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
-        Button register = this.findViewById(R.id.button_register);
+        Button register = this.findViewById(R.id.continue_button);
 
-        email = this.findViewById(R.id.editText_Email);
-        name = this.findViewById(R.id.editText_Name);
-        password = this.findViewById(R.id.editText_Password);
+        email = this.findViewById(R.id.reg_email_edit_text);
+        name = this.findViewById(R.id.reg_name_edit_text);
+        password = this.findViewById(R.id.reg_password_edit_text);
 
-        findViewById(R.id.button_register).setOnClickListener(this);
+        findViewById(R.id.continue_button).setOnClickListener(this);
         findViewById(R.id.label_haveaccount).setOnClickListener(this);
     }
 
@@ -40,13 +40,13 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void goToLoginUserActivity(){
-        Intent intent = new Intent(this, LoginUserActivity.class);
+        Intent intent = new Intent(this, LoginUserActivity2.class);
         startActivity(intent);
     }
 
     @Override
     public void onClick(View view) {
-        if (R.id.button_register == view.getId()){
+        if (R.id.continue_button == view.getId()){
             goToLoginUserActivity();
         }
         if (R.id.label_haveaccount== view.getId()){
