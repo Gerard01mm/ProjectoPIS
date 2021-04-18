@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.my_notes">
 
+    <uses-feature android:name="android.hardware.microphone" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,10 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.My_notes">
-        <activity android:name=".LoginUserActivity"></activity>
+        <activity android:name=".NoteListActivity" />
+        <activity android:name=".MainActivity" android:theme="@style/Theme.My_notes.NoActionBar"></activity>
         <activity android:name=".RegisterUserActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginUserActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.My_notes.NoActionBar">
             <intent-filter>

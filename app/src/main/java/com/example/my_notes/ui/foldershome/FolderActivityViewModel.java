@@ -1,14 +1,14 @@
-package com.example.my_notes.ui.home;
+package com.example.my_notes.ui.foldershome;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class FolderActivityViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public FolderActivityViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

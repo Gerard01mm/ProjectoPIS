@@ -1,4 +1,4 @@
-package com.example.my_notes.ui.gallery;
+package com.example.my_notes.ui.calendar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,10 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.my_notes.R;
 
-public class GalleryFragment extends Fragment {
+public class CalendarFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
-
+    /*private CalendarFragment galleryViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         galleryViewModel =
@@ -31,5 +30,5 @@ public class GalleryFragment extends Fragment {
             }
         });
         return root;
-    }
+    }*/
 }

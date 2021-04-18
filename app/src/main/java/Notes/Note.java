@@ -8,7 +8,7 @@ public class Note {
     private final String DEFAULT_TITLE = "Titol per defecte";
 
     //Atributs
-    private String text, title;
+    private String text, title, id;
     private Date creation_date, modify_date;
 
 
@@ -27,7 +27,7 @@ public class Note {
 
     /**
      * Constructor de la classe
-     * Rep copm a parametre una cadena que serà elt itol de la nota.
+     * Rep com a parametre una cadena que serà elt itol de la nota.
      * EL titol s'assigna al parametre que es passa, i es crea dues dates, una de modificació
      * i un altre data de creació.
      *

@@ -21,7 +21,9 @@ import Notes.NoteFolder;
 public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHolder>{
 
     //Aqui tenim l'ArrayList de portafolis.
-    private ArrayList<NoteFolder> localDataSet;
+    private final ArrayList<NoteFolder> localDataSet;
+    private final Context parentContext;
+
 
     /**
      * Clase viewHolder interna
@@ -48,11 +50,13 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
     }
 
     /**
-     * Constructor de la clase FOlders Adapter. Rep com a parametres un ArrayList de carpetes i
-     * l'assigna a la variable localDataSet.
+     * Constructor de la clase Folders Adapter. Rep com a parametres un ArrayList de carpetes i
+     * l'assigna a la variable localDataSet. També el contexte.
+     * @param current contexte
      * @param folders arraylist amb les carpetes
      */
-    public FoldersAdapter(ArrayList<NoteFolder> folders){
+    public FoldersAdapter(Context current, ArrayList<NoteFolder> folders){
+        this.parentContext = current;
         this.localDataSet = folders;
     }
 
@@ -81,7 +85,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position){
 
-        //Coje el elemento dels aaray localDataSer en position i reemplaza el contenido de la view
+        //Coge el elemento del array localDataSer en position y reemplaza el contenido de la view
         viewHolder.getTextView().setText(localDataSet.get(position).get_Title());
 
     }

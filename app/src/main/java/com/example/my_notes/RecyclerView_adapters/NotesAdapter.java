@@ -26,7 +26,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         }
     }
 
-
     //Falta reescriure els metodes corresponents
     public NotesAdapter(NoteFolder data){ this.locallDataSet = data;}
 

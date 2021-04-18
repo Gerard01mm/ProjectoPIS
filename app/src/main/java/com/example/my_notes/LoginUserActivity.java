@@ -31,6 +31,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         if (R.id.button_login == view.getId()){
             /*Que hacer cuando apretamos el boton login al rellenar los datos*/
+            goToMainActivity();
         }
         if (R.id.label_signin == view.getId()){
             goToRegisterUserActivity();
