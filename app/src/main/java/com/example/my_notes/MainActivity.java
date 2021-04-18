@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.my_notes.RecyclerView_adapters.FoldersAdapter;
@@ -30,6 +31,8 @@ import Notes.NoteFolder;
 
 public class MainActivity extends AppCompatActivity{
 
+    public String name;
+    public String email;
     private AppBarConfiguration mAppBarConfiguration;
 
     private FolderActivityViewModel viewModel;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -60,6 +64,27 @@ public class MainActivity extends AppCompatActivity{
         fRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         setLiveDataObservers();*/
+
+        getFromSettingsActivity();
+        changeNavHeaderData(navigationView);
+    }
+    /*Metode que canvia el nom actual i el correu de la 'nav_header_main.xml', és a dir, del menú
+    * amb les dades obtingudes a l'hora de fer login*/
+    private void changeNavHeaderData(NavigationView navigationView) {
+        View header = navigationView.getHeaderView(0);
+        TextView nameUser = (TextView) header.findViewById(R.id.nameMenu);
+        nameUser.setText(name);
+        TextView emailUser = (TextView) header.findViewById(R.id.emailMenu);
+        emailUser.setText(email);
+    }
+    /*Metode que agafa les dades introduides a l'activity LoginUserActivity que es pasen juntament amb
+     * l'intent que fem servir per passar a la MainActivity i que administrem amb el Bundle*/
+    private void getFromSettingsActivity() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            name = bundle.getString("usuario");
+            email = bundle.getString("email");
+        }
     }
 
     @Override
