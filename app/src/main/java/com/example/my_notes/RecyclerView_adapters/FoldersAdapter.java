@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.my_notes.R;
@@ -25,13 +26,13 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
     private final Context parentContext;
 
 
+
     /**
      * Clase viewHolder interna
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView folder_title;
-
-
+        private final TextView folder_size;
         /**
          * Constructor de la clase. Rep una View per poder cridar al super constructor i despres
          * assignarem el TextView folder_title al TextView folders_title, a la layout foldercard.xml
@@ -39,6 +40,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
          */
         public ViewHolder(View view){
             super(view);
+            this.folder_size = (TextView)view.findViewById(R.id.folder_size);
             this.folder_title = (TextView)view.findViewById(R.id.folder_title);
         }
 
@@ -46,8 +48,10 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
          * Ens retorna el camp de text
          * @return TextView con el titulo del protafolios
          */
-        public TextView getTextView(){ return this.folder_title; }
+        public TextView getFolder_title(){ return this.folder_title; }
+        public TextView getFolder_size(){ return this.folder_size; }
     }
+
 
     /**
      * Constructor de la clase Folders Adapter. Rep com a parametres un ArrayList de carpetes i
@@ -85,9 +89,10 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position){
 
-        //Coge el elemento del array localDataSer en position y reemplaza el contenido de la view
-        viewHolder.getTextView().setText(localDataSet.get(position).get_Title());
-
+        //Coje el elemento dels aaray localDataSer en position i reemplaza el contenido de la view
+        viewHolder.getFolder_title().setText(localDataSet.get(position).get_Title());
+        String numNotes = String.valueOf(localDataSet.get(position).get_size());
+        viewHolder.getFolder_size().setText(numNotes);
     }
 
 

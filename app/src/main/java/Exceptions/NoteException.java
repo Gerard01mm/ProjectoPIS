@@ -18,6 +18,7 @@ public class NoteException extends Exception {
      *
      * Aquest cosntructor rep com a parametre un missatge de error que serà apssat al super
      * constructor de la classe exception.
+     *
      * @param error Missatge d'error
      */
     public NoteException(String error){

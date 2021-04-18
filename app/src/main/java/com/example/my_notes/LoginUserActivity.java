@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class LoginUserActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText name, email;
+    private EditText name, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,8 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent(this, RegisterUserActivity.class);
         startActivity(intent);
     }
+
+
     private void goToMainActivity(){
         Intent intent2 = new Intent(this, MainActivity.class);
         intent2.putExtra("usuario", name.getText().toString());
@@ -38,7 +42,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         if (R.id.button_login == view.getId()){
-            goToMainActivity();
+            /*Que hacer cuando apretamos el boton login al rellenar los datos*/
             goToMainActivity();
         }
         if (R.id.label_signin == view.getId()){

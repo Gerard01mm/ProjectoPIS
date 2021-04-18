@@ -59,7 +59,7 @@
                 app:startIconDrawable="@android:drawable/sym_action_email">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/reg_email_edit_text"
+                    android:id="@+id/email_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
@@ -73,7 +73,7 @@
                 android:hint="@string/label_name">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/reg_name_edit_text"
+                    android:id="@+id/name_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -90,7 +90,7 @@
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/reg_password_edit_text"
+                    android:id="@+id/password_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />

@@ -13,7 +13,7 @@ public class NoteFolder implements Serializable {
     //Constants
     private final String DEFAULT_NAME = "Titol per defecte";
     private final String NOTE_NOT_FOUND = "La nota que vols eliminar no es troba a la carpeta";
-    private final int DEFAULT_COLOR = Color.WHITE;
+    private final int DEFAULT_COLOR = Color.WHITE; //Color predeterminat que tindrà la carpeta.
 
     //Atributs
     private ArrayList<Note> list;
@@ -102,6 +102,26 @@ public class NoteFolder implements Serializable {
      */
     public int get_size(){
         return this.list.size();
+    }
+
+
+    /**
+     * Aquesa funció ens permetrà recuperar l'enter del color de la carpeta.
+     *
+     * @return enter del color de la carpeta.
+     */
+    public int getColor(){
+        return this.color;
+    }
+
+
+    /**
+     * Aquesta funció ens permetrà canviar el color de la carpeta.
+     *
+     * @param nColor Enter del cou color.
+     */
+    public void setColor(int nColor){
+        this.color = nColor;
     }
 
 
@@ -196,15 +216,6 @@ public class NoteFolder implements Serializable {
      * Aquesta funció ens permetrà ordenar la llista de notes per la data de creació
      */
     public void sortList_by_CreationDate(){
-
-    }
-
-
-    /**
-     * Aquesta funció ens permetrà buscar una nota introduitn el seu titol
-     * @param title Titol de la nota que volem trobar.
-     */
-    public void search_by_title(String title){
 
     }
 }

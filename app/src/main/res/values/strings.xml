@@ -11,6 +11,7 @@
     <string name="add_note">New Note</string>
     <string name="create_note">Create a new note</string>
 
+    <!--Menu desplegable-->
     <string name="menu_notes">Notas</string>
     <string name="menu_calendar">Calendario</string>
     <string name="menu_slideshow">Slideshow</string>
@@ -25,9 +26,20 @@
     <string name="checkBox_privacity">I agree to the <font color='blue'>Terms of Services</font> and <font color='blue'>Privacy Policy</font></string>
     <string name="button_continue">Continue</string>
     <string name="label_have_acount">Have An Account? <font color='blue'>Sign in</font> </string>
+
     <!--Log in-->
     <string name="log_in">Log in</string>
     <string name="see_you">Hi there! Nice to see you again.</string>
     <string name="button_login">Log in</string>
     <string name="forgot_password">Forgot password? <font color='red'>Sign in</font></string>
+
+    <!--Pruebas no tocar-->
+    <string name="default_title">Titol per defecte</string>
+    <string name="number_notes">Numero de notes: </string>
+
+    <!--Cadenes de la cardView de les notes (Pruebas)-->
+    <string name="default_title_note">Titol per defecte</string>
+    <string name="default_date">12/12/21</string>
+    <string name="note_type">Nota de audio</string>
+
 </resources>
