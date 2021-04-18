@@ -8,9 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.my_notes.RecyclerView_adapters.FoldersAdapter;
-import com.example.my_notes.ui.foldershome.FolderActivityViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.my_notes.ui.foldershome.FolderViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.lifecycle.Observer;
@@ -22,7 +20,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -35,7 +32,7 @@ public class MainActivity extends AppCompatActivity{
     public String email;
     private AppBarConfiguration mAppBarConfiguration;
 
-    private FolderActivityViewModel viewModel;
+    private FolderViewModel viewModel;
     private RecyclerView fRecyclerView;
     private Context parentContext;
     private AppCompatActivity fActivity;
@@ -77,6 +74,7 @@ public class MainActivity extends AppCompatActivity{
         TextView emailUser = (TextView) header.findViewById(R.id.emailMenu);
         emailUser.setText(email);
     }
+
     /*Metode que agafa les dades introduides a l'activity LoginUserActivity que es pasen juntament amb
      * l'intent que fem servir per passar a la MainActivity i que administrem amb el Bundle*/
     private void getFromSettingsActivity() {
@@ -103,7 +101,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void setLiveDataObservers() {
         //Subscribe the activity to the observable
-        viewModel = new ViewModelProvider(this).get(FolderActivityViewModel.class);
+        viewModel = new ViewModelProvider(this).get(FolderViewModel.class);
 
         final Observer<ArrayList<NoteFolder>> observer = new Observer<ArrayList<NoteFolder>>() {
             @Override
