@@ -124,39 +124,6 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
                             }
                         });
             }
-
-            /*//En cas que els camps estiguin complerts i la checkBox marcada
-            if (!this.email.getText().toString().isEmpty() && !this.password.getText().toString().isEmpty() && !this.name.getText().toString().isEmpty() && this.privacity.isChecked()) {
-
-                //Crea un usuari amb el email i contrasenya introduits.
-                FirebaseAuth.getInstance().createUserWithEmailAndPassword(this.email.getText().toString(),
-                        this.password.getText().toString()).
-                        addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                //Si no ha succeit cap error
-                                if (task.isSuccessful()) {
-                                    goToMainActivity();
-                                }
-
-                                //En cas que si
-                                else {
-                                    showErrorMessage(REGISTER_ERROR);
-                                }
-                            }
-                        });
-            }
-
-            //En cas que la checkBox no estigui marcada
-            else if (!this.privacity.isChecked()){
-                showErrorMessage(NOT_CHECKED);
-            }
-
-            //En cas que algun camp no es trobi omplert
-            else{
-                showErrorMessage(EMPTY_INPUT);
-            }*/
         }
 
         //En cas que pulsem l'etiqueta

@@ -8,20 +8,6 @@ public class TextNote extends Note {
     private String text;
     private ArrayList<String> images_adress;
 
-
-    /**
-     * Constructor de la classe.
-     *
-     * No rep cap parametre, crida al super constructor de la classe.
-     *
-     */
-    public TextNote(String localPath, String owner){
-        super(localPath, owner); //Cridem al superconstructor sense parametres.
-        this.text = ""; //Inicialitzem la cadena de text a 0
-        //this.images_adress = new ArrayList<>(); //Inicialitzem l'arrayLiast de direccions de les fotos
-    }
-
-
     /**
      * Segon constructor de la classe.
      *
@@ -44,6 +30,7 @@ public class TextNote extends Note {
      *
      * @param text nou text que voldrem emmagatzemar.
      */
+
     public void setText(String text){
         this.text = text;
     }
@@ -54,6 +41,7 @@ public class TextNote extends Note {
      *
      * @return String text de la nota.
      */
+
     public String getText(){
         return this.text;
     }

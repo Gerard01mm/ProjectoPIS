@@ -28,11 +28,10 @@ import Notes.NoteFolder;
 
 public class MainActivity extends AppCompatActivity{
 
-    public String name;
-    public String email;
+    private String name, email;
     private AppBarConfiguration mAppBarConfiguration;
 
-    private FolderViewModel viewModel;
+
     private RecyclerView fRecyclerView;
     private Context parentContext;
     private AppCompatActivity fActivity;
@@ -57,10 +56,6 @@ public class MainActivity extends AppCompatActivity{
         NavigationUI.setupWithNavController(navigationView, navController);
 
         // Define RecyclerView elements: 1) Layout Manager and 2) Adapter
-        /*fRecyclerView = findViewById(R.id.recycler_notes);
-        fRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        setLiveDataObservers();*/
 
         getFromSettingsActivity();
         changeNavHeaderData(navigationView);
@@ -97,30 +92,5 @@ public class MainActivity extends AppCompatActivity{
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
-
-    public void setLiveDataObservers() {
-        //Subscribe the activity to the observable
-        viewModel = new ViewModelProvider(this).get(FolderViewModel.class);
-
-        final Observer<ArrayList<NoteFolder>> observer = new Observer<ArrayList<NoteFolder>>() {
-            @Override
-            public void onChanged(ArrayList<NoteFolder> noteFolders) {
-                FoldersAdapter newAdapter = new FoldersAdapter(parentContext, noteFolders);
-                fRecyclerView.swapAdapter(newAdapter, false);
-                newAdapter.notifyDataSetChanged();
-            }
-        };
-
-        final Observer<String> observerToast = new Observer<String>() {
-            @Override
-            public void onChanged(String t) {
-                Toast.makeText(parentContext, t, Toast.LENGTH_SHORT).show();
-            }
-        };
-
-        //viewModel.getAudioCards().observe(this, observer);
-        //viewModel.getToast().observe(this, observerToast);
-
     }
 }

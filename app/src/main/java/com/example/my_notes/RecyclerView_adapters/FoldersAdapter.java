@@ -89,7 +89,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position){
 
-        //Coje el elemento dels aaray localDataSer en position i reemplaza el contenido de la view
+        //Coge el elemento dels aaray localDataSer en position i reemplaza el contenido de la view
         viewHolder.getFolder_title().setText(localDataSet.get(position).get_Title());
         String numNotes = String.valueOf(localDataSet.get(position).get_size());
         viewHolder.getFolder_size().setText(numNotes);
@@ -98,7 +98,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
 
     /**
      * Aquesta funció s'encarregarà de retornar el tamany de la llista de portafolis
-     * @return tamany de localDataSet
+     * @return mida de localDataSet
      */
     @Override
     public int getItemCount(){ return this.localDataSet.size(); }

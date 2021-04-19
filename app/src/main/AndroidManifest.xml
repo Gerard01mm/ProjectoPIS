@@ -14,7 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.My_notes">
-        <!--<activity android:name=".LoginUserActivity"></activity>-->
         <activity android:name=".NoteListActivity" />
         <activity
             android:name=".MainActivity"

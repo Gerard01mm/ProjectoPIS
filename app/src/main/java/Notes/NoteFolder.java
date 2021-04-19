@@ -1,6 +1,9 @@
 package Notes;
 
 import android.graphics.Color;
+import android.util.Log;
+
+import com.example.my_notes.DatabaseAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,15 +24,17 @@ public class NoteFolder implements Serializable {
     private String title, id, owner;
     private int color;
 
+    private final DatabaseAdapter adapter = DatabaseAdapter.databaseAdapter;
+
     /**
      * Constructor principal de la classe. Inicialitzarà l'arrayList de notes on emmagatzarem les
      * notes i crearem una carpeta amb el titol per defecte.
      */
-    public NoteFolder(String owner){
+    public NoteFolder(){
         this.list = new ArrayList<>();
         this.title = this.DEFAULT_NAME;
         this.color = this.DEFAULT_COLOR;
-        this.owner = owner;
+        this.owner = adapter.getCurrentUser();
         this.id = UUID.randomUUID().toString();
     }
 
@@ -42,11 +47,11 @@ public class NoteFolder implements Serializable {
      *
      * @param title titol de la carpeta
      */
-    public NoteFolder(String title, String owner) {
+    public NoteFolder(String title) {
         this.list = new ArrayList<>();
         this.title = title;
         this.color = this.DEFAULT_COLOR;
-        this.owner = owner;
+        this.owner = adapter.getCurrentUser();
         this.id = UUID.randomUUID().toString();
     }
 
@@ -57,11 +62,11 @@ public class NoteFolder implements Serializable {
      * Rep un enter que s'asignara al color per poder afegir el color de fons
      * @param color Color que volem per a la carpeta
      */
-    public NoteFolder(String owner, int color){
+    public NoteFolder(int color){
         this.list = new ArrayList<>();
         this.title = this.DEFAULT_NAME;
         this.color = color;
-        this.owner = owner;
+        this.owner = adapter.getCurrentUser();
         this.id = UUID.randomUUID().toString();
     }
 
@@ -72,15 +77,35 @@ public class NoteFolder implements Serializable {
      * Rep com a parametres un titol per a la carpeta i despres un enter que servira per
      * assignar el color de la carpeta.
      *
-     * @param title Titul de la carpeta.
+     * @param title Títol de la carpeta.
      * @param color Color de la carpeta
+     * @param id Id de la carpeta
      */
-    public NoteFolder(String title, String owner, int color){
+    public NoteFolder(String title, int color, String id){
+        this.list = new ArrayList<>();
+        this.title = title;
+        this.color = color;
+        this.owner = adapter.getCurrentUser();
+        this.id = id;
+    }
+
+    /**
+     * Constructor de la classe.
+     *
+     * Rep com a parametres un titol per a la carpeta i despres un enter que servira per
+     * assignar el color de la carpeta.
+     *
+     * @param title Títol de la carpeta.
+     * @param color Color de la carpeta
+     * @param owner Owner de la carpeta
+     * @param id Id de la carpeta
+     */
+    public NoteFolder(String title, String owner, int color, String id){
         this.list = new ArrayList<>();
         this.title = title;
         this.color = color;
         this.owner = owner;
-        this.id = UUID.randomUUID().toString();
+        this.id = id;
     }
 
 
@@ -224,5 +249,10 @@ public class NoteFolder implements Serializable {
         else{
             return this.list.get(index);
         }
+    }
+
+    public void saveFolder(){
+        Log.d("saveFolder", "adapter-> saveFolder");
+        adapter.saveFolder(this.title, this.id, this.owner, this.color);
     }
 }

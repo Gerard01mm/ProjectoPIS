@@ -113,36 +113,6 @@ public class LoginUserActivity2 extends AppCompatActivity implements View.OnClic
                 });
             }
         }
-
-            /*//En cas que els tres camps estiguin omplerts
-            if (!this.email.getText().toString().isEmpty() && !this.password.getText().toString().isEmpty() && !this.name.getText().toString().isEmpty()){
-
-                //Busquem un usuari amb el email i constrasenya introduits.
-                FirebaseAuth.getInstance().
-                        signInWithEmailAndPassword(this.email.getText().toString(),
-                                this.password.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        //En cas que trobem l'usuari
-                        if (task.isSuccessful()){
-                            goToMainActivity();
-                        }
-
-                        //En qualsevol altre cas
-                        else{
-                            showErrorMessage(LOGIN_ERROR);
-                        }
-                    }
-                });
-            }
-
-            //En cas que algun camp de text es trobi buit.
-            else{
-                showErrorMessage(EMPTY_INPUT);
-            }
-        }*/
-
         //En cas que pulsem l'etiqueta de signIn
         if (R.id.label_signin2 == view.getId()){
             goToRegisterUserActivity();

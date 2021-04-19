@@ -97,6 +97,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
      * Aquesta funció s'encarregarà de retornar el tamany de les dades.
      * @return
      */
+
     @Override
     public int getItemCount() {
         return this.locallDataSet.get_size();
