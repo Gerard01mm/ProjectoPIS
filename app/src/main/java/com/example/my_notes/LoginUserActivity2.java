@@ -26,7 +26,7 @@ public class LoginUserActivity2 extends AppCompatActivity implements View.OnClic
 
     //Constants
     private final String LOGIN_ERROR = "Name, email or password are not correct";
-    private final String EMPTY_INPUT = "Some of the text areas are empty";
+    private final String EMPTY_INPUT = "Text area is empty";
 
     private TextInputEditText name, email, password;
 
@@ -66,8 +66,55 @@ public class LoginUserActivity2 extends AppCompatActivity implements View.OnClic
 
         //En cas que pulsem el botond e continue
         if (R.id.next_button == view.getId()){
+            boolean error = false;
 
-            //En cas que els tres camps estiguin omplerts
+            //En el cas que estigui buit el EditText de l'email
+            if (this.email.getText().toString().isEmpty()){
+                email.setError(EMPTY_INPUT);
+                error = true;
+
+                //En el cas que no estigui buit el EditText de l'email, però hagui sigut introduit amb un format incorrecte.
+            }else{
+                boolean emailCorrect = true;
+                Pattern pattern = Patterns.EMAIL_ADDRESS;
+                emailCorrect = pattern.matcher(this.email.getText().toString()).matches();
+                if(!emailCorrect){
+                    email.setError("Incorrect email format");
+                    error = false;
+                }
+            }
+            //En el cas que estigui buit el EditText de la contrassenya.
+            if (this.password.getText().toString().isEmpty()){
+                password.setError(EMPTY_INPUT);
+                error = true;
+            }
+            //En el cas que estigui buit el EditText del nom d'usuari.
+            if (this.name.getText().toString().isEmpty()){
+                name.setError(EMPTY_INPUT);
+                error = true;
+            }
+            //Si no hi ha cap error
+            if(!error){
+                FirebaseAuth.getInstance().
+                        signInWithEmailAndPassword(this.email.getText().toString(),
+                                this.password.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        //En cas que trobem l'usuari
+                        if (task.isSuccessful()){
+                            goToMainActivity();
+                        }
+                        //En qualsevol altre cas
+                        else{
+                            showErrorMessage(LOGIN_ERROR);
+                        }
+                    }
+                });
+            }
+        }
+
+            /*//En cas que els tres camps estiguin omplerts
             if (!this.email.getText().toString().isEmpty() && !this.password.getText().toString().isEmpty() && !this.name.getText().toString().isEmpty()){
 
                 //Busquem un usuari amb el email i constrasenya introduits.
@@ -94,15 +141,13 @@ public class LoginUserActivity2 extends AppCompatActivity implements View.OnClic
             else{
                 showErrorMessage(EMPTY_INPUT);
             }
-        }
+        }*/
 
         //En cas que pulsem l'etiqueta de signIn
         if (R.id.label_signin2 == view.getId()){
             goToRegisterUserActivity();
         }
     }
-
-
 
     private void showErrorMessage(String error){
         Toast.makeText(LoginUserActivity2.this, error, Toast.LENGTH_SHORT).show();

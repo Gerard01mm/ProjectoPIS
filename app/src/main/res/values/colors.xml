@@ -9,11 +9,17 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!--Color login i registro-->
+    <!--Color login i registr - OPCION 1
     <color name="textColorPrimary">#442C2E</color>
     <color name="colorPrimaryDark">#FBB8AC</color>
     <color name="toolbarIconColor">@color/textColorPrimary</color>
     <color name="textInputOutlineColor">#FBB8AC</color>
-    <color name="colorAccent">#FEDBD0</color>
+    <color name="colorAccent">#FEDBD0</color> -->
+
+    <color name="textColorPrimary">#FF7043</color>
+    <color name="colorPrimaryDark">#FFCCBC</color>
+    <color name="toolbarIconColor">#FFAB91</color>
+    <color name="textInputOutlineColor">#212121</color>
+    <color name="colorAccent">#FF7043</color>  <!--barra superior (donde esta la bateria)-->
 
 </resources>

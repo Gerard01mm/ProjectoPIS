@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,12 +19,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.regex.Pattern;
+
 public class RegisterUserActivity extends AppCompatActivity implements View.OnClickListener{
 
     //Constants
     private final String REGISTER_ERROR = "An account this that email already exists";
     private final String NOT_CHECKED = "Check the Terms of Services";
-    private final String EMPTY_INPUT = "Some of the text areas are empty";
+    private final String EMPTY_INPUT = "Text area is empty";
 
     private TextInputEditText email, name, password;
     private CheckBox privacity;
@@ -68,8 +71,61 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
 
         //En cas que pulsem el botó de continue
         if (R.id.continue_button == view.getId()) {
+            boolean error = false;
 
-            //En cas que els camps estiguin complerts i la checkBox marcada
+            //En el cas que estigui buit el EditText de l'email
+            if (this.email.getText().toString().isEmpty()){
+                email.setError(EMPTY_INPUT);
+                error = true;
+
+            //En el cas que no estigui buit el EditText de l'email, però hagui sigut introduit amb un format incorrecte.
+            }else{
+                boolean emailCorrect = true;
+                Pattern pattern = Patterns.EMAIL_ADDRESS;
+                emailCorrect = pattern.matcher(this.email.getText().toString()).matches();
+                if(!emailCorrect){
+                    email.setError("Incorrect email format");
+                    error = false;
+                }
+            }
+            //En el cas que estigui buit el EditText de la contrassenya.
+            if (this.password.getText().toString().isEmpty()){
+                password.setError(EMPTY_INPUT);
+                error = true;
+            }
+            //En el cas que estigui buit el EditText del nom d'usuari.
+            if (this.name.getText().toString().isEmpty()){
+                name.setError(EMPTY_INPUT);
+                error = true;
+            }
+            //En cas que la checkBox no estigui marcada
+            if (!this.privacity.isChecked()){
+                showErrorMessage(NOT_CHECKED);
+                error = true;
+            }
+            //Si no hi ha cap error
+            if (!error){
+                //Crea un usuari amb el email i contrasenya introduits.
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(this.email.getText().toString(),
+                        this.password.getText().toString()).
+                        addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                //Si no ha succeit cap error
+                                if (task.isSuccessful()) {
+                                    goToMainActivity();
+                                }
+
+                                //En cas que si
+                                else {
+                                    showErrorMessage(REGISTER_ERROR);
+                                }
+                            }
+                        });
+            }
+
+            /*//En cas que els camps estiguin complerts i la checkBox marcada
             if (!this.email.getText().toString().isEmpty() && !this.password.getText().toString().isEmpty() && !this.name.getText().toString().isEmpty() && this.privacity.isChecked()) {
 
                 //Crea un usuari amb el email i contrasenya introduits.
@@ -100,7 +156,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
             //En cas que algun camp no es trobi omplert
             else{
                 showErrorMessage(EMPTY_INPUT);
-            }
+            }*/
         }
 
         //En cas que pulsem l'etiqueta
