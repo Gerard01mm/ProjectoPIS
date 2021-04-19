@@ -15,7 +15,7 @@
         android:paddingBottom="40dp">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/app_name"
             android:layout_width="match_parent"
             android:layout_height="131dp"
             android:paddingTop="20dp"
@@ -44,7 +44,7 @@
                 android:id="@+id/label_hi2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/label_login"
+                android:layout_below="@id/label_login2"
                 android:paddingTop="20dip"
                 android:paddingBottom="20dip"
                 android:text="@string/see_you" />

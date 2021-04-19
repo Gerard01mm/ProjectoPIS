@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import Exceptions.NoteException;
 
@@ -17,17 +18,19 @@ public class NoteFolder implements Serializable {
 
     //Atributs
     private ArrayList<Note> list;
-    private String title;
+    private String title, id, owner;
     private int color;
 
     /**
      * Constructor principal de la classe. Inicialitzarà l'arrayList de notes on emmagatzarem les
      * notes i crearem una carpeta amb el titol per defecte.
      */
-    public NoteFolder(){
+    public NoteFolder(String owner){
         this.list = new ArrayList<>();
         this.title = this.DEFAULT_NAME;
         this.color = this.DEFAULT_COLOR;
+        this.owner = owner;
+        this.id = UUID.randomUUID().toString();
     }
 
 
@@ -39,10 +42,12 @@ public class NoteFolder implements Serializable {
      *
      * @param title titol de la carpeta
      */
-    public NoteFolder(String title) {
+    public NoteFolder(String title, String owner) {
         this.list = new ArrayList<>();
         this.title = title;
         this.color = this.DEFAULT_COLOR;
+        this.owner = owner;
+        this.id = UUID.randomUUID().toString();
     }
 
 
@@ -52,10 +57,12 @@ public class NoteFolder implements Serializable {
      * Rep un enter que s'asignara al color per poder afegir el color de fons
      * @param color Color que volem per a la carpeta
      */
-    public NoteFolder(int color){
+    public NoteFolder(String owner, int color){
         this.list = new ArrayList<>();
         this.title = this.DEFAULT_NAME;
         this.color = color;
+        this.owner = owner;
+        this.id = UUID.randomUUID().toString();
     }
 
 
@@ -68,10 +75,12 @@ public class NoteFolder implements Serializable {
      * @param title Titul de la carpeta.
      * @param color Color de la carpeta
      */
-    public NoteFolder(String title, int color){
+    public NoteFolder(String title, String owner, int color){
         this.list = new ArrayList<>();
         this.title = title;
         this.color = color;
+        this.owner = owner;
+        this.id = UUID.randomUUID().toString();
     }
 
 
@@ -123,6 +132,28 @@ public class NoteFolder implements Serializable {
     public void setColor(int nColor){
         this.color = nColor;
     }
+
+
+    /**
+     * Aquesta funció ens retornarà el ID de la carpeta.
+     * @return Cadena amb el Id de la carpeta.
+     */
+    public String getId(){ return this.id; }
+
+
+    /**
+     * Aquesta funció ens retornarà una cadena amb el owner de la nota.
+     * @return Cadena amb el owner de la carpeta.
+     */
+    public String getOwner(){ return this.owner; }
+
+
+    /**
+     * Aquesta funció ens permetrà modificar el owner de la carpeta, rebent com a parametre
+     * el nou owner.
+     * @param owner nou owner de la carpeta.
+     */
+    public void setOwner(String owner){ this.owner = owner; }
 
 
     /*Funciones*/
@@ -193,29 +224,5 @@ public class NoteFolder implements Serializable {
         else{
             return this.list.get(index);
         }
-    }
-
-
-    /**
-     * Aquesta funció ens permetrà ordenar la llista pels titols de les notes
-     */
-    public void sortList_by_title(){
-
-    }
-
-
-    /**
-     * Aquesta funció ens permetrà ordenar la llsita de notes per la data de modificació
-     */
-    public void sortList_by_modifyDate(){
-
-    }
-
-
-    /**
-     * Aquesta funció ens permetrà ordenar la llista de notes per la data de creació
-     */
-    public void sortList_by_CreationDate(){
-
     }
 }

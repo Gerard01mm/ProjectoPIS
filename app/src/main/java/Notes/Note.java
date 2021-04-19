@@ -9,7 +9,7 @@ public class Note {
     private final String DEFAULT_TITLE = "Titol per defecte";
 
     //Atributs
-    private String title, id, adress, owner;
+    private String title, id, adress, owner, folderName;
     private Date creation_date, modify_date;
 
     //Falta añadir un DataBaseAdapter.
@@ -20,10 +20,11 @@ public class Note {
      * No rep cap parametre i el titol de la nota s'assignarà com al titol per defecte de la classe
      * També es creen dues dates, una de creació i un altre de modificació.
      */
-    public Note(String localPath, String owner) {
+    public Note(String localPath, String owner, String folderName) {
         this.title = this.DEFAULT_TITLE;
         this.adress = localPath;
         this.owner = owner;
+        this.folderName = folderName;
         this.id = UUID.randomUUID().toString();
         this.creation_date = new Date();
         this.modify_date = new Date();
@@ -38,10 +39,11 @@ public class Note {
      *
      * @param title Titol de la nota
      */
-    public Note(String title, String localPath, String owner) {
+    public Note(String title, String localPath, String owner, String folderName) {
         this.title = title;
         this.adress = localPath;
         this.owner = owner;
+        this.folderName = folderName;
         this.id = UUID.randomUUID().toString();
         this.creation_date = new Date();
         this.modify_date = new Date();
@@ -93,14 +95,37 @@ public class Note {
     }
 
 
+    /**
+     * Aquesta funció ens permetra recuperar el ID de la nota.
+     * @return Cadena amb l'ID de la nota.
+     */
     public String getId(){ return this.id; }
 
 
+    /**
+     * Aquesta funció ens permetrà modificar el valor del ID de la nota.
+     * @param nID nou ID de la nota
+     */
     private void setId(String nID){ this.id = nID; }
 
 
+    /**
+     * Aquesta funció ens permetrà recuperar l'adreça de la nota.
+     * @return Cadena amb l'adreça de la nota.
+     */
     public String getAdress(){ return this.adress; }
 
 
+    /**
+     * Aquesta funció ens permetrà recuperar el owner de la nota.
+     * @return Cadena amb l'owner de la nota.
+     */
     public String getOwner(){ return this.owner; }
+
+
+    /**
+     * Aquesta funció permet canaviar el nom del owner de la nota
+     * @param nOwner nou owner.
+     */
+    public void setOwner(String nOwner){ this.owner = nOwner; }
 }
