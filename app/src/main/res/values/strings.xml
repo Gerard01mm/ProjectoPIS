@@ -44,4 +44,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--Etiquetas calendario-->
+    <string name="cd_calendar">Create a new Reminder</string>
+    <string name="fab_calendar">New Reminder</string>
+    <string name="cd_ReminderCard">Event image</string>
+
 </resources>

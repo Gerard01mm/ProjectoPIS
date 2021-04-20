@@ -6,22 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".ui.calendar.CalendarFragment">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <CalendarView
-            android:id="@+id/Calendar_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/Theme.AppCompat.Light"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Aqui apareceran los eventos apuntados para cada dia seleccionado">
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mcv_selectionColor="@color/textColorPrimary"
+                app:mcv_showOtherDates="all" />
 
-        </TextView>
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_add_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/cd_calendar"
+            android:text="@string/fab_calendar"
+            android:backgroundTint="@color/textColorPrimary"
+            app:icon="@android:drawable/ic_input_add" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

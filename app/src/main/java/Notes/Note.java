@@ -128,4 +128,18 @@ public class Note {
      * @param nOwner nou owner.
      */
     public void setOwner(String nOwner){ this.owner = nOwner; }
+
+
+    /**
+     * Aquesta funció ens retorna el nom de la carpeta a la qual pertany
+     * @return nom de la carpeta a la que pertany
+     */
+    public String getFolderName() { return this.folderName; }
+
+
+    /**
+     * Aquesta funció ens permet canviar el nom de la carpeta a la qual pertany la nota
+     * @param folderName nou nom de la carpeta a la que pertany
+     */
+    public void setFolderName(String folderName){ this.folderName = folderName; }
 }

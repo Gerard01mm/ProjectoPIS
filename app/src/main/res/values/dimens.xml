@@ -13,4 +13,11 @@
     <dimen name="NoteTitleSize">15dp</dimen>
     <dimen name="NoteDateSize">10dp</dimen>
     <dimen name="TypeNoteSize">15dp</dimen>
+
+
+    <!--Dimensions per a les reminderCards-->
+    <dimen name="ReminderTitleSize">15sp</dimen>
+    <dimen name="leftPadding">10dp</dimen>
+    <dimen name="rightPadding">10dp</dimen>
+
 </resources>
