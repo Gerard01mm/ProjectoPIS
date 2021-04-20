@@ -19,7 +19,7 @@ public class FolderViewModel extends ViewModel implements DatabaseAdapter.vmInte
         mFolders = new MutableLiveData<>();
         mToast = new MutableLiveData<>();
         DatabaseAdapter da= new DatabaseAdapter(this);
-        da.getCollectionFolders();
+        da.getCollectionFoldersByUser();
     }
 
     public LiveData<ArrayList<NoteFolder>> getFolders() {

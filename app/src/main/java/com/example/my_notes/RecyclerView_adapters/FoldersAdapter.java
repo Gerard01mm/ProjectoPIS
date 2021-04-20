@@ -4,10 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.my_notes.R;
@@ -25,14 +28,13 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
     private final ArrayList<NoteFolder> localDataSet;
     private final Context parentContext;
 
-
-
     /**
      * Clase viewHolder interna
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView folder_title;
         private final TextView folder_size;
+        private final LinearLayout fLayout;
         /**
          * Constructor de la clase. Rep una View per poder cridar al super constructor i despres
          * assignarem el TextView folder_title al TextView folders_title, a la layout foldercard.xml
@@ -42,6 +44,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
             super(view);
             this.folder_size = (TextView)view.findViewById(R.id.folder_size);
             this.folder_title = (TextView)view.findViewById(R.id.folder_title);
+            this.fLayout = view.findViewById(R.id.folder_linear);
         }
 
         /**
@@ -50,6 +53,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
          */
         public TextView getFolder_title(){ return this.folder_title; }
         public TextView getFolder_size(){ return this.folder_size; }
+        public LinearLayout getFolderLayout(){ return this.fLayout; }
     }
 
 
@@ -80,6 +84,10 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
         return new ViewHolder(view);
     }
 
+    public void openFolder(int position){
+
+    }
+
 
     /**
      * Aquesta funció s'encarregarà d'anar reemplaçant els elements que apareixen a la View
@@ -94,12 +102,19 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
 
         //Escriurà el numero de notes que té la carpeta.
         String numNotes = String.valueOf(localDataSet.get(position).get_size());
-        viewHolder.getFolder_size().setText("Numero de notes: " + numNotes);
+        viewHolder.getFolder_size().setText("Number of notes: " + numNotes);
+        LinearLayout folder_layout = viewHolder.getFolderLayout();
+        folder_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_nav_notes_to_blankFragment);
+            }
+        });
     }
 
 
     /**
-     * Aquesta funció s'encarregarà de retornar el tamany de la llista de portafolis
+     * Aquesta funció s'encarregarà de retornar la mida de la llista de portafolis
      * @return mida de localDataSet
      */
     @Override

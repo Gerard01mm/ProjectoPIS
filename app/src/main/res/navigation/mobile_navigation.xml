@@ -9,7 +9,11 @@
         android:id="@+id/nav_notes"
         android:name="com.example.my_notes.ui.foldershome.FolderFragment"
         android:label="@string/menu_notes"
-        tools:layout="@layout/fragment_folderlist" />
+        tools:layout="@layout/fragment_folderlist" >
+        <action
+            android:id="@+id/action_nav_notes_to_blankFragment"
+            app:destination="@id/blankFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_calendar"
@@ -19,7 +23,11 @@
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.my_notes.ui.slideshow.SlideshowFragment"
+        android:name="com.example.my_notes.BlankFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_notelist" />
+        tools:layout="@layout/fragment_blank" />
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.example.my_notes.ui.slideshow.SlideshowFragment"
+        android:label="fragment_blank" />
 </navigation>

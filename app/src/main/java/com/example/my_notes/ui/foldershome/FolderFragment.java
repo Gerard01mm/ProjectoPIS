@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,33 +99,7 @@ public class FolderFragment extends Fragment {
             }
         };
 
-
         folderViewModel.getFolders().observe(getViewLifecycleOwner(), observer);
         folderViewModel.getToast().observe(getViewLifecycleOwner(), observerToast);
     }
-
-    /*
-    public void setLiveDataObservers() {
-        //Subscribe the activity to the observable
-        folderViewModel = new ViewModelProvider(getActivity()).get(FolderViewModel.class);
-
-        final Observer<ArrayList<NoteFolder>> observer = new Observer<ArrayList<NoteFolder>>() {
-            @Override
-            public void onChanged(ArrayList<NoteFolder> noteFolders) {
-                FoldersAdapter newAdapter = new FoldersAdapter(parentContext, noteFolders);
-                fRecyclerView.swapAdapter(newAdapter, false);
-                newAdapter.notifyDataSetChanged();
-            }
-        };
-
-        final Observer<String> observerToast = new Observer<String>() {
-            @Override
-            public void onChanged(String t) {
-                Toast.makeText(parentContext, t, Toast.LENGTH_SHORT).show();
-            }
-        };
-        folderViewModel.getFolders().observe(getViewLifecycleOwner(), observer);
-        folderViewModel.getToast().observe(getViewLifecycleOwner(), observerToast);
-    }
-    */
 }

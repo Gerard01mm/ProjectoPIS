@@ -103,7 +103,31 @@ public class DatabaseAdapter {
                     }
                 }
             });
+    }
 
+    public void getCollectionFoldersByUser(){
+        Log.d(TAG,"updateFoldersByUser");
+        db.collection("folders")
+                .whereEqualTo("owner", getCurrentUser())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<NoteFolder> retrieved_ac = new ArrayList<NoteFolder>() ;
+                            for (QueryDocumentSnapshot folder : task.getResult()) {
+                                Log.d(TAG, folder.getId() + " => " + folder.getData());
+                                retrieved_ac.add(new NoteFolder( folder.getString("title"),
+                                        folder.getString("owner"), folder.getLong("color").intValue(),
+                                        folder.getString("id")));
+                            }
+                            listener.setCollection(retrieved_ac);
+
+                        } else {
+                            Log.d(TAG, "Error getting folders: ", task.getException());
+                        }
+                    }
+                });
     }
 
     public void saveFolder (String title, String id, String owner, int color) {

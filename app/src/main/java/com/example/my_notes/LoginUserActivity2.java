@@ -64,7 +64,7 @@ public class LoginUserActivity2 extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view) {
 
-        //En cas que pulsem el botond e continue
+        //En cas que polsem el boto e continue
         if (R.id.next_button == view.getId()){
             boolean error = false;
 

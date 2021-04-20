@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.my_notes.RecyclerView_adapters.FoldersAdapter;
+import com.example.my_notes.ui.foldershome.FolderFragment;
 import com.example.my_notes.ui.foldershome.FolderViewModel;
 import com.google.android.material.navigation.NavigationView;
 
