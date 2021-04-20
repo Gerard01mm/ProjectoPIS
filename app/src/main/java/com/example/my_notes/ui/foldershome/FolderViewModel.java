@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.my_notes.DatabaseAdapter;
-import com.example.my_notes.MainActivity;
 
 import java.util.ArrayList;
 

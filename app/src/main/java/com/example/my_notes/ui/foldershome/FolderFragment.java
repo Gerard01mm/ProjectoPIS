@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.my_notes.R;
@@ -38,6 +39,7 @@ public class FolderFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_folderlist, container, false);
         fRecyclerView = root.findViewById(R.id.recycler_notes);
         parentContext = root.getContext();
+        fRecyclerView.setLayoutManager(new LinearLayoutManager(parentContext));
 
         extendedFab = root.findViewById(R.id.extended_fab_folder);
         extendedFab.setOnClickListener((v) -> {
@@ -94,7 +96,34 @@ public class FolderFragment extends Fragment {
                 Toast.makeText(parentContext, t, Toast.LENGTH_SHORT).show();
             }
         };
+
+
         folderViewModel.getFolders().observe(getViewLifecycleOwner(), observer);
         folderViewModel.getToast().observe(getViewLifecycleOwner(), observerToast);
     }
+
+    /*
+    public void setLiveDataObservers() {
+        //Subscribe the activity to the observable
+        folderViewModel = new ViewModelProvider(getActivity()).get(FolderViewModel.class);
+
+        final Observer<ArrayList<NoteFolder>> observer = new Observer<ArrayList<NoteFolder>>() {
+            @Override
+            public void onChanged(ArrayList<NoteFolder> noteFolders) {
+                FoldersAdapter newAdapter = new FoldersAdapter(parentContext, noteFolders);
+                fRecyclerView.swapAdapter(newAdapter, false);
+                newAdapter.notifyDataSetChanged();
+            }
+        };
+
+        final Observer<String> observerToast = new Observer<String>() {
+            @Override
+            public void onChanged(String t) {
+                Toast.makeText(parentContext, t, Toast.LENGTH_SHORT).show();
+            }
+        };
+        folderViewModel.getFolders().observe(getViewLifecycleOwner(), observer);
+        folderViewModel.getToast().observe(getViewLifecycleOwner(), observerToast);
+    }
+    */
 }

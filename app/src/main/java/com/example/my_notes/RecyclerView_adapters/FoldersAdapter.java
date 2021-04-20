@@ -89,10 +89,12 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position){
 
-        //Coge el elemento dels aaray localDataSer en position i reemplaza el contenido de la view
+        //Escriurà a la cardView el titol de la carpeta
         viewHolder.getFolder_title().setText(localDataSet.get(position).get_Title());
+
+        //Escriurà el numero de notes que té la carpeta.
         String numNotes = String.valueOf(localDataSet.get(position).get_size());
-        viewHolder.getFolder_size().setText(numNotes);
+        viewHolder.getFolder_size().setText("Numero de notes: " + numNotes);
     }
 
 
