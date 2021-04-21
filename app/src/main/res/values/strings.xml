@@ -35,7 +35,7 @@
 
     <!--Pruebas no tocar-->
     <string name="default_title">Titol per defecte</string>
-    <string name="number_notes">Numero de notes: </string>
+    <string name="number_notes">Total de notes: </string>
 
     <!--Cadenes de la cardView de les notes (Pruebas)-->
     <string name="default_title_note">Titol per defecte</string>

@@ -11,8 +11,7 @@ import java.util.UUID;
 
 import Exceptions.NoteException;
 
-//Haremos la clase serializable para poder guardarla en los datos.
-public class NoteFolder implements Serializable {
+public class NoteFolder {
 
     //Constants
     private final String DEFAULT_NAME = "Titol per defecte";
@@ -107,7 +106,6 @@ public class NoteFolder implements Serializable {
         this.owner = owner;
         this.id = id;
     }
-
 
     /*Funciones getters*/
 
@@ -254,5 +252,15 @@ public class NoteFolder implements Serializable {
     public void saveFolder(){
         Log.d("saveFolder", "adapter-> saveFolder");
         adapter.saveFolder(this.title, this.id, this.owner, this.color);
+    }
+
+    public void removeFolder(){
+        Log.d("removeFolder", "adapter-> removeFolder");
+        adapter.deleteFolder(this.id);
+    }
+
+    public void updateFolder(){
+        Log.d("updateFolder", "adapter-> updateFolder");
+        adapter.updateFolder(this.title, this.id, this.owner, this.color);
     }
 }

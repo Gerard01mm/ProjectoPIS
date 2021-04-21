@@ -14,11 +14,12 @@ public class FolderViewModel extends ViewModel implements DatabaseAdapter.vmInte
 
     private MutableLiveData<ArrayList<NoteFolder>> mFolders;
     private MutableLiveData<String> mToast;
+    private DatabaseAdapter da;
 
     public FolderViewModel() {
         mFolders = new MutableLiveData<>();
         mToast = new MutableLiveData<>();
-        DatabaseAdapter da= new DatabaseAdapter(this);
+        da = new DatabaseAdapter(this);
         da.getCollectionFoldersByUser();
     }
 
@@ -52,6 +53,10 @@ public class FolderViewModel extends ViewModel implements DatabaseAdapter.vmInte
         }
         nf.saveFolder();
     }
+
+    /*public void deleteFolder(String id){
+        da.deleteFolder(id);
+    }*/
 
     @Override
     public void setCollection(ArrayList<NoteFolder> f) {

@@ -34,14 +34,15 @@ public class FolderFragment extends Fragment {
     private ExtendedFloatingActionButton extendedFab;
     private Context parentContext;
     private RecyclerView fRecyclerView;
-
+    private LinearLayoutManager layoutManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_folderlist, container, false);
         fRecyclerView = root.findViewById(R.id.recycler_notes);
         parentContext = root.getContext();
-        fRecyclerView.setLayoutManager(new LinearLayoutManager(parentContext));
+        layoutManager = new LinearLayoutManager(parentContext);
+        fRecyclerView.setLayoutManager(layoutManager);
 
         extendedFab = root.findViewById(R.id.extended_fab_folder);
         extendedFab.setOnClickListener((v) -> {

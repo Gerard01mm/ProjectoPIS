@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firestore.v1.WriteResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +83,7 @@ public class DatabaseAdapter {
     }
 
     public void getCollectionFolders(){
-        Log.d(TAG,"updateFolders");
+        Log.d(TAG,"getFolders");
         db.collection("folders")
             .get()
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -106,7 +107,7 @@ public class DatabaseAdapter {
     }
 
     public void getCollectionFoldersByUser(){
-        Log.d(TAG,"updateFoldersByUser");
+        Log.d(TAG,"getFoldersByUser");
         db.collection("folders")
                 .whereEqualTo("owner", getCurrentUser())
                 .get()
@@ -146,7 +147,8 @@ public class DatabaseAdapter {
             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
-                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    String f_id = documentReference.getId();
+                    Log.d(TAG, "DocumentSnapshot added with ID: " + f_id);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
@@ -155,5 +157,66 @@ public class DatabaseAdapter {
                     Log.w(TAG, "Error adding folder", e);
                 }
             });
+    }
+
+    public void updateFolder (String title, String id, String owner, int color) {
+        final DocumentReference[] docRef = new DocumentReference[1];
+        // Create a new hashmap
+        Map<String, Object> newfolder = new HashMap<>();
+        newfolder.put("title", title);
+        newfolder.put("id", id);
+        newfolder.put("owner", owner);
+        newfolder.put("color", color);
+        System.out.println(id);
+        Log.d(TAG, "updateFolder");
+        db.collection("folders")
+                .whereEqualTo("id", id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot folder : task.getResult()) {
+                                docRef[0] = folder.getReference();
+                                docRef[0].update(newfolder)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "Document updated correctly");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, "Error updating document ");
+                                            }
+                                        });
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error: No folder found ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+    public void deleteFolder (String id) {
+        db.collection("folders")
+                .whereEqualTo("id", id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot folder : task.getResult()) {
+                            folder.getReference().delete();
+                        }
+
+                    } else {
+                        Log.d(TAG, "Error deleting folder: ", task.getException());
+                    }
+                }
+                });
     }
 }

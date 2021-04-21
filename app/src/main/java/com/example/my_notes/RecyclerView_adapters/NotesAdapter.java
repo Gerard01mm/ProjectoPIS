@@ -46,7 +46,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
             this.date = (TextView)itemView.findViewById(R.id.NoteDate);
         }
 
-
         public ImageView getType_image(){ return this.type_image; }
         public TextView getTitle() { return this.title; }
         public TextView getDate() { return this.date; }
