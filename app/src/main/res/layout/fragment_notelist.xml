@@ -5,26 +5,78 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:layout_gravity="clip_horizontal"
+android:clickable="true"
+android:focusable="true"
 tools:context="NoteListActivity">
 
-<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    android:id="@+id/extended_fab_folder"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="16dp"
-    android:contentDescription="@string/create_note"
-    android:text="@string/add_note"
-    app:icon="@android:drawable/ic_input_add" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_notes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recycler_notes"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginEnd="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginBottom="1dp">
+    </androidx.recyclerview.widget.RecyclerView>
 
-</androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:clickable="false"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/extended_fab_imageNote"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="20dp"
+            android:clickable="true"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:fabCustomSize="40dp"
+            app:srcCompat="@drawable/ic_baseline_image_24"
+            tools:visibility="visible" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/extended_fab_audioNote"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="20dp"
+            android:clickable="true"
+            android:text="@string/add_note"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:fabCustomSize="40dp"
+            app:srcCompat="@drawable/mic_black_24dp"
+            tools:visibility="visible" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/extended_fab_textNote"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="20dp"
+            android:clickable="true"
+            android:foregroundGravity="center"
+            android:text="@string/add_note"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:fabCustomSize="40dp"
+            app:srcCompat="@drawable/ic_baseline_note_add_24"
+            tools:visibility="visible" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/extended_fab_notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:foregroundGravity="center"
+            android:text="@string/add_note"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
+    </LinearLayout>
 
 </FrameLayout>

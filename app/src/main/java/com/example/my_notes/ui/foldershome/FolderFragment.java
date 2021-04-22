@@ -39,7 +39,7 @@ public class FolderFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_folderlist, container, false);
-        fRecyclerView = root.findViewById(R.id.recycler_notes);
+        fRecyclerView = root.findViewById(R.id.recycler_folder);
         parentContext = root.getContext();
         layoutManager = new LinearLayoutManager(parentContext);
         fRecyclerView.setLayoutManager(layoutManager);

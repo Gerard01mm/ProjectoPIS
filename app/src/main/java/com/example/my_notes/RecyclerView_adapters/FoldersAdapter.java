@@ -55,7 +55,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
 
         /**
          * Ens retorna el camp de text
-         * @return TextView con el titulo del protafolios
+         * @return TextView con el título del protafolios
          */
         public TextView getFolder_title(){ return this.folder_title; }
         public TextView getFolder_size(){ return this.folder_size; }
@@ -67,7 +67,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
     /**
      * Constructor de la clase Folders Adapter. Rep com a parametres un ArrayList de carpetes i
      * l'assigna a la variable localDataSet. També el contexte.
-     * @param current contexte
+     * @param current context
      * @param folders arraylist amb les carpetes
      */
     public FoldersAdapter(Context current, ArrayList<NoteFolder> folders){
@@ -90,11 +90,6 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
 
         return new ViewHolder(view);
     }
-
-    public void openFolder(int position){
-
-    }
-
 
     /**
      * Aquesta funció s'encarregarà d'anar reemplaçant els elements que apareixen a la View

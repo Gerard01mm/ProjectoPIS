@@ -18,7 +18,7 @@
         app:icon="@android:drawable/ic_input_add" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_notes"
+        android:id="@+id/recycler_folder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginEnd="16dp"
