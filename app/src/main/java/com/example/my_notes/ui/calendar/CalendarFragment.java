@@ -37,6 +37,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -81,12 +82,15 @@ public class CalendarFragment extends Fragment {
                 new ViewModelProvider(this).get(CalendarViewModel.class);
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
 
+
         //Emmagatzem el context del pare
         this.parentContext = root.getContext();
+
 
         //Ajustem la recyclerView
         this.reminder_list = (RecyclerView)root.findViewById(R.id.cRecyclerView);
         this.reminder_list.setLayoutManager(new LinearLayoutManager(parentContext));
+
 
         //Ajustem el calendari i afegim el event
         this.calendar = (MaterialCalendarView)root.findViewById(R.id.calendar);
@@ -96,6 +100,7 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 String day = calendar.getSelectedDate().toString();
+                Log.d("DIA SELECCIONAT", "EL DIA PULSAT ÉS EL" + day);
 
                 //Cridarem a la funció que refrescarà i mostrara el contingut dels reminders del dia
                 //Seleccionat
@@ -193,5 +198,4 @@ public class CalendarFragment extends Fragment {
         calendarViewModel.getReminders().observe(getViewLifecycleOwner(), observer);
         calendarViewModel.getToast().observe(getViewLifecycleOwner(), observerToast);
     }
-
 }

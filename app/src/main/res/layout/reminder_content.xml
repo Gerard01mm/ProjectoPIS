@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <!--Titulo-->
+    <TextView
+        android:text="@string/form_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/reminder_title_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.google.android.material.textfield.TextInputEditText>
+
+
+    <!--Description-->
+    <TextView
+        android:text="@string/form_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/reminder_descp_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.google.android.material.textfield.TextInputEditText>
+
+    <!--Image button eliminar-->
+
+
+</LinearLayout>

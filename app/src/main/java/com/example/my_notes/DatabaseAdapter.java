@@ -222,12 +222,13 @@ public class DatabaseAdapter {
     }
 
 
-    public void saveReminder(String title, String id, String owner, String date){
+    public void saveReminder(String title, String id, String owner, String date, String description){
         Map<String, Object> reminder = new HashMap<>();
         reminder.put("title", title);
         reminder.put("date", date);
         reminder.put("id", id);
         reminder.put("owner", owner);
+        reminder.put("description", description);
 
         Log.d(TAG, "saveReminder");
 
@@ -249,7 +250,7 @@ public class DatabaseAdapter {
     }
 
 
-    public void updateReminder(String title, String id, String owner, String date){
+    public void updateReminder(String title, String id, String owner, String date, String description){
         final DocumentReference [] docRef = new DocumentReference[1];
 
         Map<String, Object> reminder = new HashMap<>();
@@ -257,6 +258,7 @@ public class DatabaseAdapter {
         reminder.put("date", date);
         reminder.put("id", id);
         reminder.put("owner", owner);
+        reminder.put("description", description);
 
         Log.d(TAG, "updateReminder");
 

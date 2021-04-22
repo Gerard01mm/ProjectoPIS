@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.my_notes.R;
@@ -97,7 +99,9 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
         reminder_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Se ha detectado un pulso", Toast.LENGTH_SHORT).show();
+                //Obrim un altre finestra amb el contuingut del cardView
+
+                //Toast.makeText(v.getContext(), "Se ha detectado un pulso", Toast.LENGTH_SHORT).show();
             }
         });
     }

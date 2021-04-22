@@ -21,13 +21,13 @@
                 android:layout_height="wrap_content"
                 android:background="#E4E4E4"
                 app:mcv_selectionColor="@color/textColorPrimary"
-
                 app:mcv_showOtherDates="all" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:clickable="true"/>
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

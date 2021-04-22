@@ -55,5 +55,6 @@
     <string name="form_description">Description</string>
     <string name="form_alarm">Add alarm</string>
     <string name="clock_description">Alarm image</string>
+    <string name="settings_description">Settings description</string>
 
 </resources>

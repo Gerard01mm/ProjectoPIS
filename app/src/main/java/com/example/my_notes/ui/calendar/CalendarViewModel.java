@@ -39,6 +39,9 @@ public class CalendarViewModel extends ViewModel implements DatabaseAdapter.vmIn
     }
 
 
+    public Reminder getReminder(int pos) { return this.mReminders.getValue().get(pos);}
+
+
     public void addReminder(String title, String description, String alert, String date, String id, String owner){
         Reminder reminder = new Reminder(title, description, alert, date);
 
