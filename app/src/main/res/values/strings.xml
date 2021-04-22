@@ -49,4 +49,10 @@
     <string name="fab_calendar">New Reminder</string>
     <string name="cd_ReminderCard">Event image</string>
 
+    <!--Etiquetas del formulario del reminder-->
+    <string name="form_title">Title</string>
+    <string name="form_description">Description</string>
+    <string name="form_alarm">Add alarm</string>
+    <string name="clock_description">Alarm image</string>
+
 </resources>

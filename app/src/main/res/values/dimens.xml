@@ -20,4 +20,11 @@
     <dimen name="leftPadding">10dp</dimen>
     <dimen name="rightPadding">10dp</dimen>
 
+    <!--Dimensions per a les DialogReminder-->
+    <dimen name="formTitleSize">15sp</dimen>
+    <dimen name="formTitlePadding">10sp</dimen>
+    <dimen name="formDescriptionSize">15sp</dimen>
+    <dimen name="formAlarmSize">15sp</dimen>
+
+
 </resources>

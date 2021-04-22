@@ -37,7 +37,8 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
      * Clase viewHolder interna
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView folder_title, folder_size;
+        private final TextView folder_title;
+        private final TextView folder_size;
         private final LinearLayout fLayout;
         private final ImageView deleteIm;
         /**
@@ -60,7 +61,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
         public TextView getFolder_title(){ return this.folder_title; }
         public TextView getFolder_size(){ return this.folder_size; }
         public LinearLayout getFolderLayout(){ return this.fLayout; }
-        public ImageView getImageDelete(){ return this.deleteIm; }
+        public ImageView getImageDelete() { return this.deleteIm; }
     }
 
 

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.my_notes.Reminders.Reminder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,7 +50,7 @@ public class DatabaseAdapter {
     }
 
     public interface vmInterface{
-        void setCollection(ArrayList<NoteFolder> ac);
+        void setCollection(ArrayList /*<NoteFolder>*/ ac); //SI NO FUNCIONA, ES AQUI
         void setToast(String s);
     }
 
@@ -217,6 +218,127 @@ public class DatabaseAdapter {
                         Log.d(TAG, "Error deleting folder: ", task.getException());
                     }
                 }
+                });
+    }
+
+
+    public void saveReminder(String title, String id, String owner, String date){
+        Map<String, Object> reminder = new HashMap<>();
+        reminder.put("title", title);
+        reminder.put("date", date);
+        reminder.put("id", id);
+        reminder.put("owner", owner);
+
+        Log.d(TAG, "saveReminder");
+
+        db.collection("reminders")
+            .add(reminder)
+            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    String f_id = documentReference.getId();
+                    Log.d(TAG, "Document Snapshot added with ID: " + f_id);
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error adding remidner", e);
+                }
+            });
+    }
+
+
+    public void updateReminder(String title, String id, String owner, String date){
+        final DocumentReference [] docRef = new DocumentReference[1];
+
+        Map<String, Object> reminder = new HashMap<>();
+        reminder.put("title", title);
+        reminder.put("date", date);
+        reminder.put("id", id);
+        reminder.put("owner", owner);
+
+        Log.d(TAG, "updateReminder");
+
+        db.collection("reminders")
+                .whereEqualTo("id", id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot folder : task.getResult()){
+                                docRef[0] = folder.getReference();
+                                docRef[0].update(reminder)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Log.d(TAG, "Reminder updated correctly");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, "Error pdating reminder");
+                                            }
+                                        });
+                            }
+                        }
+                        else{
+                            Log.d(TAG, "Error: No reminder found", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    public void deleteReminder(String id){
+        db.collection("reminders")
+                .whereEqualTo("id", id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot reminder : task.getResult()) {
+                                reminder.getReference().delete();
+                            }
+                        }
+                        else{
+                            Log.d(TAG, "Error deleting reminder: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    public void getCollectionReminderByUserAndDay(String date){
+        Log.d(TAG, "getRemindersByUserAndDay");
+        db.collection("reminders")
+                .whereEqualTo("owner", getCurrentUser())
+                .whereEqualTo("date", date)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            ArrayList<Reminder> retrieved_ac = new ArrayList<>();
+                            for (QueryDocumentSnapshot reminder : task.getResult()){
+                                Log.d(TAG, reminder.getId() + " => " + reminder.getData());
+                                retrieved_ac.add(new Reminder(reminder.getString("title"),
+                                        reminder.getString("description"),
+                                        reminder.getString("alert"),
+                                        reminder.getString("date"),
+                                        reminder.getString("id"),
+                                        reminder.getString("owner")));
+                            }
+
+                            listener.setCollection(retrieved_ac);
+                        }
+                        else{
+                            Log.d(TAG,"Error getting reminders: ", task.getException());
+                        }
+                    }
                 });
     }
 }

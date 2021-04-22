@@ -59,7 +59,7 @@ public class FolderViewModel extends ViewModel implements DatabaseAdapter.vmInte
     }*/
 
     @Override
-    public void setCollection(ArrayList<NoteFolder> f) {
+    public void setCollection(ArrayList/*<NoteFolder>*/ f) {
         mFolders.setValue(f);
     }
 
