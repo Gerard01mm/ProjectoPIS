@@ -5,15 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.my_notes.RecyclerView_adapters.FoldersAdapter;
-import com.example.my_notes.ui.foldershome.FolderFragment;
-import com.example.my_notes.ui.foldershome.FolderViewModel;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -22,10 +16,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-
-import Notes.NoteFolder;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -49,7 +39,7 @@ public class MainActivity extends AppCompatActivity{
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_notes, R.id.nav_calendar, R.id.nav_slideshow)
+                R.id.nav_folders, R.id.nav_calendar, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

@@ -12,8 +12,9 @@
     <string name="create_note">Create a new note</string>
 
     <!--Menu desplegable-->
-    <string name="menu_notes">Notas</string>
-    <string name="menu_calendar">Calendario</string>
+    <string name="menu_notes">Note Folders</string>
+    <string name="menu_calendar">Calendar</string>
+    <string name="menu_notelist">Notes</string>
     <string name="menu_slideshow">Slideshow</string>
 
     <!---ESTELA Strings de las layouts login_user y register_user-->
