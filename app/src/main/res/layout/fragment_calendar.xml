@@ -19,7 +19,9 @@
                 android:id="@+id/calendar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E4E4E4"
                 app:mcv_selectionColor="@color/textColorPrimary"
+
                 app:mcv_showOtherDates="all" />
 
             <androidx.recyclerview.widget.RecyclerView
