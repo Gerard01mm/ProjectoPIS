@@ -11,8 +11,12 @@
         android:label="@string/menu_notes"
         tools:layout="@layout/fragment_folderlist" >
         <action
-            android:id="@+id/action_nav_notes_to_blankFragment"
-            app:destination="@id/nav_noteList" />
+            android:id="@+id/action_nav_folder_to_notes"
+            app:destination="@id/nav_noteList" >
+            <argument
+                android:name="idFolder"
+                android:defaultValue="ihiu" />
+        </action>
     </fragment>
 
     <fragment
@@ -32,5 +36,9 @@
         android:id="@+id/nav_noteList"
         android:name="com.example.my_notes.ui.notes.NotesFragment"
         android:label="@string/menu_notelist"
-        tools:layout="@layout/fragment_notelist" />
+        tools:layout="@layout/fragment_notelist" >
+        <argument
+            android:name="idFolder"
+            app:argType="string" />
+    </fragment>
 </navigation>

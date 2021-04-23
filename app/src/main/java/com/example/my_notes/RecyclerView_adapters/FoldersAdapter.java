@@ -3,17 +3,17 @@ package com.example.my_notes.RecyclerView_adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +21,6 @@ import com.example.my_notes.R;
 
 import java.util.ArrayList;
 
-import Notes.Note;
 import Notes.NoteFolder;
 
 /**
@@ -111,7 +110,9 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
         folder_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_nav_notes_to_blankFragment);
+                Bundle bundle = new Bundle();
+                bundle.putString("FolderId", localDataSet.get(position).getId());
+                Navigation.findNavController(v).navigate(R.id.action_nav_folder_to_notes, bundle);
             }
         });
         folder_layout.setOnLongClickListener(new View.OnLongClickListener() {

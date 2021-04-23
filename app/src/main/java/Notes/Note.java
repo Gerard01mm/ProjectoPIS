@@ -1,5 +1,7 @@
 package Notes;
 
+import com.example.my_notes.DatabaseAdapter;
+
 import java.util.UUID;
 import java.util.Date;
 
@@ -9,22 +11,21 @@ public class Note {
     private final String DEFAULT_TITLE = "Titol per defecte";
 
     //Atributs
-    private String title, id, adress, owner, folderName;
-    private Date creation_date, modify_date;
+    private String title, id, owner, folderId;
+    private final Date creation_date;
+    private Date modify_date;
 
-    //Falta añadir un DataBaseAdapter.
-
+    private final DatabaseAdapter adapter = DatabaseAdapter.databaseAdapter;
 
     /**
      * Constructor de la classe
      * No rep cap parametre i el titol de la nota s'assignarà com al titol per defecte de la classe
      * També es creen dues dates, una de creació i un altre de modificació.
      */
-    public Note(String localPath, String owner, String folderName) {
+    public Note(String folderId) {
         this.title = this.DEFAULT_TITLE;
-        this.adress = localPath;
-        this.owner = owner;
-        this.folderName = folderName;
+        this.owner = adapter.getCurrentUser();
+        this.folderId = folderId;
         this.id = UUID.randomUUID().toString();
         this.creation_date = new Date();
         this.modify_date = new Date();
@@ -39,16 +40,23 @@ public class Note {
      *
      * @param title Titol de la nota
      */
-    public Note(String title, String localPath, String owner, String folderName) {
+    public Note(String title, String folderId) {
         this.title = title;
-        this.adress = localPath;
-        this.owner = owner;
-        this.folderName = folderName;
+        this.owner = adapter.getCurrentUser();
+        this.folderId = folderId;
         this.id = UUID.randomUUID().toString();
         this.creation_date = new Date();
         this.modify_date = new Date();
     }
 
+    public Note(String title, String folderId, String id, String owner, Date creation, Date modify){
+        this.title = title;
+        this.folderId = folderId;
+        this.id = id;
+        this.owner = owner;
+        this.creation_date = creation;
+        this.modify_date = modify;
+    }
 
     //Metodes getters i setters
 
@@ -108,14 +116,6 @@ public class Note {
      */
     private void setId(String nID){ this.id = nID; }
 
-
-    /**
-     * Aquesta funció ens permetrà recuperar l'adreça de la nota.
-     * @return Cadena amb l'adreça de la nota.
-     */
-    public String getAdress(){ return this.adress; }
-
-
     /**
      * Aquesta funció ens permetrà recuperar el owner de la nota.
      * @return Cadena amb l'owner de la nota.
@@ -131,15 +131,10 @@ public class Note {
 
 
     /**
-     * Aquesta funció ens retorna el nom de la carpeta a la qual pertany
-     * @return nom de la carpeta a la que pertany
+     * Aquesta funció ens retorna el Id de la carpeta a la qual pertany
+     * @return Id de la carpeta a la que pertany
      */
-    public String getFolderName() { return this.folderName; }
+    public String getFolderId() { return this.folderId; }
 
 
-    /**
-     * Aquesta funció ens permet canviar el nom de la carpeta a la qual pertany la nota
-     * @param folderName nou nom de la carpeta a la que pertany
-     */
-    public void setFolderName(String folderName){ this.folderName = folderName; }
 }

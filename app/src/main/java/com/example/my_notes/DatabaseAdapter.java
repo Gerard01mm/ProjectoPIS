@@ -1,10 +1,13 @@
 package com.example.my_notes;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.my_notes.ArrayListComparator.DateSorter;
 import com.example.my_notes.Reminders.Reminder;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,14 +20,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.firestore.v1.WriteResult;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
+import Notes.ImageNote;
+import Notes.Note;
 import Notes.NoteFolder;
+import Notes.TextNote;
 
 public class DatabaseAdapter {
     public static final String TAG = "DatabaseAdapter";
@@ -38,19 +49,18 @@ public class DatabaseAdapter {
     public static vmInterface listener;
     public static DatabaseAdapter databaseAdapter;
 
+    private ArrayList<Note> notesInFolder;
+
     public DatabaseAdapter(vmInterface listener){
         this.listener = listener;
         databaseAdapter = this;
         FirebaseFirestore.setLoggingEnabled(true);
         initFirebase();
-    }
-
-    public String getCurrentUser(){
-        return user.getEmail();
+        notesInFolder = new ArrayList<>();
     }
 
     public interface vmInterface{
-        void setCollection(ArrayList /*<NoteFolder>*/ ac); //SI NO FUNCIONA, ES AQUI
+        void setCollection(ArrayList ac);
         void setToast(String s);
     }
 
@@ -81,6 +91,10 @@ public class DatabaseAdapter {
             listener.setToast("Authentication with current user.");
 
         }
+    }
+
+    public String getCurrentUser(){
+        return user.getEmail();
     }
 
     public void getCollectionFolders(){
@@ -159,6 +173,8 @@ public class DatabaseAdapter {
                 }
             });
     }
+
+
 
     public void updateFolder (String title, String id, String owner, int color) {
         final DocumentReference[] docRef = new DocumentReference[1];
@@ -343,4 +359,169 @@ public class DatabaseAdapter {
                     }
                 });
     }
+
+    public void getCollectionNotesByFolderAndUser(String folderId){
+
+        System.out.println(folderId);
+
+        System.out.println(getCurrentUser());
+        Log.d(TAG,"getNotesByFolderAndUser");
+        db.collection("notes")
+                .document("roomImageNotes")
+                .collection("imageNotes")
+                .whereEqualTo("owner", getCurrentUser())
+                .whereEqualTo("folderId", folderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                System.out.println(note);
+                                Log.d(TAG, note.getId() + " => " + note.getData());
+                                notesInFolder.add(new ImageNote( note.getString("title"),
+                                        note.getString("id"), note.getString("folderId"),
+                                        note.getString("owner"), note.getDate("creation"),
+                                        note.getDate("modify"), note.getString("imagepath")));
+                                        notesInFolder.sort(new DateSorter());
+                                        System.out.println(notesInFolder);
+                                        listener.setCollection(notesInFolder);
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error getting notes: ", task.getException());
+                        }
+                    }
+                });
+
+        db.collection("notes")
+                .document("roomAudioNotes")
+                .collection("audioNotes")
+                .whereEqualTo("owner", getCurrentUser())
+                .whereEqualTo("folderId", folderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                Log.d(TAG, note.getId() + " => " + note.getData());
+                                /*notesInFolder.add(new AudioNote( note.getString("title"),
+                                        note.getString("id"), note.getString("folderId"),
+                                        note.getString("owner"), note.getDate("creation"),
+                                        note.getDate("modify"), note.getString("imagepath")));
+
+                                 */
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error getting notes: ", task.getException());
+                        }
+                    }
+                });
+
+        db.collection("notes")
+                .document("roomTextNotes")
+                .collection("textNotes")
+                .whereEqualTo("owner", getCurrentUser())
+                .whereEqualTo("folderId", folderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                Log.d(TAG, note.getId() + " => " + note.getData());
+                                /*notesInFolder.add(new TextNote( note.getString("title"),
+                                        note.getString("id"), note.getString("folderId"),
+                                        note.getString("owner"), note.getDate("creation"),
+                                        note.getDate("modify"), note.getString("imagepath")));
+                                        notesInFolder.sort(new DateSorter()); // tendre que quitar el otro setCollection()
+                                        listener.setCollection(notesInFolder);
+                                 */
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error getting notes: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void saveImageNote (String title, String id, String folderId, String owner,
+                               Date creation, Date modify, String imagepath) {
+
+        // Create a new user with a first and last name
+        Map<String, Object> note = new HashMap<>();
+        note.put("title", title);
+        note.put("id", id);
+        note.put("folderId", folderId);
+        note.put("owner", owner);
+        note.put("creation", creation);
+        note.put("modify", modify);
+        note.put("imagepath", imagepath);
+
+        Log.d(TAG, "saveImageNote");
+        // Add a new document with a generated ID
+        db.collection("notes")
+                .document("roomImageNotes")
+                .collection("imageNotes")
+                .add(note)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "Image Note added with ID: " + documentReference.getId());
+                        if (!imagepath.isEmpty()){
+                            saveImagefromNote(imagepath);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding Image Note", e);
+                    }
+                });
+    }
+
+    public void saveImagefromNote (String imagepath) {
+
+        Uri file = Uri.fromFile(new File(imagepath));
+        StorageReference storageRef = storage.getReference();
+        StorageReference imageRef = storageRef.child(""+File.separator+file.getLastPathSegment());
+        UploadTask uploadTask = imageRef.putFile(file);
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return imageRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Image uploaded correctly");
+                } else {
+                    Log.w(TAG, "Error uploading image");
+                }
+            }
+        });
+
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                Log.d(TAG, "Upload is " + progress + "% done");
+            }
+        });
+    }
+
 }

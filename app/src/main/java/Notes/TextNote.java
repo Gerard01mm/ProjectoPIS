@@ -17,8 +17,8 @@ public class TextNote extends Note {
      *
      * @param title titol de la notas.
      */
-    public TextNote(String title, String localPath, String owner){
-        super(title, localPath, owner);
+    public TextNote(String title, String owner){
+        super(title, owner);
         this.text = "";
     }
 
