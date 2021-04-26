@@ -31,7 +31,6 @@ public class NotesViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         try {
-            System.out.println(created);
             return (T) new NotesViewModel(application, created);
         } catch (Exception e) {
             throw new RuntimeException("Cannot create an instance of " + modelClass, e);

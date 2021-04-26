@@ -21,6 +21,7 @@ import com.example.my_notes.R;
 
 import java.util.ArrayList;
 
+import Notes.ImageNote;
 import Notes.NoteFolder;
 
 /**
@@ -37,7 +38,6 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView folder_title;
-        private final TextView folder_size;
         private final LinearLayout fLayout;
         private final ImageView deleteIm;
         /**
@@ -47,7 +47,6 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
          */
         public ViewHolder(View view){
             super(view);
-            this.folder_size = (TextView)view.findViewById(R.id.folder_size);
             this.folder_title = (TextView)view.findViewById(R.id.folder_title);
             this.fLayout = view.findViewById(R.id.folder_linear);
             this.deleteIm = view.findViewById(R.id.delete_image);
@@ -58,7 +57,6 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
          * @return TextView con el título del protafolios
          */
         public TextView getFolder_title(){ return this.folder_title; }
-        public TextView getFolder_size(){ return this.folder_size; }
         public LinearLayout getFolderLayout(){ return this.fLayout; }
         public ImageView getImageDelete() { return this.deleteIm; }
     }
@@ -102,10 +100,6 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
         //Escriurà a la cardView el titol de la carpeta
         viewHolder.getFolder_title().setText(localDataSet.get(position).get_Title());
 
-        //Escriurà el numero de notes que té la carpeta.
-        String numNotes = String.valueOf(localDataSet.get(position).get_size());
-        String t = "Number of notes: " + numNotes;
-        viewHolder.getFolder_size().setText(t);
         LinearLayout folder_layout = viewHolder.getFolderLayout();
         folder_layout.setOnClickListener(new View.OnClickListener() {
             @Override

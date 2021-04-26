@@ -1,5 +1,6 @@
 package Notes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class TextNote extends Note {

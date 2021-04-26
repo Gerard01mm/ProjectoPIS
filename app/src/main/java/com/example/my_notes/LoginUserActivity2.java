@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -41,6 +42,12 @@ public class LoginUserActivity2 extends AppCompatActivity implements View.OnClic
         this.name = (TextInputEditText) findViewById(R.id.name_edit_text);
         this.email = (TextInputEditText) findViewById(R.id.email_edit_text);
         this.password = (TextInputEditText) findViewById(R.id.password_edit_text);
+
+        SharedPreferences preferences = getSharedPreferences("dadesLogin", MODE_PRIVATE);
+
+        this.name.setText(preferences.getString("name", ""));
+        this.email.setText(preferences.getString("mail", ""));
+        this.password.setText(preferences.getString("password", ""));
 
     }
 
@@ -103,6 +110,12 @@ public class LoginUserActivity2 extends AppCompatActivity implements View.OnClic
 
                         //En cas que trobem l'usuari
                         if (task.isSuccessful()){
+                            SharedPreferences preferences1 = getSharedPreferences("dadesLogin", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences1.edit();
+                            editor.putString("mail", email.getText().toString());
+                            editor.putString("name", name.getText().toString());
+                            editor.putString("password", password.getText().toString());
+                            editor.apply();
                             goToMainActivity();
                         }
                         //En qualsevol altre cas
@@ -113,7 +126,7 @@ public class LoginUserActivity2 extends AppCompatActivity implements View.OnClic
                 });
             }
         }
-        //En cas que pulsem l'etiqueta de signIn
+        //En cas que polsem l'etiqueta de signIn
         if (R.id.label_signin2 == view.getId()){
             goToRegisterUserActivity();
         }

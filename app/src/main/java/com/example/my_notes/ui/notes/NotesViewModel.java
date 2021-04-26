@@ -36,9 +36,9 @@ public class NotesViewModel extends ViewModel implements DatabaseAdapter.vmInter
     public void addImageNote(String title){
         ImageNote n;
         if (title.isEmpty()){
-            n = new ImageNote(idFolder, "");
+            n = new ImageNote(idFolder);
         }else{
-            n = new ImageNote(title, idFolder, "");
+            n = new ImageNote(title, idFolder);
         }
         if (mNotes.getValue() == null){
             ArrayList<Note> anf = new ArrayList<>();
@@ -62,7 +62,6 @@ public class NotesViewModel extends ViewModel implements DatabaseAdapter.vmInter
 
     @Override
     public void setCollection(ArrayList ac) {
-        System.out.println("listener lo ha notado");
         mNotes.setValue(ac);
     }
 

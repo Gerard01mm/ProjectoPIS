@@ -1,13 +1,15 @@
 package com.example.my_notes.RecyclerView_adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.my_notes.R;
@@ -23,6 +25,26 @@ import Notes.ImageNote;
 import Notes.Note;
 import Notes.TextNote;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.my_notes.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Aquesta classe s'utilitzarà per adaptar el contingut d'una carpeta i per mostrar les notes
  * en la RecyclerView en el moment d'obrir una carpeta.
@@ -32,7 +54,9 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     //Atributs de la classe
     private ArrayList<Note> localDataSet;
     private final Context parentContext;
-    private final int TEXTNOTE = 0, IMAGENOTE = 1, AUDIONOTE = 2;
+    private final int TEXTNOTE = 0;
+    private final int IMAGENOTE = 1;
+    private final int AUDIONOTE = 2;
 
     public ComplexNotesAdapter(Context current, ArrayList<Note> an){
         this.parentContext = current;
@@ -41,6 +65,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
+        System.out.println(localDataSet.get(position).getId());
         if (localDataSet.get(position) instanceof TextNote) {
             return TEXTNOTE;
         } else if (localDataSet.get(position) instanceof ImageNote) {
@@ -82,14 +107,31 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case TEXTNOTE:
                 ViewHolderTextNotes vh1 = (ViewHolderTextNotes) holder;
                 configureViewHolderTextNotes(vh1, position);
+                vh1.getTextNoteLayout().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //TODO
+                    }
+                });
                 break;
             case IMAGENOTE:
                 ViewHolderImageNotes vh2 = (ViewHolderImageNotes) holder;
                 configureViewHolderImageNotes(vh2, position);
+                vh2.getImageNoteLayout().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ImageNote n = (ImageNote) localDataSet.get(position);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("noteId", n.getId());
+                        bundle.putString("folderId", n.getFolderId());
+                        Navigation.findNavController(v).navigate(R.id.action_nav_noteList_to_imageNoteFragment, bundle);
+                    }
+                });
                 break;
             case AUDIONOTE:
                 ViewHolderAudioNotes vh3 = (ViewHolderAudioNotes) holder;
                 configureViewHolderAudioNotes(vh3, position);
+                //TODO
                 break;
             default:
                 break;
@@ -142,4 +184,5 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemCount() {
         return this.localDataSet.size();
     }
+
 }

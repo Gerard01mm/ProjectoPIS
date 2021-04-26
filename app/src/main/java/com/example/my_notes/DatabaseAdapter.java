@@ -20,12 +20,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.firestore.v1.WriteResult;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,7 +40,7 @@ import Notes.Note;
 import Notes.NoteFolder;
 import Notes.TextNote;
 
-public class DatabaseAdapter {
+public class DatabaseAdapter{
     public static final String TAG = "DatabaseAdapter";
 
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -88,7 +91,7 @@ public class DatabaseAdapter {
                 });
         }
         else{
-            listener.setToast("Authentication with current user.");
+            Log.d(TAG, "Authentication with current user.");
 
         }
     }
@@ -184,7 +187,6 @@ public class DatabaseAdapter {
         newfolder.put("id", id);
         newfolder.put("owner", owner);
         newfolder.put("color", color);
-        System.out.println(id);
         Log.d(TAG, "updateFolder");
         db.collection("folders")
                 .whereEqualTo("id", id)
@@ -223,20 +225,19 @@ public class DatabaseAdapter {
                 .whereEqualTo("id", id)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot folder : task.getResult()) {
-                            folder.getReference().delete();
-                        }
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot folder : task.getResult()) {
+                                folder.getReference().delete();
+                            }
 
-                    } else {
-                        Log.d(TAG, "Error deleting folder: ", task.getException());
+                        } else {
+                            Log.d(TAG, "Error deleting folder: ", task.getException());
+                        }
                     }
-                }
                 });
     }
-
 
     public void saveReminder(String title, String id, String owner, String date, String description){
         Map<String, Object> reminder = new HashMap<>();
@@ -361,10 +362,6 @@ public class DatabaseAdapter {
     }
 
     public void getCollectionNotesByFolderAndUser(String folderId){
-
-        System.out.println(folderId);
-
-        System.out.println(getCurrentUser());
         Log.d(TAG,"getNotesByFolderAndUser");
         db.collection("notes")
                 .document("roomImageNotes")
@@ -383,9 +380,8 @@ public class DatabaseAdapter {
                                 notesInFolder.add(new ImageNote( note.getString("title"),
                                         note.getString("id"), note.getString("folderId"),
                                         note.getString("owner"), note.getDate("creation"),
-                                        note.getDate("modify"), note.getString("imagepath")));
+                                        note.getDate("modify")));
                                         notesInFolder.sort(new DateSorter());
-                                        System.out.println(notesInFolder);
                                         listener.setCollection(notesInFolder);
                             }
 
@@ -452,7 +448,7 @@ public class DatabaseAdapter {
     }
 
     public void saveImageNote (String title, String id, String folderId, String owner,
-                               Date creation, Date modify, String imagepath) {
+                               Date creation, Date modify) {
 
         // Create a new user with a first and last name
         Map<String, Object> note = new HashMap<>();
@@ -462,7 +458,6 @@ public class DatabaseAdapter {
         note.put("owner", owner);
         note.put("creation", creation);
         note.put("modify", modify);
-        note.put("imagepath", imagepath);
 
         Log.d(TAG, "saveImageNote");
         // Add a new document with a generated ID
@@ -474,9 +469,6 @@ public class DatabaseAdapter {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Image Note added with ID: " + documentReference.getId());
-                        if (!imagepath.isEmpty()){
-                            saveImagefromNote(imagepath);
-                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -487,41 +479,91 @@ public class DatabaseAdapter {
                 });
     }
 
-    public void saveImagefromNote (String imagepath) {
 
-        Uri file = Uri.fromFile(new File(imagepath));
+    public void saveImageNoteContent (String id, String folderId, String text, String imagepath) {
+        System.out.println(folderId);
+        System.out.println(id);
+        System.out.println("HOLA");
+        // Create a new user with a first and last name
+        Map<String, Object> noteContent = new HashMap<>();
+        noteContent.put("id", id);
+        noteContent.put("folderId", folderId);
+        noteContent.put("text", text);
+        noteContent.put("imagepath", imagepath);
+        Log.d(TAG, "saveImageNoteContent");
+        // Add a new document with a generated ID
+        db.collection("content")
+                .whereEqualTo("id", id)
+                .whereEqualTo("folderId", folderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        System.out.println("onccomplete");
+                        if (!task.getResult().isEmpty()){
+                            System.out.println("success");
+                            for (QueryDocumentSnapshot noteC : task.getResult()) {
+                                System.out.println(noteC);
+                                Log.d(TAG, noteC.getId() + " => " + noteC.getData());
+                                noteC.getReference().update(noteContent);//TODO
+                                //deleteImageFromStorage(note.getReference().getString("imagepath")))
+                                if(imagepath != null){
+                                    saveImageInNote(imagepath);
+                                }
+                            }
+
+                        } else {
+                            System.out.println("else");
+                            db.collection("content").add(noteContent);
+                            if(!imagepath.isEmpty()){
+                                saveImageInNote(imagepath);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void saveImageInNote (String imagepath) {
+        File fitxer = new File(imagepath);
+        Uri file = Uri.fromFile(fitxer);
         StorageReference storageRef = storage.getReference();
-        StorageReference imageRef = storageRef.child(""+File.separator+file.getLastPathSegment());
+        StorageReference imageRef = storageRef.child("images"+File.separator+imagepath);
+
         UploadTask uploadTask = imageRef.putFile(file);
 
-        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
 
-                // Continue with the task to get the download URL
-                return imageRef.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "Image uploaded correctly");
-                } else {
-                    Log.w(TAG, "Error uploading image");
-                }
-            }
-        });
-
+        // Listen for state changes, errors, and completion of the upload.
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 Log.d(TAG, "Upload is " + progress + "% done");
             }
+        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "Upload is paused");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                System.out.println(exception.toString());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                System.out.println("si");
+            }
         });
+
     }
 
+    //TODO
+    public void deleteImageFromStorage(String imagepath){
+
+    }
+
+    public void getImageNoteContent(String id, String folderId){
+
+    }
 }

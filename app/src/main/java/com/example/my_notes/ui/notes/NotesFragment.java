@@ -3,16 +3,23 @@ package com.example.my_notes.ui.notes;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.my_notes.R;
 import com.example.my_notes.RecyclerView_adapters.ComplexNotesAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,18 +28,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import Notes.Note;
 
+import static android.app.Activity.RESULT_OK;
+
 public class NotesFragment extends Fragment {
     private NotesViewModel notesViewModel;
     // Floating button functionality
-    private FloatingActionButton fab, fabText, fabImage, fabVoice, prueba;
+    private FloatingActionButton fab, fabText, fabImage, fabVoice;
     private Context parentContext;
     private RecyclerView nRecyclerView;
     private LinearLayoutManager layoutManager;
-
     private String folderId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,

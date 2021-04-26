@@ -2,6 +2,7 @@ package Notes;
 
 import com.example.my_notes.DatabaseAdapter;
 
+import java.io.Serializable;
 import java.util.UUID;
 import java.util.Date;
 
