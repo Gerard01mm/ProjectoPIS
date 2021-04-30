@@ -85,7 +85,26 @@ public class NotesFragment extends Fragment {
         fabText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                mydialog.setTitle("Title of the note: ");
 
+                final EditText input = new EditText(parentContext);
+                mydialog.setView(input);
+
+                mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String input_text = input.getText().toString();
+                        notesViewModel.addTextNote(input_text);
+                    }
+                });
+                mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                mydialog.show();
             }
         });
 

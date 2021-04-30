@@ -43,6 +43,8 @@ import com.example.my_notes.R;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.w3c.dom.Text;
+
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -65,7 +67,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        System.out.println(localDataSet.get(position).getId());
+        //System.out.println(localDataSet.get(position).getId());
         if (localDataSet.get(position) instanceof TextNote) {
             return TEXTNOTE;
         } else if (localDataSet.get(position) instanceof ImageNote) {
@@ -110,7 +112,11 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 vh1.getTextNoteLayout().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO
+                        TextNote t = (TextNote) localDataSet.get(position);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("noteId", t.getId());
+                        bundle.putString("folderId", t.getFolderId());
+                        Navigation.findNavController(v).navigate(R.id.action_nav_noteList_to_TextNoteFragment, bundle);
                     }
                 });
                 break;

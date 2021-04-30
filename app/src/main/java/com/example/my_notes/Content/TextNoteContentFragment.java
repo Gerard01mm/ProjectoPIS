@@ -20,29 +20,22 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.my_notes.R;
-import com.example.my_notes.ui.notes.NotesViewModel;
-import com.example.my_notes.ui.notes.NotesViewModelFactory;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
-import Notes.ImageNote;
-import Notes.NoteFolder;
-
 import static android.app.Activity.RESULT_OK;
 
-public class ImageNoteContentFragment extends Fragment {
-    private ImageView image, saveImageNote;
+public class TextNoteContentFragment extends Fragment {
+    private ImageView image, saveTextNote;
     private String noteId, noteFolderId, lastSegment, textWriten, imagepathset, textset;
     private EditText text;
-    private ImageNoteContentViewModel imageNoteContentViewModel;
+    private TextNoteContentViewModel textNoteContentViewModel;
     private Context parentContext;
-
-    private StorageReference storageReference;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_imagenote, container, false);
+        View root = inflater.inflate(R.layout.fragment_textnote, container, false);
 
         parentContext = root.getContext();
         // Rebem Id de la nota amb Bundle()
@@ -51,22 +44,14 @@ public class ImageNoteContentFragment extends Fragment {
             noteFolderId = getArguments().getString("folderId");
         }
 
-        imageNoteContentViewModel = new ViewModelProvider(this,
-                new ImageNoteContentViewModelFactory(requireActivity().getApplication(), noteId, noteFolderId)).get(ImageNoteContentViewModel.class);
+        textNoteContentViewModel = new ViewModelProvider(this,
+                new TextNoteContentViewModelFactory(requireActivity().getApplication(), noteId, noteFolderId)).get(TextNoteContentViewModel.class);
 
 
-        image = root.findViewById(R.id.addImage);
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                carregarImatge();
-            }
-        });
+        text = root.findViewById(R.id.editTextTextNote);
 
-        text = root.findViewById(R.id.editTextImageNote);
-
-        saveImageNote = root.findViewById(R.id.saveImageNoteContent);
-        saveImageNote.setOnClickListener(new View.OnClickListener() {
+        saveTextNote = root.findViewById(R.id.saveTextNoteContent);
+        saveTextNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -77,7 +62,7 @@ public class ImageNoteContentFragment extends Fragment {
                 mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        imageNoteContentViewModel.saveImageNoteContent(lastSegment, textWriten, noteId, noteFolderId);
+                        textNoteContentViewModel.saveTextNoteContent(lastSegment, textWriten, noteId, noteFolderId);
                     }
                 });
                 mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -94,35 +79,14 @@ public class ImageNoteContentFragment extends Fragment {
         return root;
     }
 
-    public void carregarImatge(){
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/");
-        startActivityForResult(Intent.createChooser(intent, "Select an application: "), 10);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK){
-            Uri path = data.getData();
-            image.setImageURI(path);
-            lastSegment = path.getLastPathSegment();
-        }
-    }
-
     public void setLiveDataObservers(View root) {
         //Subscribe the activity to the observable
 
         final Observer<NotesContent> observer = new Observer<NotesContent>() {
             @Override
             public void onChanged(NotesContent notesContent) {
-                ImageNoteContent imageNoteContent = (ImageNoteContent) notesContent;
-                if(imageNoteContent.getImagepath() != null){
-                    File f = new File(imageNoteContent.getImagepath());
-                    Uri uri = Uri.fromFile(f);
-                    image.setImageURI(uri);
-                }
-                text.setText(imageNoteContent.getTextNote());
+                TextNoteContent textNoteContent = (TextNoteContent) notesContent;
+                text.setText(textNoteContent.getTextNote());
             }
         };
 
@@ -133,7 +97,7 @@ public class ImageNoteContentFragment extends Fragment {
             }
         };
 
-        imageNoteContentViewModel.getImageNoteContent().observe(getViewLifecycleOwner(), observer);
-        imageNoteContentViewModel.getmToast().observe(getViewLifecycleOwner(), observerToast);
+        textNoteContentViewModel.getTextNoteContent().observe(getViewLifecycleOwner(), observer);
+        textNoteContentViewModel.getmToast().observe(getViewLifecycleOwner(), observerToast);
     }
 }

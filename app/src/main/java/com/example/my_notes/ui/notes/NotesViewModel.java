@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import Notes.ImageNote;
 import Notes.Note;
+import Notes.TextNote;
 
 import static com.example.my_notes.ui.notes.NotesViewModelFactory.created;
 
@@ -50,6 +51,25 @@ public class NotesViewModel extends ViewModel implements DatabaseAdapter.vmInter
             mNotes.setValue(mNotes.getValue());
         }
         n.saveImageNote();
+    }
+
+    public void addTextNote(String title){
+        TextNote n;
+        if (title.isEmpty()){
+            n = new TextNote(idFolder);
+        }else{
+            n = new TextNote(title, idFolder);
+        }
+        if (mNotes.getValue() == null){
+            ArrayList<Note> anf = new ArrayList<>();
+            anf.add(n);
+            mNotes.setValue(anf);
+        }else{
+            mNotes.getValue().add(n);
+            // Inform observer
+            mNotes.setValue(mNotes.getValue());
+        }
+        n.saveTextNote();
     }
 
     public LiveData<ArrayList<Note>> getNotes() {

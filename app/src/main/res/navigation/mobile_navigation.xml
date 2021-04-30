@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_nav_noteList_to_imageNoteFragment"
             app:destination="@id/imageNoteFragment" />
+        <action
+            android:id="@+id/action_nav_noteList_to_TextNoteFragment"
+            app:destination="@id/textNoteContentFragment" />
     </fragment>
     <fragment
         android:id="@+id/imageNoteFragment"
@@ -44,4 +47,9 @@
         android:label="fragment_imagenote"
         tools:layout="@layout/fragment_imagenote" >
     </fragment>
+    <fragment
+        android:id="@+id/textNoteContentFragment"
+        android:name="com.example.my_notes.Content.TextNoteContentFragment"
+        android:label="TextNoteContentFragment"
+        tools:layout="@layout/fragment_textnote" />
 </navigation>

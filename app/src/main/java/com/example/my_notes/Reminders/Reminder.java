@@ -214,7 +214,7 @@ public class Reminder {
 
     public void saveReminder(){
         Log.d("saveReminder", "adapter-> saveReminder");
-        adapter.saveReminder(this.title, this.id, this.owner, this.date, this.description);
+        adapter.saveReminder(this.title, this.id, this.owner, this.date, this.description, this.reminder_alert);
     }
 
 
@@ -227,7 +227,7 @@ public class Reminder {
 
     public void updateReminder(){
         Log.d("updateReminder", "adapter-> updateFolder");
-        adapter.updateReminder(this.title, this.id, this.owner, this.date, this.description);
+        adapter.updateReminder(this.title, this.id, this.owner, this.date, this.description, this.reminder_alert);
     }
 
 }

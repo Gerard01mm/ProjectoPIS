@@ -39,7 +39,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView folder_title;
         private final LinearLayout fLayout;
-        private final ImageView deleteIm;
+        private final ImageView editNoteName;
         /**
          * Constructor de la clase. Rep una View per poder cridar al super constructor i despres
          * assignarem el TextView folder_title al TextView folders_title, a la layout foldercard.xml
@@ -49,7 +49,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
             super(view);
             this.folder_title = (TextView)view.findViewById(R.id.folder_title);
             this.fLayout = view.findViewById(R.id.folder_linear);
-            this.deleteIm = view.findViewById(R.id.delete_image);
+            this.editNoteName = view.findViewById(R.id.editNoteName);
         }
 
         /**
@@ -58,7 +58,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
          */
         public TextView getFolder_title(){ return this.folder_title; }
         public LinearLayout getFolderLayout(){ return this.fLayout; }
-        public ImageView getImageDelete() { return this.deleteIm; }
+        public ImageView getImageEditName() { return this.editNoteName; }
     }
 
 
@@ -113,6 +113,35 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
             @Override
             public boolean onLongClick(View v) {
                 AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                mydialog.setTitle("Remove folder? ");
+
+                mydialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        NoteFolder n = localDataSet.get(position);
+                        n.removeFolder();
+                        /*for (NoteFolder i: localDataSet){
+                            System.out.println(i.get_Title());
+                        }*/
+                        localDataSet.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                });
+                mydialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                mydialog.show();
+                return true;
+            }
+        });
+        ImageView op = viewHolder.getImageEditName();
+        op.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
                 mydialog.setTitle("Rename the folder: ");
 
                 final EditText input = new EditText(parentContext);
@@ -129,36 +158,6 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
                     }
                 });
                 mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                mydialog.show();
-
-                return true;
-            }
-        });
-        ImageView op = viewHolder.getImageDelete();
-        op.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
-                mydialog.setTitle("Remove folder? ");
-
-                mydialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        NoteFolder n = localDataSet.get(position);
-                        n.removeFolder();
-                        /*for (NoteFolder i: localDataSet){
-                            System.out.println(i.get_Title());
-                        }*/
-                        localDataSet.remove(position);
-                        notifyItemRemoved(position);
-                    }
-                });
-                mydialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();

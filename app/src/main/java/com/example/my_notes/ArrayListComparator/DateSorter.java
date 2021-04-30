@@ -8,6 +8,6 @@ public class DateSorter implements Comparator<Note>
 {
     @Override
     public int compare(Note o1, Note o2) {
-        return o2.getCreation_date().compareTo(o1.getCreation_date());
+        return o1.getCreation_date().compareTo(o2.getCreation_date());
     }
 }

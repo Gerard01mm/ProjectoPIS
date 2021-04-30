@@ -1,5 +1,6 @@
 package com.example.my_notes.Content;
 
+
 import android.app.Application;
 
 import androidx.lifecycle.MutableLiveData;
@@ -9,44 +10,41 @@ import com.example.my_notes.DatabaseAdapter;
 
 import java.util.ArrayList;
 
-import Notes.ImageNote;
-import Notes.Note;
-
-public class ImageNoteContentViewModel extends ViewModel implements DatabaseAdapter.vmInterface {
+public class TextNoteContentViewModel extends ViewModel implements DatabaseAdapter.vmInterface {
 
     private DatabaseAdapter adapter;
     private MutableLiveData<String> mToast;
     private String noteId, folderId;
     private Application application;
-    private MutableLiveData<NotesContent> imageNoteContent;
+    private MutableLiveData<NotesContent> textNoteContent;
 
-    public ImageNoteContentViewModel(Application application, String noteId, String folderId){
+    public TextNoteContentViewModel(Application application, String noteId, String folderId){
         this.adapter= new DatabaseAdapter(this);
         this.mToast = new MutableLiveData<>();
-        this.imageNoteContent = new MutableLiveData<>();
+        this.textNoteContent = new MutableLiveData<>();
         this.application = application;
         this.noteId = noteId;
         this.folderId = folderId;
-        adapter.getImageNoteContent(noteId, folderId);
+        adapter.getTextNoteContent(noteId, folderId);
     }
 
-    public void saveImageNoteContent(String path, String text, String idNote, String idFolder){
-        ImageNoteContent im = new ImageNoteContent(idNote, idFolder, text, path);
-        imageNoteContent.setValue(im);
-        im.saveContent();
+    public void saveTextNoteContent(String path, String text, String idNote, String idFolder){
+        TextNoteContent tx = new TextNoteContent(idNote, idFolder, text);
+        textNoteContent.setValue(tx);
+        tx.saveContent();
     }
 
     public MutableLiveData<String> getmToast() {
         return mToast;
     }
 
-    public MutableLiveData<NotesContent> getImageNoteContent() {
-        return imageNoteContent;
+    public MutableLiveData<NotesContent> getTextNoteContent() {
+        return textNoteContent;
     }
 
     @Override
     public void setCollection(ArrayList ac) {
-        imageNoteContent.setValue((ImageNoteContent) ac.get(0));
+        textNoteContent.setValue((TextNoteContent) ac.get(0));
     }
 
     @Override
