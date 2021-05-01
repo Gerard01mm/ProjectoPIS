@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import Notes.AudioNote;
 import Notes.Note;
 
 import static android.app.Activity.RESULT_OK;
@@ -265,8 +266,8 @@ public class NotesFragment extends Fragment implements ComplexNotesAdapter.playe
     public void startPlaying(int recyclerItem) {
         try {
             MediaPlayer player = new MediaPlayer();
-
-            fileName = notesViewModel.getNote(recyclerItem).getTitle();
+            AudioNote an = (AudioNote)notesViewModel.getNote(recyclerItem);
+            fileName = an.getAdress();
             Log.d("startPlaying", fileName);
             player.setDataSource(fileName);
             player.prepare();
