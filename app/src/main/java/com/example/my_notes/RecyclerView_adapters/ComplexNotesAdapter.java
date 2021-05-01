@@ -3,9 +3,11 @@ package com.example.my_notes.RecyclerView_adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,39 +18,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.my_notes.R;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import Notes.AudioNote;
 import Notes.ImageNote;
 import Notes.Note;
 import Notes.TextNote;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.example.my_notes.R;
-import com.example.my_notes.ui.notes.NotesViewModel;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import org.w3c.dom.Text;
-
-import static android.app.Activity.RESULT_OK;
+import android.widget.SeekBar;
 
 /**
  * Aquesta classe s'utilitzarà per adaptar el contingut d'una carpeta i per mostrar les notes
@@ -60,12 +44,16 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ArrayList<Note> localDataSet;
     private final Context parentContext;
     private final int TEXTNOTE = 0, IMAGENOTE = 1, AUDIONOTE = 2;
-    private final playerInterface listener;
 
-    public ComplexNotesAdapter(Context current, ArrayList<Note> an, playerInterface listener){
+    private Runnable runnable;
+    private Handler handler = new Handler(Looper.getMainLooper());
+
+    private MediaPlayer player;
+
+    public ComplexNotesAdapter(Context current, ArrayList<Note> an){
         this.parentContext = current;
         this.localDataSet = an;
-        this.listener = listener;
+        this.player = new MediaPlayer();
     }
 
     @Override
@@ -97,7 +85,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 viewHolder = new ViewHolderImageNotes(v2);
                 break;
             case AUDIONOTE:
-                View v3 = inflater.inflate(R.layout.audio_note_card, parent, false);
+                View v3 = inflater.inflate(R.layout.audionote_rv_card, parent, false);
                 viewHolder = new ViewHolderAudioNotes(v3);
                 break;
             default:
@@ -140,64 +128,6 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case AUDIONOTE:
                 ViewHolderAudioNotes vh3 = (ViewHolderAudioNotes) holder;
                 configureViewHolderAudioNotes(vh3, position);
-                vh3.getPlay_btn().setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        playAudio(position);
-                    }
-                });
-                vh3.getDelete_btn().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
-                        mydialog.setTitle("Remove the note?");
-
-                        mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                AudioNote an = (AudioNote)localDataSet.get(position);
-                                an.removeAudioNote();
-                                localDataSet.remove(position);
-                                notifyItemRemoved(position);
-                            }
-                        });
-                        mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        mydialog.show();
-                    }
-                });
-                vh3.getTitle().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
-                        mydialog.setTitle("Title of the note: ");
-
-                        final EditText input = new EditText(parentContext);
-                        mydialog.setView(input);
-
-                        mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String input_text = input.getText().toString();
-                                AudioNote an = (AudioNote)localDataSet.get(position);
-                                an.setTitle(input_text);
-                                an.updateAudioNote();
-                                notifyDataSetChanged();
-                            }
-                        });
-                        mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        mydialog.show();
-                    }
-                });
                 break;
             default:
                 break;
@@ -217,6 +147,60 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String dateString = df.format(dateC);
             vh1.getNoteDate().setText(dateString);
             vh1.getNoteTitle().setText(tnote.getTitle());
+            vh1.getEditTextNote().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                    mydialog.setTitle("Rename the note: ");
+
+                    final EditText input = new EditText(parentContext);
+                    mydialog.setView(input);
+
+                    mydialog.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String input_text = input.getText().toString();
+                            TextNote t = (TextNote) localDataSet.get(position);
+                            t.setTitle(input_text);
+                            t.updateTextNote();
+                            notifyDataSetChanged();
+                        }
+                    });
+                    mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    mydialog.show();
+                }
+            });
+            vh1.getTextNoteLayout().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                    mydialog.setTitle("Remove note? ");
+
+                    mydialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            TextNote t = (TextNote) localDataSet.get(position);
+                            t.deleteTextNote();
+                            localDataSet.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, localDataSet.size());
+                        }
+                    });
+                    mydialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    mydialog.show();
+                    return true;
+                }
+            });
         }
     }
 
@@ -229,6 +213,62 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String dateString = df.format(dateC);
             vh2.getImageNoteDate().setText(dateString);
             vh2.getImageNoteTitle().setText(inote.getTitle());
+
+            vh2.getImageNoteLayout().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                    mydialog.setTitle("Remove note? ");
+
+                    mydialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ImageNote i = (ImageNote) localDataSet.get(position);
+                            i.deleteImageNote();
+                            localDataSet.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, localDataSet.size());
+                        }
+                    });
+                    mydialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    mydialog.show();
+                    return true;
+                }
+            });
+
+            vh2.getEditImageNote().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                    mydialog.setTitle("Rename the note: ");
+
+                    final EditText input = new EditText(parentContext);
+                    mydialog.setView(input);
+
+                    mydialog.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String input_text = input.getText().toString();
+                            ImageNote i = (ImageNote) localDataSet.get(position);
+                            i.setTitle(input_text);
+                            i.updateImageNote();
+                            notifyDataSetChanged();
+                        }
+                    });
+                    mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    mydialog.show();
+                }
+            });
         }
     }
 
@@ -241,6 +281,67 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String dateString = df.format(dateC);
             vh3.getDate().setText(dateString);
             vh3.getTitle().setText(anote.getTitle());
+            vh3.getPlay_btn().setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    vh3.getPlay_btn().setVisibility(View.GONE);
+                    vh3.getPause_btn().setVisibility(View.VISIBLE);
+                    playAudio(position, vh3.getSeekBar());
+                }
+            });
+
+            vh3.getPause_btn().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    vh3.getPause_btn().setVisibility(View.GONE);
+                    vh3.getPlay_btn().setVisibility(View.VISIBLE);
+                    pauseAudio(position);
+                }
+            });
+
+            vh3.getDelete_btn().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                    mydialog.setTitle("Remove the note?");
+
+                    mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            AudioNote an = (AudioNote)localDataSet.get(position);
+                            an.removeAudioNote();
+                            localDataSet.remove(position);
+                            notifyItemRemoved(position);
+                        }
+                    });
+                    mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    mydialog.show();
+                }
+            });
+
+            vh3.getSeekBar().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (fromUser){
+                        player.seekTo(progress);
+                    }
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
         }
     }
 
@@ -254,13 +355,34 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return this.localDataSet.size();
     }
 
+    private void playAudio(int position, SeekBar seekBar) {
+        try {
+            AudioNote an = (AudioNote) localDataSet.get(position);
+            String fileName = an.getAdress();
+            Log.d("startPlaying", fileName);
+            player.setDataSource(fileName);
+            player.prepare();
+            player.start();
 
-    public interface playerInterface{
-        void startPlaying(int fileName);
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    seekBar.setProgress(player.getCurrentPosition());
+                    handler.postDelayed(this, 500);
+                }
+            };
+            int duration = player.getDuration();
+
+            seekBar.setMax(player.getDuration());
+            handler.postDelayed(runnable, 0);
+
+        } catch (IOException e) {
+            Log.d("startPlaying", "prepare() failed");
+        }
     }
 
-    private void playAudio(int position) {
-        // Play audio for clicked note
-        listener.startPlaying(position);
+    public void pauseAudio(int position) {
+        player.pause();
+        handler.removeCallbacks(runnable);
     }
 }

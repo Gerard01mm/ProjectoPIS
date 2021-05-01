@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity{
         getFromSettingsActivity();
         changeNavHeaderData(navigationView);
 
-        verifyStoragePermissions(this);
+        //verifyStoragePermissions(this);
 
         ActivityCompat.requestPermissions(this, permissions_audio, REQUEST_RECORD_AUDIO_PERMISSION);
     }
@@ -102,6 +102,8 @@ public class MainActivity extends AppCompatActivity{
             permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
         }
         if (!permissionToRecordAccepted ) finish();
+
+        verifyStoragePermissions(this);
     }
 
     /*Metode que canvia el nom actual i el correu de la 'nav_header_main.xml', és a dir, del menú

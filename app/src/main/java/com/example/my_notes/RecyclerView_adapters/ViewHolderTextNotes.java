@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.my_notes.R;
 
 public class ViewHolderTextNotes extends RecyclerView.ViewHolder {
-    private ImageView typeText;
+    private ImageView typeText, editTextNote;
     private TextView NoteDate, NoteTitle;
     private LinearLayout textNoteLayout;
 
@@ -20,6 +20,7 @@ public class ViewHolderTextNotes extends RecyclerView.ViewHolder {
         this.NoteDate = v.findViewById(R.id.NoteDate);
         this.NoteTitle = v.findViewById(R.id.NoteTitle);
         this.textNoteLayout = v.findViewById(R.id.textnote_layout);
+        this.editTextNote = v.findViewById(R.id.editTextNote);
     }
 
     public ImageView getTypeText() {
@@ -52,5 +53,13 @@ public class ViewHolderTextNotes extends RecyclerView.ViewHolder {
 
     public void setTextNoteLayout(LinearLayout textNoteLayout) {
         this.textNoteLayout = textNoteLayout;
+    }
+
+    public ImageView getEditTextNote() {
+        return editTextNote;
+    }
+
+    public void setEditTextNote(ImageView editTextNote) {
+        this.editTextNote = editTextNote;
     }
 }

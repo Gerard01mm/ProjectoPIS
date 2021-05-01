@@ -31,4 +31,14 @@ public class TextNote extends Note {
         adapter.saveTextNote(getTitle(), getId() , getFolderId() , getOwner(),
                 getCreation_date(), getModify_date());
     }
+
+    public void updateTextNote(){
+        Log.d("updateNote", "adapter-> updateNote");
+        adapter.updateTextNote(getTitle(), getFolderId(), getId(), getOwner(), getCreation_date(), new Date());
+    }
+
+    public void deleteTextNote(){
+        Log.d("deleteNote", "adapter-> deleteNote");
+        adapter.deleteTextNote(getId(), getFolderId());
+    }
 }

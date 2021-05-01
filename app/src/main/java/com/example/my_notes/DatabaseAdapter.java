@@ -62,7 +62,7 @@ public class DatabaseAdapter{
     private ArrayList<Note> notesInFolder;
 
     public DatabaseAdapter(vmInterface listener){
-        this.listener = listener;
+        DatabaseAdapter.listener = listener;
         databaseAdapter = this;
         FirebaseFirestore.setLoggingEnabled(true);
         initFirebase();
@@ -547,10 +547,7 @@ public class DatabaseAdapter{
                                         note.getString("id"), note.getString("url"), note.getString("folderId"),
                                         note.getString("owner"), note.getDate("creation_date"),
                                         note.getDate("modify_date")));
-                                notesInFolder.sort(new DateSorter());
-                                listener.setCollection(notesInFolder);
                             }
-
                         } else {
                             Log.d(TAG, "Error getting notes: ", task.getException());
                         }
@@ -574,15 +571,104 @@ public class DatabaseAdapter{
                                         note.getString("id"), note.getString("folderId"),
                                         note.getString("owner"), note.getDate("creation"),
                                         note.getDate("modify")));
-                                        notesInFolder.sort(new DateSorter());
-                                        listener.setCollection(notesInFolder);
                             }
-
+                            notesInFolder.sort(new DateSorter());
+                            listener.setCollection(notesInFolder);
                         } else {
                             Log.d(TAG, "Error getting notes: ", task.getException());
                         }
                     }
                 });
+    }
+
+    public void updateTextNote (String title, String folderId, String id, String owner, Date creation, Date modify) {
+        // Create a new hashmap
+        Map<String, Object> textNote = new HashMap<>();
+        textNote.put("title", title);
+        textNote.put("id", id);
+        textNote.put("folderId", folderId);
+        textNote.put("owner", owner);
+        textNote.put("creation", creation);
+        textNote.put("modify", modify);
+
+        Log.d(TAG, "updateTextNote");
+        db.collection("notes")
+                .document("roomTextNotes")
+                .collection("textNotes")
+                .whereEqualTo("id", id)
+                .whereEqualTo("folderId", folderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                note.getReference().update(textNote)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "Document updated correctly");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, "Error updating document ");
+                                            }
+                                        });
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error: No note found ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+    public void updateImageNote (String title, String folderId, String id, String owner, Date creation, Date modify) {
+        // Create a new hashmap
+        Map<String, Object> imageNote = new HashMap<>();
+        imageNote.put("title", title);
+        imageNote.put("id", id);
+        imageNote.put("folderId", folderId);
+        imageNote.put("owner", owner);
+        imageNote.put("creation", creation);
+        imageNote.put("modify", modify);
+
+        Log.d(TAG, "updateImageNote");
+        db.collection("notes")
+                .document("roomImageNotes")
+                .collection("imageNotes")
+                .whereEqualTo("id", id)
+                .whereEqualTo("folderId", folderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                note.getReference().update(imageNote)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "Document updated correctly");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, "Error updating document ");
+                                            }
+                                        });
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error: No note found ", task.getException());
+                        }
+                    }
+                });
+
     }
 
     public void saveImageNote (String title, String id, String folderId, String owner,
@@ -837,9 +923,31 @@ public class DatabaseAdapter{
 
     }
 
+    public void deleteTextNote(String id, String folderId){
+        db.collection("notes")
+                .document("roomTextNotes")
+                .collection("textNotes")
+                .whereEqualTo("id", id)
+                .whereEqualTo("folderId", folderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                deleteTextNoteContent(note.getString("id"), note.getString("folderId"));
+                                note.getReference().delete();
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error deleting folder: ", task.getException());
+                        }
+                    }
+                });
+    }
+
     public void deleteTextNoteContent (String id, String folderId) {
-        System.out.println("llega a text content");
-        Log.d(TAG, "saveImageNoteContent");
+        Log.d(TAG, "deleteImageNoteContent");
         // Add a new document with a generated ID
         db.collection("content")
                 .document("roomTextNoteContent")
@@ -852,7 +960,6 @@ public class DatabaseAdapter{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             for (QueryDocumentSnapshot noteC : task.getResult()) {
-                                System.out.println(noteC);
                                 noteC.getReference().delete();
                             }
 
@@ -888,8 +995,6 @@ public class DatabaseAdapter{
 
     public void deleteImageNoteContent (String id, String folderId) {
         Log.d(TAG, "saveImageNoteContent");
-        System.out.println("Llega a image content");
-        System.out.println(id + " " + folderId);
         // Add a new document with a generated ID
         db.collection("content")
                 .document("roomImageNoteContent")
@@ -902,13 +1007,10 @@ public class DatabaseAdapter{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             for (QueryDocumentSnapshot noteC : task.getResult()) {
-                                System.out.println("llega al for");
-                                System.out.println(noteC);
                                 if(noteC.getString("imagepath") != null){
                                     System.out.println("Entra en el if");
                                     deleteImageFromStorage(noteC.getString("imagepath"));
                                 }
-                                System.out.println("llega a delete");
                                 noteC.getReference().delete();
                             }
 

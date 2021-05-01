@@ -125,6 +125,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
                         }*/
                         localDataSet.remove(position);
                         notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, localDataSet.size());
                     }
                 });
                 mydialog.setNegativeButton("No", new DialogInterface.OnClickListener() {

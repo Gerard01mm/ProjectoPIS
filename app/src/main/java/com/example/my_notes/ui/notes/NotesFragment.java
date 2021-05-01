@@ -11,16 +11,19 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.my_notes.R;
@@ -52,26 +55,23 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import Notes.AudioNote;
 import Notes.Note;
 
 import static android.app.Activity.RESULT_OK;
 
-public class NotesFragment extends Fragment implements ComplexNotesAdapter.playerInterface {
+public class NotesFragment extends Fragment {
     private NotesViewModel notesViewModel;
     // Floating button functionality
     private FloatingActionButton fab, fabText, fabImage, fabVoice;
     private Context parentContext;
     private RecyclerView nRecyclerView;
     private LinearLayoutManager layoutManager;
-    private String folderId;
-
+    private String folderId, fileName;
     private MediaRecorder recorder;
     private boolean isRecording = false;
-    String fileName;
-
-    private Fragment mFragment;
 
     public NotesFragment() {
     }
@@ -79,7 +79,6 @@ public class NotesFragment extends Fragment implements ComplexNotesAdapter.playe
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        mFragment = this;
         // Rebem la Id de la carpeta que conté les notes amb Bundle()
         if (getArguments() != null){
             folderId = getArguments().getString("FolderId");
@@ -171,16 +170,14 @@ public class NotesFragment extends Fragment implements ComplexNotesAdapter.playe
             @Override
             public void onClick(View v) {
                 if (isRecording) {
-                    fabVoice.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                    parentContext, android.R.drawable.ic_btn_speak_now));
+                    Toast.makeText(getActivity(), "Audio recording stoped", Toast.LENGTH_SHORT).show();
+                    fabVoice.setImageResource(R.drawable.mic_black_24dp);
                     stopRecording();
                     showPopup(nRecyclerView);
 
                 } else {
-                    fabVoice.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                    parentContext, android.R.drawable.ic_input_add));
+                    Toast.makeText(getActivity(), "Audio recording started", Toast.LENGTH_SHORT).show();
+                    fabVoice.setImageResource(R.drawable.ic_baseline_stop_24);
                     startRecording();
                 }
             }
@@ -245,7 +242,7 @@ public class NotesFragment extends Fragment implements ComplexNotesAdapter.playe
         final Observer<ArrayList<Note>> observer = new Observer<ArrayList<Note>>() {
             @Override
             public void onChanged(ArrayList<Note> notes) {
-                ComplexNotesAdapter newAdapter = new ComplexNotesAdapter(parentContext, notes, (ComplexNotesAdapter.playerInterface) mFragment);
+                ComplexNotesAdapter newAdapter = new ComplexNotesAdapter(parentContext, notes);
                 nRecyclerView.swapAdapter(newAdapter, false);
                 newAdapter.notifyDataSetChanged();
             }
@@ -260,20 +257,5 @@ public class NotesFragment extends Fragment implements ComplexNotesAdapter.playe
 
         notesViewModel.getNotes().observe(getViewLifecycleOwner(), observer);
         notesViewModel.getToast().observe(getViewLifecycleOwner(), observerToast);
-    }
-
-    @Override
-    public void startPlaying(int recyclerItem) {
-        try {
-            MediaPlayer player = new MediaPlayer();
-            AudioNote an = (AudioNote)notesViewModel.getNote(recyclerItem);
-            fileName = an.getAdress();
-            Log.d("startPlaying", fileName);
-            player.setDataSource(fileName);
-            player.prepare();
-            player.start();
-        } catch (IOException e) {
-            Log.d("startPlaying", "prepare() failed");
-        }
     }
 }

@@ -15,7 +15,7 @@
     <LinearLayout
         android:id="@+id/textnote_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <!--Añadiremos una imagen del tipo de nota que sea-->
@@ -35,7 +35,7 @@
         </ImageView>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="307dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -56,6 +56,13 @@
 
             </TextView>
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/editTextNote"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            app:srcCompat="@drawable/create_black_24dp" />
     </LinearLayout>
 
 

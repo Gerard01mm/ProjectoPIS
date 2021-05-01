@@ -1,5 +1,7 @@
 package Notes;
 
+import android.util.Log;
+
 import com.example.my_notes.DatabaseAdapter;
 
 import java.io.Serializable;

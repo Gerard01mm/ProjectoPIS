@@ -30,5 +30,12 @@ public class ImageNote extends Note {
         adapter.saveImageNote(getTitle(), getId() , getFolderId() , getOwner(),
                 getCreation_date(), getModify_date());
     }
-
+    public void deleteImageNote(){
+        Log.d("deleteNote", "adapter-> deleteNote");
+        adapter.deleteImageNote(getId(), getFolderId());
+    }
+    public void updateImageNote(){
+        Log.d("updateNote", "adapter-> updateNote");
+        adapter.updateImageNote(getTitle(), getFolderId(), getId(), getOwner(), getCreation_date(), new Date());
+    }
 }
