@@ -136,6 +136,4 @@ public class Note {
      * @return Id de la carpeta a la que pertany
      */
     public String getFolderId() { return this.folderId; }
-
-
 }

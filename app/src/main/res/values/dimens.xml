@@ -10,9 +10,9 @@
     <dimen name="FolderTitleSize">15dp</dimen>
 
     <!--Llistat dels tamannys de la cardView de la nota-->
-    <dimen name="NoteTitleSize">15dp</dimen>
-    <dimen name="NoteDateSize">10dp</dimen>
-    <dimen name="TypeNoteSize">15dp</dimen>
+    <dimen name="NoteTitleSize">15sp</dimen>
+    <dimen name="NoteDateSize">10sp</dimen>
+    <dimen name="TypeNoteSize">15sp</dimen>
 
 
     <!--Dimensions per a les reminderCards-->

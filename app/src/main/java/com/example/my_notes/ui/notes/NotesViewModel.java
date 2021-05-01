@@ -10,6 +10,7 @@ import com.example.my_notes.DatabaseAdapter;
 
 import java.util.ArrayList;
 
+import Notes.AudioNote;
 import Notes.ImageNote;
 import Notes.Note;
 import Notes.TextNote;
@@ -88,5 +89,35 @@ public class NotesViewModel extends ViewModel implements DatabaseAdapter.vmInter
     @Override
     public void setToast(String s) {
         mToast.setValue(s);
+    }
+
+    public void addAudioCard(String title, String adress, String folderId) {
+        AudioNote an = new AudioNote(title, adress, folderId);
+        if (mNotes.getValue() == null){
+            ArrayList<Note> anf = new ArrayList<>();
+            anf.add(an);
+            mNotes.setValue(anf);
+        }else{
+            mNotes.getValue().add(an);
+            // Inform observer
+            mNotes.setValue(mNotes.getValue());
+        }
+        an.saveAudioNote();
+    }
+
+    public void removeAudioCard(int idx){
+        AudioNote an = (AudioNote)mNotes.getValue().remove(idx);
+        mNotes.setValue(mNotes.getValue());
+        an.removeAudioNote();
+    }
+
+    public void updateAudioCard(int idx, String new_title){
+        AudioNote an = (AudioNote)mNotes.getValue().get(idx);
+        an.setTitle(new_title);
+        mNotes.setValue(mNotes.getValue());
+        an.updateAudioNote();
+    }
+    public Note getNote(int idx){
+        return mNotes.getValue().get(idx);
     }
 }

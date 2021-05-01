@@ -1,9 +1,11 @@
 package com.example.my_notes;
 
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.example.my_notes.ArrayListComparator.DateSorter;
 import com.example.my_notes.Content.ImageNoteContent;
@@ -28,6 +30,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.firebase.storage.UploadTask;
 import com.google.firestore.v1.WriteResult;
 
 import java.io.File;
@@ -38,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
+import Notes.AudioNote;
 import Notes.ImageNote;
 import Notes.Note;
 import Notes.NoteFolder;
@@ -316,6 +320,137 @@ public class DatabaseAdapter{
                 });
     }
 
+    public void saveAudioNoteWithFile(String id, String title, String owner, String folderId, Date creation_date, Date modify_date, String path) {
+        Uri file = Uri.fromFile(new File(path));
+        StorageReference storageRef = storage.getReference();
+        StorageReference audioRef = storageRef.child("audio"+File.separator+file.getLastPathSegment());
+        UploadTask uploadTask = audioRef.putFile(file);
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return audioRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    saveAudio(id, title, owner, folderId, creation_date, modify_date, downloadUri.toString());
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
+
+
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                Log.d(TAG, "Upload is " + progress + "% done");
+            }
+        });
+    }
+
+    public void saveAudio(String id, String title, String owner, String folderId, Date creation_date, Date modify_date, String url){
+        // Create a new user with a first and last name
+        Map<String, Object> audioNote = new HashMap<>();
+        audioNote.put("id", id);
+        audioNote.put("title", title);
+        audioNote.put("owner", owner);
+        audioNote.put("folderId", folderId);
+        audioNote.put("creation_date", creation_date);
+        audioNote.put("modify_date", modify_date);
+        audioNote.put("url", url);
+
+        Log.d(TAG, "saveAudioNote");
+        // Add a new document with a generated ID
+        db.collection("notes").document("roomAudioNotes").collection("audioNotes")
+                .add(audioNote)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        String f_id = documentReference.getId();
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + f_id);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding audioNote", e);
+                    }
+                });
+    }
+
+    public void updateAudioNote(String id, String title, String owner, String folderId, Date creation_date, Date modify_date, String url){
+        final DocumentReference [] docRef = new DocumentReference[1];
+
+        Map<String, Object> newAudioNote = new HashMap<>();
+        newAudioNote.put("id", id);
+        newAudioNote.put("title", title);
+        newAudioNote.put("owner", owner);
+        newAudioNote.put("folderId", folderId);
+        newAudioNote.put("creation_date", creation_date);
+        newAudioNote.put("modify_date", modify_date);
+        newAudioNote.put("url", url);
+
+        Log.d(TAG, "updateAudioNote");
+        db.collection("notes").document("roomAudioNotes").collection("audioNotes")
+                .whereEqualTo("id", id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot audioNote : task.getResult()) {
+                                docRef[0] = audioNote.getReference();
+                                docRef[0].update(newAudioNote)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "Document updated correctly");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, "Error updating document ");
+                                            }
+                                        });
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error: No audioNote found ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void removeAudioNote(String id) {
+        db.collection("notes").document("roomAudioNotes").collection("audioNotes")
+                .whereEqualTo("id", id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot audioNote : task.getResult()) {
+                                audioNote.getReference().delete();
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error deleting audioNote: ", task.getException());
+                        }
+                    }
+                });
+    }
 
     public void deleteReminder(String id){
         db.collection("reminders")
@@ -401,18 +536,19 @@ public class DatabaseAdapter{
                 .whereEqualTo("folderId", folderId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
 
                             for (QueryDocumentSnapshot note : task.getResult()) {
                                 Log.d(TAG, note.getId() + " => " + note.getData());
-                                /*notesInFolder.add(new AudioNote( note.getString("title"),
-                                        note.getString("id"), note.getString("folderId"),
-                                        note.getString("owner"), note.getDate("creation"),
-                                        note.getDate("modify"), note.getString("imagepath")));
-
-                                 */
+                                notesInFolder.add(new AudioNote( note.getString("title"),
+                                        note.getString("id"), note.getString("url"), note.getString("folderId"),
+                                        note.getString("owner"), note.getDate("creation_date"),
+                                        note.getDate("modify_date")));
+                                notesInFolder.sort(new DateSorter());
+                                listener.setCollection(notesInFolder);
                             }
 
                         } else {

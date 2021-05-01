@@ -1,6 +1,8 @@
 package com.example.my_notes.RecyclerView_adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +42,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.my_notes.R;
+import com.example.my_notes.ui.notes.NotesViewModel;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -56,13 +59,13 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     //Atributs de la classe
     private ArrayList<Note> localDataSet;
     private final Context parentContext;
-    private final int TEXTNOTE = 0;
-    private final int IMAGENOTE = 1;
-    private final int AUDIONOTE = 2;
+    private final int TEXTNOTE = 0, IMAGENOTE = 1, AUDIONOTE = 2;
+    private final playerInterface listener;
 
-    public ComplexNotesAdapter(Context current, ArrayList<Note> an){
+    public ComplexNotesAdapter(Context current, ArrayList<Note> an, playerInterface listener){
         this.parentContext = current;
         this.localDataSet = an;
+        this.listener = listener;
     }
 
     @Override
@@ -94,8 +97,8 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 viewHolder = new ViewHolderImageNotes(v2);
                 break;
             case AUDIONOTE:
-                /*View v3 = inflater.inflate(R.layout.audionote_rv_card, parent, false);
-                viewHolder = new ViewHolderAudioNotes(v3);*/
+                View v3 = inflater.inflate(R.layout.audio_note_card, parent, false);
+                viewHolder = new ViewHolderAudioNotes(v3);
                 break;
             default:
                 break;
@@ -137,7 +140,64 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case AUDIONOTE:
                 ViewHolderAudioNotes vh3 = (ViewHolderAudioNotes) holder;
                 configureViewHolderAudioNotes(vh3, position);
-                //TODO
+                vh3.getPlay_btn().setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        playAudio(position);
+                    }
+                });
+                vh3.getDelete_btn().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                        mydialog.setTitle("Remove the note?");
+
+                        mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AudioNote an = (AudioNote)localDataSet.get(position);
+                                an.removeAudioNote();
+                                localDataSet.remove(position);
+                                notifyItemRemoved(position);
+                            }
+                        });
+                        mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        mydialog.show();
+                    }
+                });
+                vh3.getTitle().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                        mydialog.setTitle("Title of the note: ");
+
+                        final EditText input = new EditText(parentContext);
+                        mydialog.setView(input);
+
+                        mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String input_text = input.getText().toString();
+                                AudioNote an = (AudioNote)localDataSet.get(position);
+                                an.setTitle(input_text);
+                                an.updateAudioNote();
+                                notifyDataSetChanged();
+                            }
+                        });
+                        mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        mydialog.show();
+                    }
+                });
                 break;
             default:
                 break;
@@ -175,9 +235,12 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void configureViewHolderAudioNotes(ViewHolderAudioNotes vh3, int position) {
         AudioNote anote = (AudioNote) localDataSet.get(position);
         if (anote != null){
-            /*
-            * Configurar
-            * */
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+            Date dateC = anote.getCreation_date();
+
+            String dateString = df.format(dateC);
+            vh3.getDate().setText(dateString);
+            vh3.getTitle().setText(anote.getTitle());
         }
     }
 
@@ -191,4 +254,13 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return this.localDataSet.size();
     }
 
+
+    public interface playerInterface{
+        void startPlaying(int fileName);
+    }
+
+    private void playAudio(int position) {
+        // Play audio for clicked note
+        listener.startPlaying(position);
+    }
 }

@@ -60,4 +60,8 @@
     <!--Etiquetas nota de imagen-->
     <string name="textImageNote">Empty note</string>
 
+    <!--Etiquetas del formulario de la AudioNote-->
+    <string name="add_description_msg">Note description</string>
+    <string name="save_note">Save note</string>
+
 </resources>

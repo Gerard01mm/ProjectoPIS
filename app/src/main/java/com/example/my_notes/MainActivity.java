@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -29,6 +30,11 @@ public class MainActivity extends AppCompatActivity{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+
+    // Requesting permission to RECORD_AUDIO
+    private boolean permissionToRecordAccepted = false;
+    private final String [] permissions_audio = {Manifest.permission.RECORD_AUDIO};
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
 
     private String name, email;
     private AppBarConfiguration mAppBarConfiguration;
@@ -85,7 +91,19 @@ public class MainActivity extends AppCompatActivity{
         changeNavHeaderData(navigationView);
 
         verifyStoragePermissions(this);
+
+        ActivityCompat.requestPermissions(this, permissions_audio, REQUEST_RECORD_AUDIO_PERMISSION);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
+            permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        }
+        if (!permissionToRecordAccepted ) finish();
+    }
+
     /*Metode que canvia el nom actual i el correu de la 'nav_header_main.xml', és a dir, del menú
     * amb les dades obtingudes a l'hora de fer login*/
     private void changeNavHeaderData(NavigationView navigationView) {
