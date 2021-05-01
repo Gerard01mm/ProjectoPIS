@@ -8,16 +8,18 @@ import android.util.Log;
 import com.example.my_notes.DatabaseAdapter;
 
 public class AudioNote extends Note {
-    private String adress;
+    private String adress, audioName;
     private final DatabaseAdapter adapter = DatabaseAdapter.databaseAdapter;
 
-    public AudioNote(String title, String localPath, String folderId){
+    public AudioNote(String title, String localPath, String folderId, String audioName){
         super(title, folderId);
         this.adress = localPath;
+        this.audioName = audioName;
     }
-    public AudioNote(String title,String id, String localPath, String folderId, String owner, Date creation, Date modify){
+    public AudioNote(String title,String id, String localPath, String folderId, String owner, Date creation, Date modify, String audioName){
         super(title, folderId, id, owner, creation, modify);
         this.adress = localPath;
+        this.audioName = audioName;
     }
 
     public String getAdress(){
@@ -26,12 +28,12 @@ public class AudioNote extends Note {
 
     public void saveAudioNote(){
         Log.d("saveAudioNote", "adapter-> saveAudioNote");
-        adapter.saveAudioNoteWithFile(getId(), getTitle(), getOwner(), getFolderId(), getCreation_date(), getModify_date(), this.adress);
+        adapter.saveAudioNoteWithFile(getId(), getTitle(), getOwner(), getFolderId(), getCreation_date(), getModify_date(), this.adress, this.audioName);
     }
 
     public void updateAudioNote(){
         Log.d("updateAudioNote", "adapter-> updateAudioNote");
-        adapter.updateAudioNote(getId(), getTitle(), getOwner(), getFolderId(), getCreation_date(), getModify_date(), this.adress);
+        adapter.updateAudioNote(getId(), getTitle(), getOwner(), getFolderId(), getCreation_date(), getModify_date(), this.adress, this.audioName);
     }
 
     public void removeAudioNote(){

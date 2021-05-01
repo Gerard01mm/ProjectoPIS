@@ -91,8 +91,8 @@ public class NotesViewModel extends ViewModel implements DatabaseAdapter.vmInter
         mToast.setValue(s);
     }
 
-    public void addAudioCard(String title, String adress, String folderId) {
-        AudioNote an = new AudioNote(title, adress, folderId);
+    public void addAudioCard(String title, String adress, String folderId, String audioName) {
+        AudioNote an = new AudioNote(title, adress, folderId, audioName);
         if (mNotes.getValue() == null){
             ArrayList<Note> anf = new ArrayList<>();
             anf.add(an);

@@ -69,9 +69,11 @@ public class NotesFragment extends Fragment {
     private Context parentContext;
     private RecyclerView nRecyclerView;
     private LinearLayoutManager layoutManager;
-    private String folderId, fileName;
+    private String folderId, fileName, audioName;
     private MediaRecorder recorder;
     private boolean isRecording = false;
+
+    private Fragment mFragment;
 
     public NotesFragment() {
     }
@@ -193,7 +195,8 @@ public class NotesFragment extends Fragment {
         recorder = new MediaRecorder();
         DateFormat df = new SimpleDateFormat("yyMMddHHmmss", Locale.GERMANY);
         String date = df.format(Calendar.getInstance().getTime());
-        fileName =  getActivity().getExternalCacheDir().getAbsolutePath()+File.separator +date+".3gp";
+        audioName = date+"3.gp";
+        fileName =  getActivity().getExternalCacheDir().getAbsolutePath()+File.separator +audioName;
         Log.d("startRecording", fileName);
 
         recorder.setOutputFile(fileName);
@@ -223,7 +226,7 @@ public class NotesFragment extends Fragment {
         Button saveButton = popupView.findViewById(R.id.save_button);
         saveButton.setOnClickListener((v) -> {
             String title = saveDescr.getEditText().getText().toString();
-            notesViewModel.addAudioCard(title, fileName, folderId);
+            notesViewModel.addAudioCard(title, fileName, folderId, audioName);
             popupWindow.dismiss();
         });
     }

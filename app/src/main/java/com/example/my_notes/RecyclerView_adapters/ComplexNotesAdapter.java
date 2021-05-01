@@ -299,9 +299,38 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
 
-            vh3.getDelete_btn().setOnClickListener(new View.OnClickListener() {
+            vh3.getEdit_btn().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                    mydialog.setTitle("Title of the note: ");
+
+                    final EditText input = new EditText(parentContext);
+                    mydialog.setView(input);
+
+                    mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String input_text = input.getText().toString();
+                            AudioNote an = (AudioNote)localDataSet.get(position);
+                            an.setTitle(input_text);
+                            an.updateAudioNote();
+                            notifyDataSetChanged();
+                        }
+                    });
+                    mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    mydialog.show();
+                }
+            });
+
+            vh3.getLinearLayout().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
                     AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
                     mydialog.setTitle("Remove the note?");
 
@@ -321,6 +350,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         }
                     });
                     mydialog.show();
+                    return true;
                 }
             });
 

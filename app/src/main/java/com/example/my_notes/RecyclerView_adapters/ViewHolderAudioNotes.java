@@ -2,6 +2,7 @@ package com.example.my_notes.RecyclerView_adapters;
 
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -10,22 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.my_notes.R;
 
 public class ViewHolderAudioNotes extends RecyclerView.ViewHolder {
-    private ImageButton play_btn, delete_btn, pause_btn;
+    private ImageButton play_btn, edit_btn, pause_btn;
     private TextView title, date;
     private SeekBar seekBar;
+    private LinearLayout linearLayout;
 
     public ViewHolderAudioNotes(View v){
         super(v);
         this.play_btn = v.findViewById(R.id.play_btn);
-        this.delete_btn = v.findViewById(R.id.delete_btn);
+        this.edit_btn = v.findViewById(R.id.edit_btn);
         this.title = v.findViewById(R.id.NoteTitle);
         this.date = v.findViewById(R.id.NoteDate);
         this.pause_btn = v.findViewById(R.id.pauseButton);
         this.seekBar = v.findViewById(R.id.audioSeekBar);
+        this.linearLayout = v.findViewById(R.id.audioNote_layout);
     }
 
-    public ImageButton getDelete_btn() {
-        return delete_btn;
+    public ImageButton getEdit_btn() {
+        return edit_btn;
     }
 
     public ImageButton getPlay_btn() {
@@ -52,8 +55,8 @@ public class ViewHolderAudioNotes extends RecyclerView.ViewHolder {
         this.date = date;
     }
 
-    public void setDelete_btn(ImageButton delete_btn) {
-        this.delete_btn = delete_btn;
+    public void setEdit_btn(ImageButton delete_btn) {
+        this.edit_btn = delete_btn;
     }
 
     public void setPlay_btn(ImageButton play_btn) {
@@ -63,4 +66,6 @@ public class ViewHolderAudioNotes extends RecyclerView.ViewHolder {
     public SeekBar getSeekBar() {
         return seekBar;
     }
+
+    public LinearLayout getLinearLayout(){ return this.linearLayout;}
 }

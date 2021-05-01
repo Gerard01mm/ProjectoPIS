@@ -320,10 +320,10 @@ public class DatabaseAdapter{
                 });
     }
 
-    public void saveAudioNoteWithFile(String id, String title, String owner, String folderId, Date creation_date, Date modify_date, String path) {
+    public void saveAudioNoteWithFile(String id, String title, String owner, String folderId, Date creation_date, Date modify_date, String path, String audioName) {
         Uri file = Uri.fromFile(new File(path));
         StorageReference storageRef = storage.getReference();
-        StorageReference audioRef = storageRef.child("audio"+File.separator+file.getLastPathSegment());
+        StorageReference audioRef = storageRef.child("audio"+File.separator+audioName);
         UploadTask uploadTask = audioRef.putFile(file);
 
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -341,7 +341,7 @@ public class DatabaseAdapter{
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    saveAudio(id, title, owner, folderId, creation_date, modify_date, downloadUri.toString());
+                    saveAudio(id, title, owner, folderId, creation_date, modify_date, downloadUri.toString(), audioName);
                 } else {
                     // Handle failures
                     // ...
@@ -359,7 +359,7 @@ public class DatabaseAdapter{
         });
     }
 
-    public void saveAudio(String id, String title, String owner, String folderId, Date creation_date, Date modify_date, String url){
+    public void saveAudio(String id, String title, String owner, String folderId, Date creation_date, Date modify_date, String url, String audioName){
         // Create a new user with a first and last name
         Map<String, Object> audioNote = new HashMap<>();
         audioNote.put("id", id);
@@ -369,6 +369,7 @@ public class DatabaseAdapter{
         audioNote.put("creation_date", creation_date);
         audioNote.put("modify_date", modify_date);
         audioNote.put("url", url);
+        audioNote.put("audioName", audioName);
 
         Log.d(TAG, "saveAudioNote");
         // Add a new document with a generated ID
@@ -389,7 +390,7 @@ public class DatabaseAdapter{
                 });
     }
 
-    public void updateAudioNote(String id, String title, String owner, String folderId, Date creation_date, Date modify_date, String url){
+    public void updateAudioNote(String id, String title, String owner, String folderId, Date creation_date, Date modify_date, String url, String audioName){
         final DocumentReference [] docRef = new DocumentReference[1];
 
         Map<String, Object> newAudioNote = new HashMap<>();
@@ -400,6 +401,7 @@ public class DatabaseAdapter{
         newAudioNote.put("creation_date", creation_date);
         newAudioNote.put("modify_date", modify_date);
         newAudioNote.put("url", url);
+        newAudioNote.put("audioName", audioName);
 
         Log.d(TAG, "updateAudioNote");
         db.collection("notes").document("roomAudioNotes").collection("audioNotes")
@@ -443,6 +445,7 @@ public class DatabaseAdapter{
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot audioNote : task.getResult()) {
                                 audioNote.getReference().delete();
+                                deleteAudioFromStorage(audioNote.getString("audioName"));
                             }
 
                         } else {
@@ -546,7 +549,7 @@ public class DatabaseAdapter{
                                 notesInFolder.add(new AudioNote( note.getString("title"),
                                         note.getString("id"), note.getString("url"), note.getString("folderId"),
                                         note.getString("owner"), note.getDate("creation_date"),
-                                        note.getDate("modify_date")));
+                                        note.getDate("modify_date"), note.getString("audioName")));
                             }
                         } else {
                             Log.d(TAG, "Error getting notes: ", task.getException());
@@ -814,6 +817,21 @@ public class DatabaseAdapter{
 
     }
 
+    public void deleteAudioFromStorage(String audioName){
+        StorageReference storageReference = storage.getReference().child("audio"+File.separator+audioName);
+        storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Audio deleted");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Error deleting: " + e.toString());
+            }
+        });
+    }
+
     public void deleteImageFromStorage(String imagepath){
         StorageReference storageReference = storage.getReference().child("images"+File.separator+imagepath);
         storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -890,9 +908,7 @@ public class DatabaseAdapter{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot note : task.getResult()) {
-                                //TODO
-                                //deleteAudioNoteContent(note.getString("id"), note.getString("folderId"),
-                                //        note.getString("text"), note.getString("imagepath"));
+                                deleteAudioFromStorage(note.getString("audioName"));
                                 note.getReference().delete();
                             }
 
