@@ -25,6 +25,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
     private final String NOT_CHECKED = "Check the Terms of Services";
     private final String EMPTY_INPUT = "Text area is empty";
     private final String PSW_NOT_SAFE = "Password not safe";
+    private final String NEW_PSSW = "It must have more than 8 characters, a digit and an upper case";
 
     private TextInputEditText email, name, password;
     private CheckBox privacity;
