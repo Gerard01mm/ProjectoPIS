@@ -23,7 +23,7 @@
         <activity android:name=".RegisterUserActivity"
             android:theme="@style/Theme.RegisterUser" />
         <activity
-            android:name=".LoginUserActivity2"
+            android:name=".LoginUserActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.RegisterUser">
             <intent-filter>

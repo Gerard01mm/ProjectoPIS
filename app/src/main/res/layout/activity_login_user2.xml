@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginUserActivity2">
+    tools:context=".LoginUserActivity">
 
 
     <LinearLayout
@@ -15,11 +15,11 @@
         android:paddingBottom="40dp">
 
         <ImageView
-            android:id="@+id/app_name"
-            android:layout_width="match_parent"
-            android:layout_height="131dp"
-            android:paddingTop="20dp"
-            app:srcCompat="@drawable/nom_app" />
+            android:id="@+id/imageView3"
+            android:layout_width="387dp"
+            android:layout_height="156dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/logo_small" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +35,6 @@
                 android:id="@+id/label_login2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/app_name"
                 android:text="@string/log_in"
                 android:textSize="24sp"
                 android:textStyle="bold" />

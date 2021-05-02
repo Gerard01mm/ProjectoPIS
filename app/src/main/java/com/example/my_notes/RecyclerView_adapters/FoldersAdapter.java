@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,8 +20,7 @@ import com.example.my_notes.R;
 
 import java.util.ArrayList;
 
-import Notes.ImageNote;
-import Notes.NoteFolder;
+import com.example.my_notes.Model.NoteFolder;
 
 /**
  * Aquesta clase s'utilitzarà per adaptar la visualització en el Recycelr View de les carpetes.

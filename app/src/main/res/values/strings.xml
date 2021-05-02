@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MY NOTES</string>
+    <string name="app_name">My Notes</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -10,6 +10,7 @@
     <string name="create_folder">Create a new folder</string>
     <string name="add_note">New Note</string>
     <string name="create_note">Create a new note</string>
+
 
     <!--Menu desplegable-->
     <string name="menu_notes">Note Folders</string>

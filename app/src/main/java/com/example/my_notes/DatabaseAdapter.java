@@ -7,11 +7,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.example.my_notes.ArrayListComparator.DateSorter;
-import com.example.my_notes.Content.ImageNoteContent;
-import com.example.my_notes.Content.NotesContent;
-import com.example.my_notes.Content.TextNoteContent;
-import com.example.my_notes.Reminders.Reminder;
+import com.example.my_notes.Utils.ArrayListComparator.DateSorter;
+import com.example.my_notes.Model.ImageNoteContent;
+import com.example.my_notes.Model.NotesContent;
+import com.example.my_notes.Model.TextNoteContent;
+import com.example.my_notes.Model.Reminder;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,25 +27,21 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.firebase.storage.UploadTask;
-import com.google.firestore.v1.WriteResult;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-import Notes.AudioNote;
-import Notes.ImageNote;
-import Notes.Note;
-import Notes.NoteFolder;
-import Notes.TextNote;
+import com.example.my_notes.Model.AudioNote;
+import com.example.my_notes.Model.ImageNote;
+import com.example.my_notes.Model.Note;
+import com.example.my_notes.Model.NoteFolder;
+import com.example.my_notes.Model.TextNote;
 
 public class DatabaseAdapter{
     public static final String TAG = "DatabaseAdapter";

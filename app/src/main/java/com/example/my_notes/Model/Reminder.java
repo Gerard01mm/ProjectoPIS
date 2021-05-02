@@ -1,4 +1,4 @@
-package com.example.my_notes.Reminders;
+package com.example.my_notes.Model;
 
 import android.util.Log;
 

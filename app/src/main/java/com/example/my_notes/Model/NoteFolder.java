@@ -1,15 +1,11 @@
-package Notes;
+package com.example.my_notes.Model;
 
 import android.graphics.Color;
 import android.util.Log;
 
 import com.example.my_notes.DatabaseAdapter;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.UUID;
-
-import Exceptions.NoteException;
 
 public class NoteFolder {
 

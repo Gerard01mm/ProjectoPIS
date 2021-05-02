@@ -10,6 +10,9 @@ import com.example.my_notes.DatabaseAdapter;
 
 import java.util.ArrayList;
 
+import com.example.my_notes.Model.NotesContent;
+import com.example.my_notes.Model.TextNoteContent;
+
 public class TextNoteContentViewModel extends ViewModel implements DatabaseAdapter.vmInterface {
 
     private DatabaseAdapter adapter;

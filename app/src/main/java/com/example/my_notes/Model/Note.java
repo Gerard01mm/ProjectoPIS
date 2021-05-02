@@ -1,10 +1,7 @@
-package Notes;
-
-import android.util.Log;
+package com.example.my_notes.Model;
 
 import com.example.my_notes.DatabaseAdapter;
 
-import java.io.Serializable;
 import java.util.UUID;
 import java.util.Date;
 

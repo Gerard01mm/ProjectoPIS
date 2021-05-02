@@ -1,66 +1,43 @@
 package com.example.my_notes.ui.notes;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.my_notes.R;
 import com.example.my_notes.RecyclerView_adapters.ComplexNotesAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.my_notes.R;
-import com.example.my_notes.RecyclerView_adapters.ComplexNotesAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
-import Notes.AudioNote;
-import Notes.Note;
-
-import static android.app.Activity.RESULT_OK;
+import com.example.my_notes.Model.Note;
 
 public class NotesFragment extends Fragment {
     private NotesViewModel notesViewModel;
@@ -74,9 +51,6 @@ public class NotesFragment extends Fragment {
     private boolean isRecording = false;
 
     private Fragment mFragment;
-
-    public NotesFragment() {
-    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -209,7 +183,6 @@ public class NotesFragment extends Fragment {
         } catch (IOException e) {
             Log.d("startRecording", "prepare() failed");
         }
-
         recorder.start();
         isRecording = true;
     }

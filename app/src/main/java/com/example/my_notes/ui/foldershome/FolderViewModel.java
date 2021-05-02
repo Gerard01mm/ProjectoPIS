@@ -8,7 +8,7 @@ import com.example.my_notes.DatabaseAdapter;
 
 import java.util.ArrayList;
 
-import Notes.NoteFolder;
+import com.example.my_notes.Model.NoteFolder;
 
 public class FolderViewModel extends ViewModel implements DatabaseAdapter.vmInterface{
 

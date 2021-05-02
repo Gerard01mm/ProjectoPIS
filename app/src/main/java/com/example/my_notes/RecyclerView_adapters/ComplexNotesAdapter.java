@@ -24,14 +24,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
-import Notes.AudioNote;
-import Notes.ImageNote;
-import Notes.Note;
-import Notes.TextNote;
+import com.example.my_notes.Model.AudioNote;
+import com.example.my_notes.Model.ImageNote;
+import com.example.my_notes.Model.Note;
+import com.example.my_notes.Model.TextNote;
 
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 
 /**
@@ -53,7 +53,6 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public ComplexNotesAdapter(Context current, ArrayList<Note> an){
         this.parentContext = current;
         this.localDataSet = an;
-        this.player = new MediaPlayer();
     }
 
     @Override
@@ -284,22 +283,22 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vh3.getPlay_btn().setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    vh3.getPlay_btn().setVisibility(View.GONE);
+                    vh3.getPlay_btn().setVisibility(View.INVISIBLE);
                     vh3.getPause_btn().setVisibility(View.VISIBLE);
-                    playAudio(position, vh3.getSeekBar());
+                    playAudio(position, vh3.getSeekBar(), vh3.getPlay_btn(), vh3.getPause_btn());
                 }
             });
 
             vh3.getPause_btn().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    vh3.getPause_btn().setVisibility(View.GONE);
+                    vh3.getPause_btn().setVisibility(View.INVISIBLE);
                     vh3.getPlay_btn().setVisibility(View.VISIBLE);
-                    pauseAudio(position);
+                    stopAudio(position);
                 }
             });
 
-            vh3.getEdit_btn().setOnClickListener(new View.OnClickListener() {
+            vh3.getEditbtn().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
@@ -341,6 +340,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             an.removeAudioNote();
                             localDataSet.remove(position);
                             notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, localDataSet.size());
                         }
                     });
                     mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -354,7 +354,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
 
-            vh3.getSeekBar().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            /*vh3.getSeekBar().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if (fromUser){
@@ -371,7 +371,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onStopTrackingTouch(SeekBar seekBar) {
 
                 }
-            });
+            });*/
         }
     }
 
@@ -385,14 +385,17 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return this.localDataSet.size();
     }
 
-    private void playAudio(int position, SeekBar seekBar) {
+    private void playAudio(int position, SeekBar seekBar, ImageView play, ImageView pause) {
         try {
+            this.player = new MediaPlayer();
             AudioNote an = (AudioNote) localDataSet.get(position);
             String fileName = an.getAdress();
             Log.d("startPlaying", fileName);
             player.setDataSource(fileName);
             player.prepare();
             player.start();
+
+
 
             runnable = new Runnable() {
                 @Override
@@ -403,6 +406,15 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             };
             int duration = player.getDuration();
 
+
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    pause.setVisibility(View.INVISIBLE);
+                    play.setVisibility(View.VISIBLE);
+                }
+            });
+
             seekBar.setMax(player.getDuration());
             handler.postDelayed(runnable, 0);
 
@@ -411,8 +423,8 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public void pauseAudio(int position) {
-        player.pause();
+    public void stopAudio(int position) {
+        player.stop();
         handler.removeCallbacks(runnable);
     }
 }

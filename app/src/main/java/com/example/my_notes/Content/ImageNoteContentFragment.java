@@ -20,14 +20,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.my_notes.R;
-import com.example.my_notes.ui.notes.NotesViewModel;
-import com.example.my_notes.ui.notes.NotesViewModelFactory;
+import com.example.my_notes.Utils.UriUtils.UriUtils;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
-import Notes.ImageNote;
-import Notes.NoteFolder;
+import com.example.my_notes.Model.ImageNoteContent;
+import com.example.my_notes.Model.NotesContent;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -106,7 +105,7 @@ public class ImageNoteContentFragment extends Fragment {
         if (resultCode == RESULT_OK){
             Uri path = data.getData();
             image.setImageURI(path);
-            lastSegment = path.getLastPathSegment();
+            lastSegment = UriUtils.getPathFromUri(parentContext,path);
         }
     }
 

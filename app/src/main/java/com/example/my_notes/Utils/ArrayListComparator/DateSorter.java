@@ -1,8 +1,8 @@
-package com.example.my_notes.ArrayListComparator;
+package com.example.my_notes.Utils.ArrayListComparator;
 
 import java.util.Comparator;
 
-import Notes.Note;
+import com.example.my_notes.Model.Note;
 
 public class DateSorter implements Comparator<Note>
 {

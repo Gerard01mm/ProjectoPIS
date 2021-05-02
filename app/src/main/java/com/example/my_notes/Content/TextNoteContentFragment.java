@@ -3,10 +3,7 @@ package com.example.my_notes.Content;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +17,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.my_notes.R;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-
-import static android.app.Activity.RESULT_OK;
+import com.example.my_notes.Model.NotesContent;
+import com.example.my_notes.Model.TextNoteContent;
 
 public class TextNoteContentFragment extends Fragment {
     private ImageView image, saveTextNote;

@@ -9,8 +9,9 @@ import com.example.my_notes.DatabaseAdapter;
 
 import java.util.ArrayList;
 
-import Notes.ImageNote;
-import Notes.Note;
+import com.example.my_notes.Model.ImageNoteContent;
+import com.example.my_notes.Model.NotesContent;
+
 
 public class ImageNoteContentViewModel extends ViewModel implements DatabaseAdapter.vmInterface {
 

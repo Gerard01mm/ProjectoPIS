@@ -8,22 +8,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginUserActivity2 extends AppCompatActivity implements View.OnClickListener{
+public class LoginUserActivity extends AppCompatActivity implements View.OnClickListener{
 
     //Constants
     private final String LOGIN_ERROR = "Name, email or password are not correct";
@@ -133,7 +129,7 @@ public class LoginUserActivity2 extends AppCompatActivity implements View.OnClic
     }
 
     private void showErrorMessage(String error){
-        Toast.makeText(LoginUserActivity2.this, error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginUserActivity.this, error, Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.my_notes.DatabaseAdapter;
-import com.example.my_notes.Reminders.Reminder;
+import com.example.my_notes.Model.Reminder;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class CalendarViewModel extends ViewModel implements DatabaseAdapter.vmInterface{
 

@@ -10,12 +10,10 @@ import com.example.my_notes.DatabaseAdapter;
 
 import java.util.ArrayList;
 
-import Notes.AudioNote;
-import Notes.ImageNote;
-import Notes.Note;
-import Notes.TextNote;
-
-import static com.example.my_notes.ui.notes.NotesViewModelFactory.created;
+import com.example.my_notes.Model.AudioNote;
+import com.example.my_notes.Model.ImageNote;
+import com.example.my_notes.Model.Note;
+import com.example.my_notes.Model.TextNote;
 
 public class NotesViewModel extends ViewModel implements DatabaseAdapter.vmInterface{
 

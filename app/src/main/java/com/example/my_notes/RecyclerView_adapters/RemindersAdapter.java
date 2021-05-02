@@ -4,19 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.my_notes.R;
-import com.example.my_notes.Reminders.Reminder;
+import com.example.my_notes.Model.Reminder;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.ViewHolder>{
@@ -55,7 +51,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
 
 
     /**
-     * Constructor de la classe. Rep un context i un arrayList de Reminders.
+     * Constructor de la classe. Rep un context i un arrayList de reminders.
      *
      * Assigna el parentCOntext al context que rebem i el localdataSet al arraylist de reminders.
      *

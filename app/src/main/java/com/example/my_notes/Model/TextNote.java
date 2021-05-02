@@ -1,11 +1,9 @@
-package Notes;
+package com.example.my_notes.Model;
 
 import android.util.Log;
 
 import com.example.my_notes.DatabaseAdapter;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class TextNote extends Note {

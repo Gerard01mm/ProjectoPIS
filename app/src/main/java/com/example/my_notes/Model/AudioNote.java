@@ -1,6 +1,5 @@
-package Notes;
+package com.example.my_notes.Model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import android.util.Log;
