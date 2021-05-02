@@ -285,7 +285,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View v) {
                     vh3.getPlay_btn().setVisibility(View.INVISIBLE);
                     vh3.getPause_btn().setVisibility(View.VISIBLE);
-                    playAudio(position, vh3.getSeekBar(), vh3.getPlay_btn(), vh3.getPause_btn());
+                    playAudio(position, vh3);
                 }
             });
 
@@ -294,7 +294,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View v) {
                     vh3.getPause_btn().setVisibility(View.INVISIBLE);
                     vh3.getPlay_btn().setVisibility(View.VISIBLE);
-                    stopAudio(position);
+                    stopAudio(position, vh3);
                 }
             });
 
@@ -354,24 +354,6 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
 
-            /*vh3.getSeekBar().setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (fromUser){
-                        player.seekTo(progress);
-                    }
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                }
-            });*/
         }
     }
 
@@ -385,7 +367,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return this.localDataSet.size();
     }
 
-    private void playAudio(int position, SeekBar seekBar, ImageView play, ImageView pause) {
+    private void playAudio(int position, ViewHolderAudioNotes viewHolderAudioNotes) {
         try {
             this.player = new MediaPlayer();
             AudioNote an = (AudioNote) localDataSet.get(position);
@@ -395,27 +377,24 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             player.prepare();
             player.start();
 
-
-
             runnable = new Runnable() {
                 @Override
                 public void run() {
-                    seekBar.setProgress(player.getCurrentPosition());
+                    viewHolderAudioNotes.getSeekBar().setProgress(player.getCurrentPosition());
                     handler.postDelayed(this, 500);
                 }
             };
             int duration = player.getDuration();
 
-
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    pause.setVisibility(View.INVISIBLE);
-                    play.setVisibility(View.VISIBLE);
+                    viewHolderAudioNotes.getPause_btn().setVisibility(View.INVISIBLE);
+                    viewHolderAudioNotes.getPlay_btn().setVisibility(View.VISIBLE);
                 }
             });
 
-            seekBar.setMax(player.getDuration());
+            viewHolderAudioNotes.getSeekBar().setMax(player.getDuration());
             handler.postDelayed(runnable, 0);
 
         } catch (IOException e) {
@@ -423,7 +402,8 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public void stopAudio(int position) {
+    public void stopAudio(int position, ViewHolderAudioNotes viewHolderAudioNotes) {
+        viewHolderAudioNotes.getSeekBar().setProgress(0);
         player.stop();
         handler.removeCallbacks(runnable);
     }

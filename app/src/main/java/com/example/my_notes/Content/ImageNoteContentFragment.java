@@ -105,7 +105,7 @@ public class ImageNoteContentFragment extends Fragment {
         if (resultCode == RESULT_OK){
             Uri path = data.getData();
             image.setImageURI(path);
-            lastSegment = path.getLastPathSegment();
+            lastSegment = UriUtils.getPathFromUri(parentContext, path);;
         }
     }
 

@@ -19,7 +19,6 @@ public class CalendarViewModel extends ViewModel implements DatabaseAdapter.vmIn
     private MutableLiveData<String> mToast;
     private DatabaseAdapter da;
 
-
     public CalendarViewModel(){
         this.mReminders = new MutableLiveData<>();
         this.mToast = new MutableLiveData<>();
