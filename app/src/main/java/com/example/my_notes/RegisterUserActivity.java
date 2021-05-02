@@ -24,6 +24,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
     private final String REGISTER_ERROR = "An account this that email already exists";
     private final String NOT_CHECKED = "Check the Terms of Services";
     private final String EMPTY_INPUT = "Text area is empty";
+    private final String PSW_NOT_SAFE = "Password not safe";
 
     private TextInputEditText email, name, password;
     private CheckBox privacity;
@@ -100,6 +101,13 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
                 showErrorMessage(NOT_CHECKED);
                 error = true;
             }
+
+            if (!validatePassword(this.password.getText().toString())){
+                password.setError(PSW_NOT_SAFE);
+                showErrorMessage(PSW_NOT_SAFE);
+                error = true;
+            }
+
             //Si no hi ha cap error
             if (!error){
                 //Crea un usuari amb el email i contrasenya introduits.
@@ -129,6 +137,19 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+
+    public boolean validatePassword(String psw){
+        if (psw.length() < 8){
+            return false;
+        }
+        int contadorNum = 0;
+        for (int i = 0; i < psw.length(); i++){
+            if (Character.isDigit(psw.charAt(i))){
+                contadorNum++;
+            }
+        }
+        return !psw.toLowerCase().equals(psw) && contadorNum != 0 && contadorNum != psw.length();
+    }
 
     /**
      * Aquesta funció rep un missatge d'error i el mostra a la pantalla.
