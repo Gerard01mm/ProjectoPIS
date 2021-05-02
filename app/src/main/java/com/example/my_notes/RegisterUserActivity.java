@@ -105,7 +105,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
 
             if (!validatePassword(this.password.getText().toString())){
                 password.setError(PSW_NOT_SAFE);
-                showErrorMessage(PSW_NOT_SAFE);
+                showErrorMessage(NEW_PSSW);
                 error = true;
             }
 
