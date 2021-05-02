@@ -209,7 +209,7 @@ public class Reminder {
      * Ens permet modificar la data d'avis.
      * @param date
      */
-    public void setReminder_alert(Date date) { this.reminder_alert = date.toString(); }
+    public void setReminder_alert(String date) { this.reminder_alert = date; }
 
 
     public void saveReminder(){

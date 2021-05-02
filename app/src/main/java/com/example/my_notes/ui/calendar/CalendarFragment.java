@@ -1,6 +1,8 @@
 package com.example.my_notes.ui.calendar;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,9 +10,13 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -24,10 +30,12 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +44,9 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 
 public class CalendarFragment extends Fragment {
@@ -117,7 +128,6 @@ public class CalendarFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onClick(View v) {
-                        Log.d("Entro aqui", "JAJAS");
                         Calendar mCalendar = Calendar.getInstance();
                         TimePickerDialog timePickerDialog =
                                 new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
@@ -126,13 +136,11 @@ public class CalendarFragment extends Fragment {
                                         mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                         mCalendar.set(Calendar.MINUTE, minute);
                                         String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(mCalendar.getTime());
+                                        dateReminder.setText(time);
                                         Log.d("MainActivity", "Selected time is " + time);
                                     }
                                 }, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
                         timePickerDialog.show();
-                        Log.d("CAlendario time", String.valueOf(mCalendar.getTime()));
-                        date = mCalendar.getTime().toString();
-                        dateReminder.setText(date);
                     }
                 });
 
@@ -143,8 +151,7 @@ public class CalendarFragment extends Fragment {
                         description = descriptionRem.getText().toString();
                         if(title != null && description != null){
                             String day = calendar.getSelectedDate().toString();
-                            //Reminder nR = new Reminder(title, description, day);
-                            calendarViewModel.addReminder(title, description, "", day, "", "");
+                            calendarViewModel.addReminder(title, description, dateReminder.getText().toString(), day);
                         }
                     }
                 })
@@ -169,7 +176,7 @@ public class CalendarFragment extends Fragment {
 
             @Override
             public void onChanged(ArrayList<Reminder> reminders) {
-                RemindersAdapter newAdapter = new RemindersAdapter(parentContext, reminders);
+                RemindersAdapter newAdapter = new RemindersAdapter(parentContext, reminders, getActivity());
                 reminder_list.swapAdapter(newAdapter, false);
                 newAdapter.notifyDataSetChanged();
             }

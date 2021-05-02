@@ -737,6 +737,7 @@ public class DatabaseAdapter{
 
     public void saveImageNoteContent (String id, String folderId, String text, String imagepath) {
         // Create a new user with a first and last name
+        System.out.println("Directori de la imatge:" + imagepath);
         Map<String, Object> noteContent = new HashMap<>();
         noteContent.put("id", id);
         noteContent.put("folderId", folderId);
@@ -781,6 +782,9 @@ public class DatabaseAdapter{
     public void saveImageInNote (String imagepath) {
         File fitxer = new File(imagepath);
         Uri file = Uri.fromFile(fitxer);
+        if (!fitxer.exists()) {
+            System.out.println("Existe");
+        }
         StorageReference storageRef = storage.getReference();
         StorageReference imageRef = storageRef.child("images"+File.separator+imagepath);
 
@@ -972,6 +976,7 @@ public class DatabaseAdapter{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             for (QueryDocumentSnapshot noteC : task.getResult()) {
+                                System.out.println(noteC);
                                 noteC.getReference().delete();
                             }
 
