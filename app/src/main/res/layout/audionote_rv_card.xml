@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/NoteCardView"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="65dp"
     android:animateLayoutChanges="true"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="10dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true">
 
@@ -16,6 +16,7 @@
         android:id="@+id/audioNote_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="clip_horizontal|center_vertical"
         android:background="#FFFFFF"
         android:orientation="horizontal">
 
@@ -23,23 +24,28 @@
 
 
         <ImageView
-            android:id="@+id/pause_btn"
-            android:layout_width="35dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/ic_baseline_stop_24" />
-
-        <ImageView
             android:id="@+id/play_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             app:srcCompat="@android:drawable/ic_media_play" />
+
+        <ImageView
+            android:id="@+id/pause_btn"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_baseline_stop_24" />
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
@@ -67,7 +73,7 @@
 
             <SeekBar
                 android:id="@+id/audioSeekBar"
-                android:layout_width="203dp"
+                android:layout_width="173dp"
                 android:layout_height="match_parent"
                 android:clickable="false" />
 

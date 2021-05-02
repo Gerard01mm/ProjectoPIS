@@ -170,7 +170,6 @@ public class CalendarFragment extends Fragment {
 
 
     public void setLiveDataObservers() {
-        this.calendarViewModel = new ViewModelProvider(requireActivity()).get(CalendarViewModel.class);
 
         final Observer<ArrayList<Reminder>> observer = new Observer<ArrayList<Reminder>>(){
 

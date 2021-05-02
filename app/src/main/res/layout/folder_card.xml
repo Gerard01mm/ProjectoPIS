@@ -2,18 +2,19 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="65dp"
     android:animateLayoutChanges="true"
     android:clickable="true"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="1dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="3dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:id="@+id/folder_linear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="clip_horizontal"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -39,8 +40,8 @@
 
             <ImageView
                 android:id="@+id/editNoteName"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:visibility="visible"
                 app:srcCompat="@drawable/ic_baseline_edit_24" />

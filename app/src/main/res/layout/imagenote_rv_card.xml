@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="65dp"
     android:animateLayoutChanges="true"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="10dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true">
 
@@ -20,6 +20,7 @@
             android:id="@+id/imagenote_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
             <!--Añadiremos una imagen del tipo de nota que sea-->
@@ -29,24 +30,29 @@
                 android:id="@+id/typeImage"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:baselineAlignBottom="false"
                 android:paddingLeft="10dp"
                 android:paddingTop="1dp"
-                android:paddingRight="5dp"
+                android:paddingRight="10dp"
                 app:srcCompat="@drawable/image_black_24dp"
                 tools:ignore="VectorDrawableCompat">
 
             </ImageView>
 
             <LinearLayout
-                android:layout_width="307dp"
+                android:layout_width="286dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/imageNoteTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:text="@string/default_title_note"
                     android:textSize="@dimen/NoteTitleSize"
                     android:textStyle="bold"></TextView>
@@ -55,6 +61,7 @@
                     android:id="@+id/imageNoteDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:text="@string/default_date"
                     android:textSize="@dimen/NoteDateSize">
 
@@ -64,10 +71,9 @@
 
             <ImageView
                 android:id="@+id/editImageNote"
-                android:layout_width="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:paddingRight="5dp"
+                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
 
         </LinearLayout>

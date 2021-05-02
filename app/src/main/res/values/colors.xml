@@ -21,5 +21,7 @@
     <color name="toolbarIconColor">#FFAB91</color>
     <color name="textInputOutlineColor">#212121</color>
     <color name="colorAccent">#FF7043</color>  <!--barra superior (donde esta la bateria)-->
+    <color name="fondoCalendari">#FDF5E6</color>
+    <color name="seleccioCalendari">#EC8768</color>
 
 </resources>
