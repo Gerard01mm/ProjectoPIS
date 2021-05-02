@@ -33,7 +33,7 @@
     <string name="log_in">Log in</string>
     <string name="see_you">Hi there! Nice to see you again.</string>
     <string name="button_login">Log in</string>
-    <string name="forgot_password">Forgot password? <font color='red'>Sign in</font></string>
+    <string name="forgot_password">"Don't have an account?" <font color='red'>Sign up</font></string>
 
     <!--Pruebas no tocar-->
     <string name="default_title">Titol per defecte</string>
@@ -62,7 +62,7 @@
     <string name="textImageNote">Empty note</string>
 
     <!--Etiquetas del formulario de la AudioNote-->
-    <string name="add_description_msg">Note description</string>
+    <string name="add_description_msg">Note title</string>
     <string name="save_note">Save note</string>
 
 </resources>

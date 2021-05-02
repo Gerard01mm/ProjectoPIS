@@ -302,7 +302,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
-                    mydialog.setTitle("Title of the note: ");
+                    mydialog.setTitle("Rename the note: ");
 
                     final EditText input = new EditText(parentContext);
                     mydialog.setView(input);
