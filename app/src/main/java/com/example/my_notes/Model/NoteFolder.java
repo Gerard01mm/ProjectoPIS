@@ -70,13 +70,12 @@ public class NoteFolder {
      *
      * @param title Títol de la carpeta.
      * @param color Color de la carpeta
-     * @param id Id de la carpeta
      */
-    public NoteFolder(String title, int color, String id){
+    public NoteFolder(String title, int color){
         this.title = title;
         this.color = color;
         this.owner = adapter.getCurrentUser();
-        this.id = id;
+        this.id = UUID.randomUUID().toString();
     }
 
     /**

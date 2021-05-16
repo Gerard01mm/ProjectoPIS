@@ -1,8 +1,10 @@
 package com.example.my_notes.RecyclerView_adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +24,8 @@ import com.example.my_notes.R;
 import java.util.ArrayList;
 
 import com.example.my_notes.Model.NoteFolder;
+
+import petrov.kristiyan.colorpicker.ColorPicker;
 
 /**
  * Aquesta clase s'utilitzarà per adaptar la visualització en el Recycelr View de les carpetes.
@@ -38,6 +43,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
         private final TextView folder_title;
         private final LinearLayout fLayout;
         private final ImageView editNoteName;
+        private final CardView fCardView;
         /**
          * Constructor de la clase. Rep una View per poder cridar al super constructor i despres
          * assignarem el TextView folder_title al TextView folders_title, a la layout foldercard.xml
@@ -48,6 +54,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
             this.folder_title = (TextView)view.findViewById(R.id.folder_title);
             this.fLayout = view.findViewById(R.id.folder_linear);
             this.editNoteName = view.findViewById(R.id.editNoteName);
+            this.fCardView = view.findViewById(R.id.folder_card_view);
         }
 
         /**
@@ -57,6 +64,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
         public TextView getFolder_title(){ return this.folder_title; }
         public LinearLayout getFolderLayout(){ return this.fLayout; }
         public ImageView getImageEditName() { return this.editNoteName; }
+        public CardView getfCardView(){ return this.fCardView; }
     }
 
 
@@ -97,6 +105,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
 
         //Escriurà a la cardView el titol de la carpeta
         viewHolder.getFolder_title().setText(localDataSet.get(position).get_Title());
+        viewHolder.getfCardView().setCardBackgroundColor(localDataSet.get(position).getColor());
 
         LinearLayout folder_layout = viewHolder.getFolderLayout();
         folder_layout.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +113,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("FolderId", localDataSet.get(position).getId());
+                bundle.putInt("FolderColor", localDataSet.get(position).getColor());
                 Navigation.findNavController(v).navigate(R.id.action_nav_folder_to_notes, bundle);
             }
         });
@@ -141,22 +151,61 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
-                mydialog.setTitle("Rename the folder: ");
+                mydialog.setTitle("What do you want to modify?");
 
-                final EditText input = new EditText(parentContext);
-                mydialog.setView(input);
-
-                mydialog.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                mydialog.setPositiveButton("Title", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String input_text = input.getText().toString();
-                        NoteFolder n = localDataSet.get(position);
-                        n.set_title(input_text);
-                        n.updateFolder();
-                        notifyDataSetChanged();
+                        AlertDialog.Builder mydialog1 = new AlertDialog.Builder(parentContext);
+                        mydialog1.setTitle("Rename the folder: ");
+
+                        final EditText input = new EditText(parentContext);
+                        mydialog1.setView(input);
+
+                        mydialog1.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String input_text = input.getText().toString();
+                                NoteFolder n = localDataSet.get(position);
+                                n.set_title(input_text);
+                                n.updateFolder();
+                                notifyDataSetChanged();
+                            }
+                        });
+                        mydialog1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        mydialog1.show();
                     }
                 });
-                mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                mydialog.setNegativeButton("Color", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final ColorPicker colorPicker = new ColorPicker((Activity) parentContext);
+                        colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                            @Override
+                            public void onChooseColor(int idx,int color) {
+                                NoteFolder n = localDataSet.get(position);
+                                n.setColor(color);
+                                n.updateFolder();
+                                notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancel(){
+                                dialog.cancel();
+                            }
+                        })
+                        .setRoundColorButton(true)
+                        .setColumns(5)
+                        .setTitle("Choose a new folder color")
+                        .show();
+                    }
+                });
+                mydialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();

@@ -1,8 +1,10 @@
 package com.example.my_notes.ui.foldershome;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,8 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import java.util.ArrayList;
 
 import com.example.my_notes.Model.NoteFolder;
+
+import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class FolderFragment extends Fragment {
 
@@ -55,8 +59,24 @@ public class FolderFragment extends Fragment {
             mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    String input_text = input.getText().toString();
-                    folderViewModel.addFolder(input_text);
+                    final ColorPicker colorPicker = new ColorPicker((Activity) parentContext);
+                    colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                        @Override
+                        public void onChooseColor(int position,int color) {
+                            String input_text = input.getText().toString();
+                            folderViewModel.addFolder(input_text, color);
+                        }
+
+                        @Override
+                        public void onCancel(){
+                            String input_text = input.getText().toString();
+                            folderViewModel.addFolder(input_text, Color.WHITE);
+                        }
+                    })
+                    .setRoundColorButton(true)
+                    .setColumns(5)
+                    .setTitle("Choose a folder color or press cancel to create a white one")
+                    .show();
                 }
             });
             mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

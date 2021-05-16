@@ -49,8 +49,8 @@ public class NotesFragment extends Fragment {
     private String folderId, fileName, audioName;
     private MediaRecorder recorder;
     private boolean isRecording = false;
+    private int backgroundColor;
 
-    private Fragment mFragment;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -58,12 +58,14 @@ public class NotesFragment extends Fragment {
         // Rebem la Id de la carpeta que conté les notes amb Bundle()
         if (getArguments() != null){
             folderId = getArguments().getString("FolderId");
+            backgroundColor = getArguments().getInt("FolderColor");
         }
         notesViewModel = new ViewModelProvider(this,
                 new NotesViewModelFactory(requireActivity().getApplication(), folderId)).get(NotesViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_notelist, container, false);
 
+        root.setBackgroundColor(backgroundColor);
         nRecyclerView = root.findViewById(R.id.recycler_notes);
         parentContext = root.getContext();
         layoutManager = new LinearLayoutManager(parentContext);

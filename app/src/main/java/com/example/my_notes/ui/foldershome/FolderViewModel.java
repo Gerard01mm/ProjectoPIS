@@ -35,12 +35,12 @@ public class FolderViewModel extends ViewModel implements DatabaseAdapter.vmInte
         return mFolders.getValue().get(idx);
     }
 
-    public void addFolder(String titol){
+    public void addFolder(String titol, int color){
         NoteFolder nf;
         if (titol.isEmpty()){
-            nf = new NoteFolder();
+            nf = new NoteFolder(color);
         }else{
-            nf = new NoteFolder(titol);
+            nf = new NoteFolder(titol, color);
         }
         if (mFolders.getValue() == null){
             ArrayList<NoteFolder> anf = new ArrayList<>();
