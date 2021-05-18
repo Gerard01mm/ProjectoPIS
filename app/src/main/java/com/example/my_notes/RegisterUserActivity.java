@@ -138,7 +138,6 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-
     public boolean validatePassword(String psw){
         if (psw.length() < 8){
             return false;

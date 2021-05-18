@@ -58,6 +58,7 @@
     <string name="clock_description">Alarm image</string>
     <string name="settings_description">Settings description</string>
     <string name="change_alarm">Change alarm</string>
+    <string name="form_location">Enter the city where the event takes place</string>
 
     <!--Etiquetas nota de imagen-->
     <string name="textImageNote">Empty note</string>
@@ -65,5 +66,15 @@
     <!--Etiquetas del formulario de la AudioNote-->
     <string name="add_description_msg">Note title</string>
     <string name="save_note">Save note</string>
+    <string name="change_location">Change Location</string>
+    <string name="use_this_location">Use this location?</string>
+    <string name="select">Select</string>
+
+
+    <string name="complete_address">Country: %1$s \nLatitude: %2$f \nLongitude: %3$f</string>
+    <string name="location">Location:\n </string>
+    <string name="checklocation">Check Location</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="go">Close map</string>
 
 </resources>

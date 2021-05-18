@@ -11,7 +11,8 @@ public class Reminder {
 
 
     //Atributs
-    private String title, description, id, owner, date, reminder_alert;
+    private String title, description, id, owner, date, reminder_alert, country, locality, countrycode;
+    private Double longitude, latitude;
 
     private final DatabaseAdapter adapter = DatabaseAdapter.databaseAdapter;
 
@@ -97,34 +98,51 @@ public class Reminder {
      * @param alert Data per saltar la notificació recordatoria
      * @param date dia al que s'assignarà el reminder.
      */
-    public Reminder(String title, String description, String alert, String date, String id, String owner){
+    public Reminder(String title, String description, String alert, String date, String id, String owner,
+                    Double longitude, Double latitude, String country, String locality, String countrycode){
         this.title = title;
         this.description = description;
         this.date = date;
         this.id = id;
         this.owner = owner;
         this.reminder_alert = alert;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.country = country;
+        this.locality = locality;
+        this.countrycode = countrycode;
     }
 
 
-    public Reminder(String title, String description, String alert, String date, String id){
+    public Reminder(String title, String description, String alert, String date, String id,
+                    Double longitude, Double latitude, String country, String locality, String countrycode){
         this.title = title;
         this.description = description;
         this.date = date;
         this.id = id;
         this.owner = adapter.getCurrentUser();
         this.reminder_alert = alert;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.country = country;
+        this.locality = locality;
+        this.countrycode = countrycode;
     }
 
 
-    public Reminder(String title, String description, String alert, String date){
+    public Reminder(String title, String description, String alert, String date, Double longitude,
+                    Double latitude, String country, String locality, String countrycode){
         this.title = title;
         this.description = description;
         this.id = UUID.randomUUID().toString();
         this.date = date;
         this.owner = adapter.getCurrentUser();
         this.reminder_alert = alert;
-        System.out.println("REMINDER CREAT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.country = country;
+        this.locality = locality;
+        this.countrycode = countrycode;
     }
 
 
@@ -197,6 +215,25 @@ public class Reminder {
      */
     public void setOwner(String nOwner) { this.owner = nOwner; }
 
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCountrycode() {
+        return countrycode;
+    }
 
     /**
      * Ens retorna la data d'avis del reminder
@@ -214,7 +251,8 @@ public class Reminder {
 
     public void saveReminder(){
         Log.d("saveReminder", "adapter-> saveReminder");
-        adapter.saveReminder(this.title, this.id, this.owner, this.date, this.description, this.reminder_alert);
+        adapter.saveReminder(this.title, this.id, this.owner, this.date, this.description, this.reminder_alert,
+                this.longitude, this.latitude, this.country, this.locality, this.countrycode);
     }
 
 
@@ -227,7 +265,8 @@ public class Reminder {
 
     public void updateReminder(){
         Log.d("updateReminder", "adapter-> updateFolder");
-        adapter.updateReminder(this.title, this.id, this.owner, this.date, this.description, this.reminder_alert);
+        adapter.updateReminder(this.title, this.id, this.owner, this.date, this.description, this.reminder_alert,
+                this.longitude, this.latitude, this.country, this.locality, this.countrycode);
     }
 
 }

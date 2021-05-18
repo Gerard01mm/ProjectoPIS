@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/reminderFormLL"
     android:orientation="vertical"
-    android:padding="@dimen/formTitlePadding">
+    android:padding="@dimen/formTitlePadding"
+    tools:context="com.example.my_notes.ui.calendar.CalendarFragment">
 
     <TextView
         android:layout_width="match_parent"
@@ -39,6 +40,76 @@
         android:padding="@dimen/formTitlePadding">
 
     </com.google.android.material.textfield.TextInputEditText>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/formTitlePadding"
+        android:text="@string/form_location"
+        android:textSize="@dimen/formDescriptionSize"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/dialog_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/formTitlePadding">
+
+    </com.google.android.material.textfield.TextInputEditText>
+
+    <!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/mapfragmentcontainer"
+            android:layout_marginTop="20dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:tag="fragmentContainer">
+
+            <fragment
+                android:id="@+id/mapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.google.android.gms.maps.SupportMapFragment" />
+        </LinearLayout>
+
+        <fragment
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:id="@+id/mapp"
+            android:layout_marginTop="20dp"
+            android:layout_height="150dp" />
+
+          <RelativeLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+
+              <com.google.android.gms.maps.MapView
+                  android:id="@+id/mapView"
+                  android:layout_width="match_parent"
+                  android:layout_marginTop="20dp"
+                  android:layout_height="150dp"
+                  tools:context=".MainActivity">
+
+              </com.google.android.gms.maps.MapView>
+          </RelativeLayout>
+      -->
+
+    <Button
+        android:id="@+id/checklocbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/checklocation"
+        app:rippleColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/textViewLatLong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="@dimen/formTitlePadding"
+        android:text=""
+        android:textSize="@dimen/formDescriptionSize" />
 
     <TextView
         android:layout_width="match_parent"

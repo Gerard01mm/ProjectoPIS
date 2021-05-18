@@ -38,6 +38,138 @@
 
     </com.google.android.material.textfield.TextInputEditText>
 
+    <LinearLayout
+        android:id="@+id/allLocation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/location"></TextView>
+
+        <ImageView
+            android:id="@+id/flag"
+            android:layout_width="93dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/ic_baseline_flag_24" />
+
+        <TextView
+            android:id="@+id/textViewInfoLoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <Space
+                android:id="@+id/sp2"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/lizq" />
+
+            <Space
+                android:id="@+id/sp1"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/lcen" />
+
+            <LinearLayout
+                android:id="@+id/lcen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/sp2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dia2"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:textAlignment="center" />
+
+                <ImageView
+                    android:id="@+id/icon2"
+                    android:layout_width="93dp"
+                    android:layout_height="93dp"
+                    app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+
+                <TextView
+                    android:id="@+id/infodia2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/sp1"
+                android:foregroundGravity="right"
+                android:gravity="right"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dia3"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:textAlignment="center" />
+
+                <ImageView
+                    android:id="@+id/icon3"
+                    android:layout_width="93dp"
+                    android:layout_height="93dp"
+                    app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+
+                <TextView
+                    android:id="@+id/infodia3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lizq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dia1"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:textAlignment="center" />
+
+                <ImageView
+                    android:id="@+id/icon1"
+                    android:layout_width="93dp"
+                    android:layout_height="93dp"
+                    app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+
+                <TextView
+                    android:id="@+id/infodia1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,7 +204,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="51dp" />
+        android:layout_height="41dp" />
 
     <LinearLayout
         android:orientation="horizontal"

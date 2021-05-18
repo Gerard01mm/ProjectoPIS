@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.icu.util.Calendar;
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +12,36 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.my_notes.R;
 import com.example.my_notes.Model.Reminder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.ViewHolder>{
 
     private final ArrayList<Reminder> localDataSet;
     private final Context parentContext;
     private final Activity parentActivity;
+
+    private String icon1 = null, icon2 = null, icon3 = null, desc1 = null, desc2 = null, desc3 = null;
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private final TextView reminder_title;
@@ -108,13 +119,34 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
         reminder_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Obrim un altre finestra amb el contuingut del cardView
+                //Obrim un altre finestra amb el contingut del cardView
                 Reminder selected = localDataSet.get(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
                 LayoutInflater inflater = parentActivity.getLayoutInflater();
                 View vista  = inflater.inflate(R.layout.reminder_content, null);
                 AlertDialog content = builder.create();
                 content.setView(vista);
+
+                if (selected.getLongitude() == null && selected.getLatitude() == null){
+                    LinearLayout linearLayout = (LinearLayout) vista.findViewById(R.id.allLocation);
+                    linearLayout.setVisibility(View.INVISIBLE);
+                }else{
+                getClimaData(selected.getLatitude(), selected.getLongitude(), selected.getCountrycode(), vista);
+                TextView loc = (TextView) vista.findViewById(R.id.textViewInfoLoc);
+                String s = null;
+                DecimalFormat numberFormat = new DecimalFormat("#.000");
+                if (selected.getLocality() == null){
+                    s = "\n" + selected.getCountry() + "\nLatitude: " + numberFormat.format(selected.getLatitude().doubleValue()) +
+                            "\nLongitude: " + numberFormat.format(selected.getLongitude().doubleValue()) + "\n";
+                }else{
+                    s = "\n" + selected.getLocality() + ", " + selected.getCountry() +
+                            "\nLatitude: " + numberFormat.format(selected.getLatitude().doubleValue()) +
+                            "\nLongitude: " + numberFormat.format(selected.getLongitude().doubleValue()) + "\n";
+                }
+
+                loc.setText(s);
+            }
+
 
                 TextInputEditText title = (TextInputEditText)vista.findViewById(R.id.reminder_title_content);
                 title.setText(selected.getTitle());
@@ -186,4 +218,142 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
      */
     public int getItemCount(){ return this.localDataSet.size(); }
 
+    public void getClimaData(Double lat, Double lon, String countrycode, View vista) {
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+            .url("https://weatherbit-v1-mashape.p.rapidapi.com/forecast/daily?lat=" + lat + "&lon=" + lon)
+            .get()
+            .addHeader("x-rapidapi-key", "9ccdce2b87mshfb1a0d8ad72a9edp1ceab9jsne75320017c29")
+            .addHeader("x-rapidapi-host", "weatherbit-v1-mashape.p.rapidapi.com")
+            .build();
+
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Toast.makeText(parentContext, "Error accessing Weather API", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                if (response.isSuccessful()){
+                    String newresponse = response.body().string();
+                    parentActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                JSONObject jsonObject = new JSONObject(newresponse);
+
+                                TextView textView1 = (TextView) vista.findViewById(R.id.infodia1);
+                                TextView textViewDia1 = (TextView) vista.findViewById(R.id.dia1);
+                                icon1 = jsonObject.getJSONArray("data").getJSONObject(0).getJSONObject("weather").getString("icon");
+
+                                Glide.with(parentContext)
+                                        .load("https://www.weatherbit.io/static/img/icons/" + icon1 + ".png")
+                                        .centerCrop()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .into((ImageView) vista.findViewById(R.id.icon1));
+
+                                String infoDia1 = jsonObject.getJSONArray("data").getJSONObject(0).getString("temp") + " ºC"
+                                        + "\nMax: " + jsonObject.getJSONArray("data").getJSONObject(0).getString("max_temp") + " ºC"
+                                        + "\nMin: " + jsonObject.getJSONArray("data").getJSONObject(0).getString("min_temp") + " ºC\n";
+                                textView1.setText(infoDia1);
+
+                                String p1 = jsonObject.getJSONArray("data").getJSONObject(0).getString("datetime")
+                                        + "\n" + jsonObject.getJSONArray("data").getJSONObject(0).getJSONObject("weather").getString("description");
+                                textViewDia1.setText(p1);
+
+                                TextView textView2 = (TextView) vista.findViewById(R.id.infodia2);
+                                TextView textViewDia2 = (TextView) vista.findViewById(R.id.dia2);
+                                icon2 = jsonObject.getJSONArray("data").getJSONObject(1).getJSONObject("weather").getString("icon");
+
+                                Glide.with(parentContext)
+                                        .load("https://www.weatherbit.io/static/img/icons/" + icon2 + ".png")
+                                        .centerCrop()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .into((ImageView) vista.findViewById(R.id.icon2));
+
+                                String infoDia2 = jsonObject.getJSONArray("data").getJSONObject(1).getString("temp") + " ºC"
+                                        + "\nMax: " + jsonObject.getJSONArray("data").getJSONObject(1).getString("max_temp") + " ºC"
+                                        + "\nMin: " + jsonObject.getJSONArray("data").getJSONObject(1).getString("min_temp") + " ºC\n";
+                                textView2.setText(infoDia2);
+
+                                String p2 = jsonObject.getJSONArray("data").getJSONObject(1).getString("datetime")
+                                        + "\n" +jsonObject.getJSONArray("data").getJSONObject(1).getJSONObject("weather").getString("description");
+
+                                textViewDia2.setText(p2);
+
+                                TextView textView3 = (TextView) vista.findViewById(R.id.infodia3);
+                                TextView textViewDia3 = (TextView) vista.findViewById(R.id.dia3);
+                                icon3 = jsonObject.getJSONArray("data").getJSONObject(2).getJSONObject("weather").getString("icon");
+                                Glide.with(parentContext)
+                                        .load("https://www.weatherbit.io/static/img/icons/" + icon3 + ".png")
+                                        .centerCrop()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .into((ImageView) vista.findViewById(R.id.icon3));
+
+                                String infoDia3 = jsonObject.getJSONArray("data").getJSONObject(2).getString("temp") + " ºC"
+                                        + "\nMax: " + jsonObject.getJSONArray("data").getJSONObject(2).getString("max_temp") + " ºC"
+                                        + "\nMin: " + jsonObject.getJSONArray("data").getJSONObject(2).getString("min_temp") + " ºC\n";
+                                textView3.setText(infoDia3);
+
+                                String p3 = jsonObject.getJSONArray("data").getJSONObject(2).getString("datetime")
+                                        + "\n" +jsonObject.getJSONArray("data").getJSONObject(2).getJSONObject("weather").getString("description");
+
+                                textViewDia3.setText(p3);
+
+                                Glide.with(parentContext)
+                                        .load("https://www.countryflags.io/" + countrycode + "/flat/64.png")
+                                        .centerCrop()
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .into((ImageView) vista.findViewById(R.id.flag));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        /*
+        Request request2 = new Request.Builder()
+                .url("https://www.weatherbit.io/static/img/icons/" + icon[0] + ".png")
+                .get()
+                .addHeader("x-rapidapi-key", "9ccdce2b87mshfb1a0d8ad72a9edp1ceab9jsne75320017c29")
+                .addHeader("x-rapidapi-host", "weatherbit-v1-mashape.p.rapidapi.com")
+                .build();
+
+
+        client.newCall(request2).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Toast.makeText(parentContext, "Error accessing Weather API", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                if (response.isSuccessful()){
+                    System.out.println("entra");
+                    final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                    // Remember to set the bitmap in the main thread.
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("entra en el bitmap");
+                            ImageView clima = (ImageView) vista.findViewById(R.id.imageViewClima);
+                            clima.setImageBitmap(bitmap);
+                        }
+                    });
+                }else {
+                    System.out.println(" no entraen nitmap");
+                    System.out.println(response.code());
+                }
+            }
+        });
+        */
+    }
 }

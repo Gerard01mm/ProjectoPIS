@@ -243,7 +243,8 @@ public class DatabaseAdapter{
                 });
     }
 
-    public void saveReminder(String title, String id, String owner, String date, String description, String alarm){
+    public void saveReminder(String title, String id, String owner, String date, String description, String alarm,
+                             Double longitude, Double latitude, String country, String locality, String countrycode){
         Map<String, Object> reminder = new HashMap<>();
         reminder.put("title", title);
         reminder.put("date", date);
@@ -251,6 +252,11 @@ public class DatabaseAdapter{
         reminder.put("owner", owner);
         reminder.put("description", description);
         reminder.put("alarm", alarm);
+        reminder.put("longitude", longitude);
+        reminder.put("latitude", latitude);
+        reminder.put("country", country);
+        reminder.put("locality", locality);
+        reminder.put("countrycode", countrycode);
 
         Log.d(TAG, "saveReminder");
 
@@ -266,13 +272,14 @@ public class DatabaseAdapter{
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.w(TAG, "Error adding remidner", e);
+                    Log.w(TAG, "Error adding reminder", e);
                 }
             });
     }
 
 
-    public void updateReminder(String title, String id, String owner, String date, String description, String alarm){
+    public void updateReminder(String title, String id, String owner, String date, String description, String alarm,
+                               Double longitude, Double latitude, String country, String locality, String countrycode){
         final DocumentReference [] docRef = new DocumentReference[1];
 
         Map<String, Object> reminder = new HashMap<>();
@@ -282,6 +289,11 @@ public class DatabaseAdapter{
         reminder.put("owner", owner);
         reminder.put("description", description);
         reminder.put("alarm", alarm);
+        reminder.put("longitude", longitude);
+        reminder.put("latitude", latitude);
+        reminder.put("country", country);
+        reminder.put("locality", locality);
+        reminder.put("countrycode", countrycode);
 
         Log.d(TAG, "updateReminder");
 
@@ -304,7 +316,7 @@ public class DatabaseAdapter{
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Log.d(TAG, "Error pdating reminder");
+                                                Log.d(TAG, "Error updating reminder");
                                             }
                                         });
                             }
@@ -488,7 +500,12 @@ public class DatabaseAdapter{
                                         reminder.getString("alert"),
                                         reminder.getString("date"),
                                         reminder.getString("id"),
-                                        reminder.getString("owner")));
+                                        reminder.getString("owner"),
+                                        reminder.getDouble("longitude"),
+                                        reminder.getDouble("latitude"),
+                                        reminder.getString("country"),
+                                        reminder.getString("locality"),
+                                        reminder.getString("countrycode")));
                             }
 
                             listener.setCollection(retrieved_ac);
@@ -790,7 +807,6 @@ public class DatabaseAdapter{
 
         UploadTask uploadTask = imageRef.putFile(file);
 
-
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -876,7 +892,6 @@ public class DatabaseAdapter{
                 });
     }
 
-    //TODO
     public void deleteNotesFromFolder(String folderId){
         db.collection("notes")
                 .document("roomImageNotes")

@@ -73,8 +73,11 @@ public class CalendarViewModel extends ViewModel implements DatabaseAdapter.vmIn
      * @param alert data quan saltarà el reminder
      * @param date data assignada al reminder
      */
-    public void addReminder(String title, String description, String alert, String date){
-        Reminder reminder = new Reminder(title, description, alert, date);
+    public void addReminder(String title, String description, String alert, String date,
+                            Double longitude, Double latitude, String country, String locality,
+                            String countrycode){
+        Reminder reminder = new Reminder(title, description, alert, date, longitude,
+                latitude, country, locality, countrycode);
 
         if(mReminders.getValue() == null){
             ArrayList<Reminder> rem = new ArrayList<>();
