@@ -3,6 +3,7 @@ package com.example.my_notes.Content;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,7 @@ import com.example.my_notes.Model.NotesContent;
 import com.example.my_notes.Model.TextNoteContent;
 
 public class TextNoteContentFragment extends Fragment {
-    private ImageView image, saveTextNote;
+    private ImageView shareText, saveTextNote;
     private String noteId, noteFolderId, lastSegment, textWriten, imagepathset, textset;
     private EditText text;
     private TextNoteContentViewModel textNoteContentViewModel;
@@ -67,6 +68,22 @@ public class TextNoteContentFragment extends Fragment {
                     }
                 });
                 mydialog.show();
+            }
+        });
+
+        shareText = root.findViewById(R.id.shareText);
+        shareText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textWriten = text.getText().toString();
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, textWriten);
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
             }
         });
 

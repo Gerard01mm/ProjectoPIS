@@ -10,6 +10,7 @@
     <string name="create_folder">Create a new folder</string>
     <string name="add_note">New Note</string>
     <string name="create_note">Create a new note</string>
+    <string name="signOut_title">Sign out</string>
 
 
     <!--Menu desplegable-->

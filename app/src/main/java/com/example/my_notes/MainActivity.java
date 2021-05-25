@@ -2,14 +2,21 @@ package com.example.my_notes;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -41,7 +48,7 @@ public class MainActivity extends AppCompatActivity{
 
 
     private RecyclerView fRecyclerView;
-    private Context parentContext;
+    private Context context;
     private AppCompatActivity fActivity;
 
 
@@ -75,6 +82,8 @@ public class MainActivity extends AppCompatActivity{
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
+        context = this;
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -93,6 +102,32 @@ public class MainActivity extends AppCompatActivity{
         //verifyStoragePermissions(this);
 
         ActivityCompat.requestPermissions(this, permissions_audio, REQUEST_RECORD_AUDIO_PERMISSION);
+
+        View header = navigationView.getHeaderView(0);
+        ImageButton signOut = (ImageButton) header.findViewById(R.id.btn_sign_out);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mydialog = new AlertDialog.Builder(context);
+                mydialog.setTitle("Do you want to sign out?");
+
+                mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(MainActivity.this, LoginUserActivity.class));
+                        finish();
+                    }
+                });
+                mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                mydialog.show();
+            }
+        });
     }
 
     @Override
