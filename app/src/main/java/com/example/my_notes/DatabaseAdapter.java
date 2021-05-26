@@ -65,10 +65,12 @@ public class DatabaseAdapter{
         notesInFolder = new ArrayList<>();
     }
 
+
     public interface vmInterface{
         void setCollection(ArrayList ac);
         void setToast(String s);
     }
+
 
     public void initFirebase(){
 
@@ -220,7 +222,6 @@ public class DatabaseAdapter{
                         }
                     }
                 });
-
     }
 
     public void deleteFolder (String id) {
@@ -508,6 +509,7 @@ public class DatabaseAdapter{
                                         reminder.getString("countrycode")));
                             }
 
+                            System.out.println("Numero de notes del dia: " + date + retrieved_ac.size());
                             listener.setCollection(retrieved_ac);
                         }
                         else{

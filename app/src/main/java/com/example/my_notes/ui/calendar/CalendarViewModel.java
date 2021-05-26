@@ -1,5 +1,7 @@
 package com.example.my_notes.ui.calendar;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -19,15 +21,15 @@ public class CalendarViewModel extends ViewModel implements DatabaseAdapter.vmIn
     private MutableLiveData<String> mToast;
     private DatabaseAdapter da;
 
+
+    /**
+     * Constructor de la classe. Inicialitzem els mutableLiveData i inicialitzem l'adaptador de la
+     * base de dades.
+     */
     public CalendarViewModel(){
         this.mReminders = new MutableLiveData<>();
         this.mToast = new MutableLiveData<>();
         this.da = new DatabaseAdapter(this);
-
-        //Apareixeran els reminders del dia d'avui
-        String today = new CalendarDay().toString();
-        Log.d("Dia seleccionat: " + today, "Carregant els reminders del dia seleccionat");
-        this.da.getCollectionReminderByUserAndDay(today);
     }
 
 
@@ -36,7 +38,10 @@ public class CalendarViewModel extends ViewModel implements DatabaseAdapter.vmIn
      * @return llista de reminders
      */
     public LiveData<ArrayList<Reminder>> getReminders(){
-        return this.mReminders;
+        if (mReminders == null){
+            mReminders = new MutableLiveData<>();
+        }
+        return mReminders;
     }
 
 
@@ -75,9 +80,14 @@ public class CalendarViewModel extends ViewModel implements DatabaseAdapter.vmIn
      */
     public void addReminder(String title, String description, String alert, String date,
                             Double longitude, Double latitude, String country, String locality,
-                            String countrycode){
+                            String countrycode, Intent intent, PendingIntent pendingIntent){
+
         Reminder reminder = new Reminder(title, description, alert, date, longitude,
                 latitude, country, locality, countrycode);
+
+        //Ajustem els intents i pending intent al recordatori creat
+        reminder.setAlarmIntent(intent);
+        reminder.setAlarmPendingIntent(pendingIntent);
 
         if(mReminders.getValue() == null){
             ArrayList<Reminder> rem = new ArrayList<>();
@@ -105,10 +115,10 @@ public class CalendarViewModel extends ViewModel implements DatabaseAdapter.vmIn
 
 
     @Override
-    public void setCollection(ArrayList list){
-        //Log.d("CalendarViewModel","Ha entrado en el setCollection");
-        mReminders.setValue(list);
+    public void setCollection(ArrayList rem) {
+        this.mReminders.setValue(rem);
     }
+
 
     @Override
     public void setToast(String s){ mToast.setValue(s); }

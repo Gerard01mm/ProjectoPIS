@@ -1,5 +1,7 @@
 package com.example.my_notes.Model;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.util.Log;
 
 import com.example.my_notes.DatabaseAdapter;
@@ -13,6 +15,8 @@ public class Reminder {
     //Atributs
     private String title, description, id, owner, date, reminder_alert, country, locality, countrycode;
     private Double longitude, latitude;
+    private Intent alarmIntent;
+    private PendingIntent alarmPendingIntent;
 
     private final DatabaseAdapter adapter = DatabaseAdapter.databaseAdapter;
 
@@ -247,6 +251,35 @@ public class Reminder {
      * @param date
      */
     public void setReminder_alert(String date) { this.reminder_alert = date; }
+
+    /**
+     * Aquesta funció ens permet recuperar el intent per a l'alarma
+     * @return Intent de l'alarma
+     */
+    public Intent getAlarmIntent(){ return this.alarmIntent;}
+
+
+    /**
+     * Aquesta fucnió ens permet ajustar l'intent de l'alarma
+      * @param alarmIntent Nou intent de l'alarma
+     */
+    public void setAlarmIntent(Intent alarmIntent){
+        this.alarmIntent = alarmIntent;
+    }
+
+
+    /**
+     * Aquesta funció ens permet recuperar el pending Intent de la alarma
+      * @return pendign itnent de l'alarma
+     */
+    public PendingIntent getAlarmPendingIntent(){return this.alarmPendingIntent;}
+
+
+    /**
+     * Aquesta fucnió ens permet ajustar el pending intent de l'alarma
+      * @param pendingIntent nou pending intent de l'alarma
+     */
+    public void setAlarmPendingIntent(PendingIntent pendingIntent){this.alarmPendingIntent = pendingIntent;}
 
 
     public void saveReminder(){

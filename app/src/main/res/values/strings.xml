@@ -78,4 +78,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="go">Close map</string>
 
+    <!--Etiquetas de las notificaciones-->
+    <string name="notify_channel">RemidnersChannel</string>
+
 </resources>

@@ -1,9 +1,13 @@
 package com.example.my_notes.ui.calendar;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,6 +36,7 @@ import android.widget.Toast;
 import com.example.my_notes.GeoLocation;
 import com.example.my_notes.LoginUserActivity;
 import com.example.my_notes.MainActivity;
+import com.example.my_notes.Notify.AlarmReceiver;
 import com.example.my_notes.RecyclerView_adapters.RemindersAdapter;
 import com.example.my_notes.Model.Reminder;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -82,13 +87,17 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 
 
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment{
 
-    private static final int REQUEST_PLACE_PICKER = 1001;
     //Constantes
+    private static final int REQUEST_PLACE_PICKER = 1001;
     private final String FORM_TITLE = "Add new reminder";
     private final String ACCEPT_BUTTON = "Accept";
     private final String CANCEL_BUTTON = "Cancel";
+    private final String TAG = "CALENDARFRAGMENT";
+    private final String TITLE_KEY = "REMINDER_TITLE";
+    private final String CONTENT_KEY = "REMINDER_CONTENT";
+    private final String ID_KEY = "ALARM_ID";
 
     private GoogleMap googleMap;
 
@@ -98,6 +107,7 @@ public class CalendarFragment extends Fragment {
     private CalendarViewModel calendarViewModel;
     private Context parentContext;
     private RecyclerView reminder_list;
+
     //Dialog
     private ImageButton alarm;
     private Button checkAddress;
@@ -106,14 +116,17 @@ public class CalendarFragment extends Fragment {
     private SupportMapFragment mapFragment;
     private FragmentManager fragmentManager;
 
-    //Variables delr eminder
-    private String title = null;
-    private String description = null;
-    private String date;
+
+    //Variables del reminder
+    private String title = null, description = null, date;
     private String adress = null, country = null, locality = null, countrycode = null;
     private Double longitude = null;
     private Double latitude = null;
     private final String EMPTY_INPUT = "Text area is empty";
+    private int flags = 0;
+    private int ID = 0;
+    private long timeInMillis;
+    private AlarmManager alarmManager;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -121,6 +134,8 @@ public class CalendarFragment extends Fragment {
         calendarViewModel =
                 new ViewModelProvider(this).get(CalendarViewModel.class);
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
+
+         this.alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
 
         //Emmagatzem el context del pare
         this.parentContext = root.getContext();
@@ -133,13 +148,16 @@ public class CalendarFragment extends Fragment {
 
         //Ajustem el calendari i afegim el event
         this.calendar = (MaterialCalendarView) root.findViewById(R.id.calendar);
+        CalendarDay today = new CalendarDay();
+        this.calendar.setSelectedDate(today);
+        this.calendarViewModel.remindersDaySelected(today.toString());
 
         this.calendar.setSelectedDate(new CalendarDay());
         this.calendar.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 String day = calendar.getSelectedDate().toString();
-                Log.d("DIA SELECCIONAT", "EL DIA POLSAT ÉS EL" + day);
+                Log.d("DIA SELECCIONAT", "EL DIA PULSAT ÉS EL" + day);
 
                 //Cridarem a la funció que refrescarà i mostrara el contingut dels reminders del dia
                 //Seleccionat
@@ -151,12 +169,7 @@ public class CalendarFragment extends Fragment {
         this.add_reminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adress = null;
-                country = null;
-                locality = null;
-                countrycode = null;
-                longitude = null;
-                latitude = null;
+
 
                 AlertDialog.Builder tit = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = requireActivity().getLayoutInflater();
@@ -171,18 +184,20 @@ public class CalendarFragment extends Fragment {
                 latAndLong = (TextView) dialog.findViewById(R.id.textViewLatLong);
                 checkAddress = (Button) dialog.findViewById(R.id.checklocbutton);
 
-                tit.setTitle("Write a title for the reminder:");
+                tit.setTitle(FORM_TITLE);
                 tit.setView(dialog);
 
                 checkAddress.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         adress = null;
                         country = null;
                         locality = null;
                         countrycode = null;
                         longitude = null;
                         latitude = null;
+
                         if (location.getText().toString().equals("")) {
                             location.setError(EMPTY_INPUT);
                         }
@@ -194,6 +209,7 @@ public class CalendarFragment extends Fragment {
                     }
                 });
 
+                Calendar mCalendar = Calendar.getInstance();
                 alarm.setOnClickListener(new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
@@ -204,23 +220,28 @@ public class CalendarFragment extends Fragment {
                                     @Override
                                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
                                         mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                        System.out.println("HORA " + mCalendar.get(Calendar.HOUR_OF_DAY));
                                         mCalendar.set(Calendar.MINUTE, minute);
+                                        System.out.println("MINUTO " + mCalendar.get(Calendar.MINUTE));
+                                        //mCalendar.set(Calendar.SECOND, 0);
                                         String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(mCalendar.getTime());
                                         dateReminder.setText(time);
                                         Log.d("MainActivity", "Selected time is " + time);
+                                        timeInMillis = mCalendar.getTimeInMillis();
                                     }
                                 }, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
                         timePickerDialog.show();
                     }
                 });
 
-                tit.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                tit.setPositiveButton(ACCEPT_BUTTON, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         title = nomReminder.getText().toString();
                         description = descriptionRem.getText().toString();
                         adress = location.getText().toString();
 
+                        //En el cas que hi hagi un titol i un contignut
                         if (title != null && description != null) {
                             String day = calendar.getSelectedDate().toString();
 
@@ -228,32 +249,64 @@ public class CalendarFragment extends Fragment {
                                 Toast.makeText(getContext(), "Saving reminder with no location", Toast.LENGTH_SHORT).show();
                             }
 
+                            PendingIntent pendingIntent = null;
+                            Intent intent = null;
+
+                            //En cas que hi hagi seleccionada una hora configurarà l'alarma
+                            if(mCalendar != null) {
+
+                                //Guardem el titol,d escripcio i id al intent
+                                intent = new Intent(requireContext(), AlarmReceiver.class);
+                                intent.putExtra(TITLE_KEY, title);
+                                Log.d("TITOL", title);
+                                intent.putExtra(CONTENT_KEY, description);
+                                Log.d("CONTINGUT", description);
+
+                                pendingIntent = PendingIntent.getBroadcast(requireContext(), ID , intent, 0);
+
+                                //Incremerntem el id i els flags per evitar solapaments.
+                                ID++;
+                                flags++;
+
+                                System.out.println("HORA SELECCIONADA " + mCalendar.get(Calendar.HOUR_OF_DAY) +"\nMINUTO SELECCIONADO " + mCalendar.get(Calendar.MINUTE));
+
+                                System.out.println("TIME IN MILLIS" + mCalendar.getTimeInMillis());
+
+                                alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+                            }
+
                             calendarViewModel.addReminder(title, description, dateReminder.getText().toString(),
-                                    day, longitude, latitude, country, locality, countrycode);
+                                    day, longitude, latitude, country, locality, countrycode, intent, pendingIntent);
                         }
                     }
                 })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
+                .setNegativeButton(CANCEL_BUTTON, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
                 tit.show();
             }
         });
+
+        createNotificationChannel();
         setLiveDataObservers();
         return root;
     }
 
 
+    /**
+     * Aquesta funció s'encarrega d'ajustar els observers, els quals controlen si el contingut de
+     * la recyclerView i s'encarrega de canviar l'adaptador
+     */
     public void setLiveDataObservers() {
 
         final Observer<ArrayList<Reminder>> observer = new Observer<ArrayList<Reminder>>() {
 
             @Override
             public void onChanged(ArrayList<Reminder> reminders) {
-                RemindersAdapter newAdapter = new RemindersAdapter(parentContext, reminders, getActivity());
+                RemindersAdapter newAdapter = new RemindersAdapter(parentContext, reminders, getActivity(), alarmManager, ID);
                 reminder_list.swapAdapter(newAdapter, false);
                 newAdapter.notifyDataSetChanged();
             }
@@ -268,6 +321,24 @@ public class CalendarFragment extends Fragment {
 
         calendarViewModel.getReminders().observe(getViewLifecycleOwner(), observer);
         calendarViewModel.getToast().observe(getViewLifecycleOwner(), observerToast);
+    }
+
+
+    /**
+     * Aquesta funció s'encarrega de crear un canal de notificació de cara a que l'usuari pugi
+     * rebre les notificacions.
+     */
+    private void createNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = "Prueba numero 1";
+            String description = "Canal de prueba";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel  channel = new NotificationChannel("notifyChannel", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = requireActivity().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private class GeoHandler extends Handler {

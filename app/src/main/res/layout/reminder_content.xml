@@ -184,7 +184,7 @@
 
         <TextView
             android:id="@+id/alertTextView"
-            android:layout_width="260dp"
+            android:layout_width="285dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:text="12/12/21 19:00">
@@ -194,7 +194,7 @@
         <ImageView
             android:id="@+id/change_alarm_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:contentDescription="@string/form_description"
             app:srcCompat="@drawable/alarm_black_24dp">
 
@@ -218,7 +218,7 @@
             app:srcCompat="@drawable/delete_black_24dp" />
 
         <Space
-            android:layout_width="235dp"
+            android:layout_width="262dp"
             android:layout_height="match_parent" />
 
         <ImageView

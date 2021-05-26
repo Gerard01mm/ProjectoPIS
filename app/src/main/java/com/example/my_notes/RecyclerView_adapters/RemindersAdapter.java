@@ -1,10 +1,14 @@
 package com.example.my_notes.RecyclerView_adapters;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.icu.util.Calendar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.my_notes.Notify.AlarmReceiver;
 import com.example.my_notes.R;
 import com.example.my_notes.Model.Reminder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -37,9 +42,17 @@ import java.util.ArrayList;
 
 public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.ViewHolder>{
 
+    //Constants
+    private final String TITLE_KEY = "REMINDER_TITLE";
+    private final String CONTENT_KEY = "REMINDER_CONTENT";
+
+    //Atributs
     private final ArrayList<Reminder> localDataSet;
     private final Context parentContext;
     private final Activity parentActivity;
+    private AlarmManager alarmManager;
+    private Long timeInMillis = null;
+    private int ID;
 
     private String icon1 = null, icon2 = null, icon3 = null, desc1 = null, desc2 = null, desc3 = null;
 
@@ -81,10 +94,12 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
      * @param current Context
      * @param reminders Llistat de reminders.
      */
-    public RemindersAdapter(Context current, ArrayList<Reminder> reminders, Activity act){
+    public RemindersAdapter(Context current, ArrayList<Reminder> reminders, Activity act, AlarmManager alarmManager, int ID){
         this.parentContext = current;
         this.localDataSet = reminders;
         this.parentActivity = act;
+        this.alarmManager = alarmManager;
+        this.ID = ID;
     }
 
 
@@ -159,9 +174,14 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
 
                 ImageView delete = (ImageView) vista.findViewById(R.id.reminder_delete_button);
 
+                //Ajustem el botó d'eliminar
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //Eliminem l'alarma en cas que estigués configurada
+                        if (selected.getAlarmPendingIntent() != null) {
+                            alarmManager.cancel(selected.getAlarmPendingIntent());
+                        }
                         selected.removeReminder();
                         localDataSet.remove(position);
                         notifyItemRemoved(position);
@@ -170,7 +190,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
                     }
                 });
 
-
+                //Configuració del botó de guardar
                 ImageView save = (ImageView)vista.findViewById(R.id.reminder_save_button);
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -178,14 +198,35 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
                         selected.setTitle(title.getText().toString());
                         selected.setDescription(description.getText().toString());
                         selected.setReminder_alert(alert.getText().toString());
+
+                        //Si no hem escollit una hora, no es configurarà l'alarma
+                        if (timeInMillis != null){
+
+                            //En cas que tinguessim ja un alarma configurada
+                            if (selected.getAlarmPendingIntent() != null){
+                                //Cancelem l'antiga alarma
+                                System.out.println("CANCELEM L'ANTIGA ALARMA");
+                                alarmManager.cancel(selected.getAlarmPendingIntent());
+                            }
+
+                            //Configurem l'alarma
+                            Intent intent = new Intent(parentContext, AlarmReceiver.class);
+                            intent.putExtra(TITLE_KEY, selected.getTitle());
+                            intent.putExtra(CONTENT_KEY, selected.getDescription());
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(parentContext, ID, intent, 0);
+
+                            selected.setAlarmIntent(intent);
+                            selected.setAlarmPendingIntent(pendingIntent);
+                            alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+                        }
+
                         selected.updateReminder();
                         notifyDataSetChanged();
                         content.dismiss();
                     }
                 });
 
-
-
+                //Botó per ajustar l'horari de la notificació
                 ImageView setAlert = (ImageView)vista.findViewById(R.id.change_alarm_button);
                 setAlert.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -199,7 +240,10 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
                                         mCalendar.set(Calendar.MINUTE, minute);
                                         String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(mCalendar.getTime());
                                         alert.setText(time);
-                                        //Log.d("MainActivity", "Selected time is " + time);
+
+                                        //Ajustem l'horari de la notificació en milisegons
+                                        timeInMillis = mCalendar.getTimeInMillis();
+                                        Log.d("MainActivity", "Selected time is " + time);
                                     }
                                 }, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true);
                         timePickerDialog.show();
