@@ -1,5 +1,6 @@
 package com.example.my_notes;
 
+import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -17,9 +18,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.core.UserWriteRecord;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -54,8 +60,10 @@ public class DatabaseAdapter{
 
     public static vmInterface listener;
     public static DatabaseAdapter databaseAdapter;
+    public static DatabaseReference usersReference;
 
     private ArrayList<Note> notesInFolder;
+    private ArrayList<Note> sharedNotes;
 
     public DatabaseAdapter(vmInterface listener){
         DatabaseAdapter.listener = listener;
@@ -63,6 +71,7 @@ public class DatabaseAdapter{
         FirebaseFirestore.setLoggingEnabled(true);
         initFirebase();
         notesInFolder = new ArrayList<>();
+        sharedNotes = new ArrayList<>();
     }
 
 
@@ -75,7 +84,6 @@ public class DatabaseAdapter{
     public void initFirebase(){
 
         user = mAuth.getCurrentUser();
-
         if (user == null) {
             mAuth.signInAnonymously()
                 .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
@@ -83,7 +91,7 @@ public class DatabaseAdapter{
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInAnonymously:success");
+                            //Log.d(TAG, "signInAnonymously:success");
                             listener.setToast("Authentication successful.");
                             user = mAuth.getCurrentUser();
                         } else {
@@ -97,7 +105,6 @@ public class DatabaseAdapter{
         }
         else{
             Log.d(TAG, "Authentication with current user.");
-
         }
     }
 
@@ -105,8 +112,175 @@ public class DatabaseAdapter{
         return user.getEmail();
     }
 
+    /* Mètode que serveix per afegir un nou usuari en l'atribut "shared" de la nota que es un array, per
+     * compartir la nota amb més d'un usuari.*/
+    public void updateSharedUsers (String noteId, String noteFolderId, String idUser){
+        db.collection("notes")
+                .document("roomTextNotes")
+                .collection("textNotes")
+                .whereEqualTo("id", noteId)
+                .whereEqualTo("folderId", noteFolderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                ArrayList<String> users = new ArrayList<String>();
+                                Map<String, Object> textNote = new HashMap<>();
+                                textNote.put("title", note.getString("title"));
+                                textNote.put("id", note.getString("id"));
+                                textNote.put("folderId", note.getString("folderId"));
+                                textNote.put("owner", note.getString("owner"));
+                                textNote.put("creation", (Timestamp) note.get("creation"));
+                                textNote.put("modify", (Timestamp) note.get("modify"));
+
+                                users = (ArrayList<String>) note.get("shared");
+                                if (users != null) {
+                                    boolean exist = false;
+                                    for (String use : users) {
+                                        if(use.equals(idUser)){
+                                            exist = true;
+                                        }
+                                    }
+                                    if(!exist) {
+                                        users.add(idUser);
+                                        textNote.put("shared", users);
+                                        note.getReference().update(textNote)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "Document updated correctly");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.d(TAG, "Error updating document ");
+                                                    }
+                                                });
+                                    }
+                                }
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error: No note found ", task.getException());
+                        }
+                    }
+                });
+    }
+    /* Mètode que serveix per afegir un nou usuari en l'atribut "shared" de la nota que es un array, per
+     * compartir la nota amb més d'un usuari.*/
+    public void updateSharedImageNote (String noteId, String noteFolderId, String idUser) {
+
+        //Log.d(TAG, "updateImageNote");
+        db.collection("notes")
+                .document("roomImageNotes")
+                .collection("imageNotes")
+                .whereEqualTo("id", noteId)
+                .whereEqualTo("folderId", noteFolderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                ArrayList<String> users = new ArrayList<String>();
+                                Map<String, Object> imageNote = new HashMap<>();
+                                imageNote.put("title", note.getString("title"));
+                                imageNote.put("id", note.getString("id"));
+                                imageNote.put("folderId", note.getString("folderId"));
+                                imageNote.put("owner", note.getString("owner"));
+                                imageNote.put("creation", (Timestamp) note.get("creation"));
+                                imageNote.put("modify", (Timestamp) note.get("modify"));
+
+                                users = (ArrayList<String>) note.get("shared");
+                                if (users != null) {
+                                    boolean exist = false;
+                                    for (String use : users) {
+                                        if (use.equals(idUser)) {
+                                            exist = true;
+                                        }
+                                    }
+                                    if (!exist) {
+                                        users.add(idUser);
+                                        imageNote.put("shared", users);
+                                        note.getReference().update(imageNote)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "Document updated correctly");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.d(TAG, "Error updating document ");
+                                                    }
+                                                });
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error: No note found ", task.getException());
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    /* Mètode que comproba si el correu existeix, per motius de incompatibilitat gestiono els errors que
+     * es mostraran a l'editText desde aqui, en el cas que no existeixi l'usuari i si introduixen el
+     * seu propi correu.*/
+    public void checkEmail(String idUser, String noteId, String noteFolderId, String textWriten, String title, TextInputEditText userEmail, AlertDialog content){
+
+        mAuth.fetchSignInMethodsForEmail(idUser)
+                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                        boolean check = !task.getResult().getSignInMethods().isEmpty();
+                        //
+                        if(!check){
+                            userEmail.setError("Don't exist user with this email");
+                        }else{
+                            //Si el correu introduit és el del mateix usuari.
+                            if(getCurrentUser().equals(idUser)){
+                                userEmail.setError("This is your own email!!");
+                            }else{
+                                updateSharedUsers(noteId, noteFolderId, idUser);
+                                content.dismiss();
+                            }
+                        }
+                    }
+                });
+    }
+    /* Mètode que comproba si el correu existeix, per motius de incompatibilitat gestiono els errors que
+     * es mostraran a l'editText desde aqui, en el cas que no existeixi l'usuari i si introduixen el
+     * seu propi correu.*/
+    public void checkEmailImatge(String idUser, String noteId, String noteFolderId, String textWriten, String title, TextInputEditText userEmail, AlertDialog content){
+
+        mAuth.fetchSignInMethodsForEmail(idUser)
+                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                        boolean check = !task.getResult().getSignInMethods().isEmpty();
+                        //
+                        if(!check){
+                            userEmail.setError("Don't exist user with this email");
+                        }else{
+                            //Si el correu introduit és el del mateix usuari.
+                            if(getCurrentUser().equals(idUser)){
+                                userEmail.setError("This is your own email!!");
+                            }else{
+                                updateSharedImageNote(noteId, noteFolderId, idUser);
+                                content.dismiss();
+                            }
+                        }
+                    }
+                });
+    }
+
     public void getCollectionFolders(){
-        Log.d(TAG,"getFolders");
+        //Log.d(TAG,"getFolders");
         db.collection("folders")
             .get()
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -115,7 +289,7 @@ public class DatabaseAdapter{
                     if (task.isSuccessful()) {
                         ArrayList<NoteFolder> retrieved_ac = new ArrayList<NoteFolder>() ;
                         for (QueryDocumentSnapshot folder : task.getResult()) {
-                            Log.d(TAG, folder.getId() + " => " + folder.getData());
+                            //Log.d(TAG, folder.getId() + " => " + folder.getData());
                             retrieved_ac.add(new NoteFolder( folder.getString("title"),
                                 folder.getString("owner"), folder.getLong("color").intValue(),
                                 folder.getString("id")));
@@ -130,7 +304,7 @@ public class DatabaseAdapter{
     }
 
     public void getCollectionFoldersByUser(){
-        Log.d(TAG,"getFoldersByUser");
+        //Log.d(TAG,"getFoldersByUser");
         db.collection("folders")
                 .whereEqualTo("owner", getCurrentUser())
                 .get()
@@ -140,7 +314,7 @@ public class DatabaseAdapter{
                         if (task.isSuccessful()) {
                             ArrayList<NoteFolder> retrieved_ac = new ArrayList<NoteFolder>() ;
                             for (QueryDocumentSnapshot folder : task.getResult()) {
-                                Log.d(TAG, folder.getId() + " => " + folder.getData());
+                                //Log.d(TAG, folder.getId() + " => " + folder.getData());
                                 retrieved_ac.add(new NoteFolder( folder.getString("title"),
                                         folder.getString("owner"), folder.getLong("color").intValue(),
                                         folder.getString("id")));
@@ -163,7 +337,7 @@ public class DatabaseAdapter{
         folder.put("owner", owner);
         folder.put("color", color);
 
-        Log.d(TAG, "saveFolder");
+        //Log.d(TAG, "saveFolder");
         // Add a new document with a generated ID
         db.collection("folders")
             .add(folder)
@@ -192,7 +366,7 @@ public class DatabaseAdapter{
         newfolder.put("id", id);
         newfolder.put("owner", owner);
         newfolder.put("color", color);
-        Log.d(TAG, "updateFolder");
+        //Log.d(TAG, "updateFolder");
         db.collection("folders")
                 .whereEqualTo("id", id)
                 .get()
@@ -259,7 +433,7 @@ public class DatabaseAdapter{
         reminder.put("locality", locality);
         reminder.put("countrycode", countrycode);
 
-        Log.d(TAG, "saveReminder");
+        //Log.d(TAG, "saveReminder");
 
         db.collection("reminders")
             .add(reminder)
@@ -296,7 +470,7 @@ public class DatabaseAdapter{
         reminder.put("locality", locality);
         reminder.put("countrycode", countrycode);
 
-        Log.d(TAG, "updateReminder");
+        //Log.d(TAG, "updateReminder");
 
         db.collection("reminders")
                 .whereEqualTo("id", id)
@@ -380,7 +554,7 @@ public class DatabaseAdapter{
         audioNote.put("url", url);
         audioNote.put("audioName", audioName);
 
-        Log.d(TAG, "saveAudioNote");
+        //Log.d(TAG, "saveAudioNote");
         // Add a new document with a generated ID
         db.collection("notes").document("roomAudioNotes").collection("audioNotes")
                 .add(audioNote)
@@ -412,7 +586,7 @@ public class DatabaseAdapter{
         newAudioNote.put("url", url);
         newAudioNote.put("audioName", audioName);
 
-        Log.d(TAG, "updateAudioNote");
+        //Log.d(TAG, "updateAudioNote");
         db.collection("notes").document("roomAudioNotes").collection("audioNotes")
                 .whereEqualTo("id", id)
                 .get()
@@ -484,7 +658,7 @@ public class DatabaseAdapter{
     }
 
     public void getCollectionReminderByUserAndDay(String date){
-        Log.d(TAG, "getRemindersByUserAndDay");
+        //Log.d(TAG, "getRemindersByUserAndDay");
         db.collection("reminders")
                 .whereEqualTo("owner", getCurrentUser())
                 .whereEqualTo("date", date)
@@ -495,7 +669,7 @@ public class DatabaseAdapter{
                         if (task.isSuccessful()){
                             ArrayList<Reminder> retrieved_ac = new ArrayList<>();
                             for (QueryDocumentSnapshot reminder : task.getResult()){
-                                Log.d(TAG, reminder.getId() + " => " + reminder.getData());
+                                //Log.d(TAG, reminder.getId() + " => " + reminder.getData());
                                 retrieved_ac.add(new Reminder(reminder.getString("title"),
                                         reminder.getString("description"),
                                         reminder.getString("alert"),
@@ -519,8 +693,64 @@ public class DatabaseAdapter{
                 });
     }
 
+    /* Mètode que agafa les notes que siguin compartides amb el currentUser mirant el camp
+     * "shared" que és un array, per veure si conté el correu electronic del usuuari actual. */
+    public void getCollectionNotesBySharedToUser(){
+        //Log.d(TAG,"getCollectionNotesBySharedToUser");
+        db.collection("notes")
+                .document("roomTextNotes")
+                .collection("textNotes")
+                .whereArrayContains("shared", getCurrentUser())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                ArrayList<String> userShared = new ArrayList<String>();
+                                userShared = (ArrayList<String>) note.get("shared");
+                                sharedNotes.add(new TextNote( note.getString("title"),
+                                        note.getString("id"), note.getString("folderId"),
+                                        note.getString("owner"), userShared, note.getDate("creation"),
+                                        note.getDate("modify")));
+                                Log.d("AAADAPTEEER TEXTOO: ", "Supuestamente cogo una de texto");
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting notes: ", task.getException());
+                        }
+                    }
+                });
+
+        db.collection("notes")
+                .document("roomImageNotes")
+                .collection("imageNotes")
+                .whereArrayContains("shared", getCurrentUser())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                ArrayList<String> userShared = new ArrayList<String>();
+                                userShared = (ArrayList<String>) note.get("shared");
+                                notesInFolder.add(new ImageNote( note.getString("title"),
+                                        note.getString("id"), note.getString("folderId"),
+                                        note.getString("owner"), userShared, note.getDate("creation"),
+                                        note.getDate("modify")));
+                                Log.d("AAADAPTEEER IMAGEEN: ", "Supuestamente cogo la imagen");
+                            }
+                            sharedNotes.sort(new DateSorter());
+                            listener.setCollection(sharedNotes);
+                        } else {
+                            Log.d(TAG, "Error getting notes: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
     public void getCollectionNotesByFolderAndUser(String folderId){
-        Log.d(TAG,"getNotesByFolderAndUser");
+        //Log.d(TAG,"getNotesByFolderAndUser");
         db.collection("notes")
                 .document("roomImageNotes")
                 .collection("imageNotes")
@@ -531,16 +761,13 @@ public class DatabaseAdapter{
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
                             for (QueryDocumentSnapshot note : task.getResult()) {
-                                System.out.println(note);
-                                Log.d(TAG, note.getId() + " => " + note.getData());
+                                //Log.d(TAG, note.getId() + " => " + note.getData());
                                 notesInFolder.add(new ImageNote( note.getString("title"),
                                         note.getString("id"), note.getString("folderId"),
                                         note.getString("owner"), note.getDate("creation"),
                                         note.getDate("modify")));
                             }
-
                         } else {
                             Log.d(TAG, "Error getting notes: ", task.getException());
                         }
@@ -560,7 +787,7 @@ public class DatabaseAdapter{
                         if (task.isSuccessful()) {
 
                             for (QueryDocumentSnapshot note : task.getResult()) {
-                                Log.d(TAG, note.getId() + " => " + note.getData());
+                                //Log.d(TAG, note.getId() + " => " + note.getData());
                                 notesInFolder.add(new AudioNote( note.getString("title"),
                                         note.getString("id"), note.getString("url"), note.getString("folderId"),
                                         note.getString("owner"), note.getDate("creation_date"),
@@ -584,7 +811,7 @@ public class DatabaseAdapter{
                         if (task.isSuccessful()) {
 
                             for (QueryDocumentSnapshot note : task.getResult()) {
-                                Log.d(TAG, note.getId() + " => " + note.getData());
+                                //Log.d(TAG, note.getId() + " => " + note.getData());
                                 notesInFolder.add(new TextNote( note.getString("title"),
                                         note.getString("id"), note.getString("folderId"),
                                         note.getString("owner"), note.getDate("creation"),
@@ -609,7 +836,7 @@ public class DatabaseAdapter{
         textNote.put("creation", creation);
         textNote.put("modify", modify);
 
-        Log.d(TAG, "updateTextNote");
+        //Log.d(TAG, "updateTextNote");
         db.collection("notes")
                 .document("roomTextNotes")
                 .collection("textNotes")
@@ -635,7 +862,6 @@ public class DatabaseAdapter{
                                             }
                                         });
                             }
-
                         } else {
                             Log.d(TAG, "Error: No note found ", task.getException());
                         }
@@ -654,7 +880,7 @@ public class DatabaseAdapter{
         imageNote.put("creation", creation);
         imageNote.put("modify", modify);
 
-        Log.d(TAG, "updateImageNote");
+        //Log.d(TAG, "updateImageNote");
         db.collection("notes")
                 .document("roomImageNotes")
                 .collection("imageNotes")
@@ -691,7 +917,7 @@ public class DatabaseAdapter{
 
     public void saveImageNote (String title, String id, String folderId, String owner,
                                Date creation, Date modify) {
-
+        ArrayList<String> user = new ArrayList<String>();
         // Create a new user with a first and last name
         Map<String, Object> note = new HashMap<>();
         note.put("title", title);
@@ -700,6 +926,7 @@ public class DatabaseAdapter{
         note.put("owner", owner);
         note.put("creation", creation);
         note.put("modify", modify);
+        note.put("shared", user);
 
         Log.d(TAG, "saveImageNote");
         // Add a new document with a generated ID
@@ -724,6 +951,7 @@ public class DatabaseAdapter{
     public void saveTextNote (String title, String id, String folderId, String owner,
                                Date creation, Date modify) {
 
+        ArrayList<String> user = new ArrayList<String>();
         // Create a new user with a first and last name
         Map<String, Object> note = new HashMap<>();
         note.put("title", title);
@@ -732,8 +960,9 @@ public class DatabaseAdapter{
         note.put("owner", owner);
         note.put("creation", creation);
         note.put("modify", modify);
+        note.put("shared", user);
 
-        Log.d(TAG, "saveTextNote");
+        //Log.d(TAG, "saveTextNote");
         // Add a new document with a generated ID
         db.collection("notes")
                 .document("roomTextNotes")
@@ -756,7 +985,7 @@ public class DatabaseAdapter{
 
     public void saveImageNoteContent (String id, String folderId, String text, String imagepath) {
         // Create a new user with a first and last name
-        System.out.println("Directori de la imatge:" + imagepath);
+        //System.out.println("Directori de la imatge:" + imagepath);
         Map<String, Object> noteContent = new HashMap<>();
         noteContent.put("id", id);
         noteContent.put("folderId", folderId);
@@ -774,11 +1003,8 @@ public class DatabaseAdapter{
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        System.out.println("onccomplete");
                         if (!task.getResult().isEmpty()){
-                            System.out.println("success");
                             for (QueryDocumentSnapshot noteC : task.getResult()) {
-                                System.out.println(noteC);
                                 Log.d(TAG, noteC.getId() + " => " + noteC.getData());
                                 deleteImageFromStorage(noteC.getString("imagepath"));
                                 noteC.getReference().update(noteContent);
@@ -801,9 +1027,7 @@ public class DatabaseAdapter{
     public void saveImageInNote (String imagepath) {
         File fitxer = new File(imagepath);
         Uri file = Uri.fromFile(fitxer);
-        if (!fitxer.exists()) {
-            System.out.println("Existe");
-        }
+
         StorageReference storageRef = storage.getReference();
         StorageReference imageRef = storageRef.child("images"+File.separator+imagepath);
 
@@ -824,12 +1048,12 @@ public class DatabaseAdapter{
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                System.out.println(exception.toString());
+                Log.d(TAG, exception.toString());
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                System.out.println("si");
+                Log.d(TAG, "Upload Successful");
             }
         });
 
@@ -870,7 +1094,7 @@ public class DatabaseAdapter{
         db.collection("content")
                 .document("roomImageNoteContent")
                 .collection("ImageNoteContent")
-                .whereEqualTo("owner", getCurrentUser())
+                //.whereEqualTo("owner", getCurrentUser())
                 .whereEqualTo("id", id)
                 .whereEqualTo("folderId", folderId)
                 .get()
@@ -954,6 +1178,117 @@ public class DatabaseAdapter{
                     }
                 });
 
+    }
+
+    /* Aquest mètode elimina per l'usuari actual, la nota compartida per un altre, de manera que l'atribut
+     * de la col·lecció  "shared" que és un array, elimina a l'usuari actual de la llista de usuaris compartits.
+     */
+    public void deleteSharedTextNote(String id, String folderId){
+        db.collection("notes")
+                .document("roomTextNotes")
+                .collection("textNotes")
+                .whereEqualTo("id", id)
+                .whereEqualTo("folderId", folderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                ArrayList<String> users = new ArrayList<String>();
+                                Map<String, Object> textNote = new HashMap<>();
+                                textNote.put("title", note.getString("title"));
+                                textNote.put("id", note.getString("id"));
+                                textNote.put("folderId", note.getString("folderId"));
+                                textNote.put("owner", note.getString("owner"));
+                                textNote.put("creation", (Timestamp) note.get("creation"));
+                                textNote.put("modify", (Timestamp) note.get("modify"));
+
+                                users = (ArrayList<String>) note.get("shared");
+                                if (users != null) {
+                                    boolean exist = false;
+                                    for (int i = 0; i < users.size(); i++) {
+                                        if(users.get(i).equals(getCurrentUser())){
+                                            users.remove(i);
+                                            i = users.size();
+                                        }
+                                    }
+                                    textNote.put("shared", users);
+                                    note.getReference().update(textNote)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "Document updated correctly");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.d(TAG, "Error updating document ");
+                                                }
+                                            });
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "Error deleting folder: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    /* Aquest mètode elimina per l'usuari actual, la nota compartida per un altre, de manera que l'atribut
+     * de la col·lecció  "shared" que és un array, elimina a l'usuari actual de la llista de usuaris compartits.*/
+    public void deleteSharedImageNote(String id, String folderId){
+        db.collection("notes")
+                .document("roomImageNotes")
+                .collection("imageNotes")
+                .whereEqualTo("id", id)
+                .whereEqualTo("folderId", folderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot note : task.getResult()) {
+                                ArrayList<String> users = new ArrayList<String>();
+                                Map<String, Object> textNote = new HashMap<>();
+                                textNote.put("title", note.getString("title"));
+                                textNote.put("id", note.getString("id"));
+                                textNote.put("folderId", note.getString("folderId"));
+                                textNote.put("owner", note.getString("owner"));
+                                textNote.put("creation", (Timestamp) note.get("creation"));
+                                textNote.put("modify", (Timestamp) note.get("modify"));
+
+                                users = (ArrayList<String>) note.get("shared");
+                                if (users != null) {
+                                    boolean exist = false;
+                                    for (int i = 0; i < users.size(); i++) {
+                                        if(users.get(i).equals(getCurrentUser())){
+                                            users.remove(i);
+                                            i = users.size();
+                                        }
+                                    }
+                                    textNote.put("shared", users);
+                                    note.getReference().update(textNote)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "Document updated correctly");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.d(TAG, "Error updating document ");
+                                                }
+                                            });
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "Error deleting folder: ", task.getException());
+                        }
+                    }
+                });
     }
 
     public void deleteTextNote(String id, String folderId){
@@ -1092,7 +1427,7 @@ public class DatabaseAdapter{
         db.collection("content")
                 .document("roomTextNoteContent")
                 .collection("TextNoteContent")
-                .whereEqualTo("owner", getCurrentUser())
+                //.whereEqualTo("owner", getCurrentUser())
                 .whereEqualTo("id", id)
                 .whereEqualTo("folderId", folderId)
                 .get()
@@ -1114,4 +1449,5 @@ public class DatabaseAdapter{
                     }
                 });
     }
+
 }

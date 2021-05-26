@@ -76,10 +76,12 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         switch (viewType) {
             case TEXTNOTE:
+                Log.d("OnCreateViewholder----------------->", "entro en nota de texto");
                 View v1 = inflater.inflate(R.layout.textnote_rv_card, parent, false);
                 viewHolder = new ViewHolderTextNotes(v1);
                 break;
             case IMAGENOTE:
+                Log.d("OnCreateViewholder----------------->", "entro en imagen");
                 View v2 = inflater.inflate(R.layout.imagenote_rv_card, parent, false);
                 viewHolder = new ViewHolderImageNotes(v2);
                 break;
@@ -106,6 +108,9 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         Bundle bundle = new Bundle();
                         bundle.putString("noteId", t.getId());
                         bundle.putString("folderId", t.getFolderId());
+                        bundle.putString("title", t.getTitle());
+                        //Passo aquesta dada per saber si estem accedint desde la opcio del menu "shared" o "notes".
+                        bundle.putString("tipus", "notes");
                         Navigation.findNavController(v).navigate(R.id.action_nav_noteList_to_TextNoteFragment, bundle);
                     }
                 });
@@ -372,7 +377,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.player = new MediaPlayer();
             AudioNote an = (AudioNote) localDataSet.get(position);
             String fileName = an.getAdress();
-            Log.d("startPlaying", fileName);
+            //Log.d("startPlaying", fileName);
             player.setDataSource(fileName);
             player.prepare();
             player.start();

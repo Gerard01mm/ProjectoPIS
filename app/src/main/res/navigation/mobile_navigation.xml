@@ -46,4 +46,16 @@
         android:name="com.example.my_notes.Content.TextNoteContentFragment"
         android:label="TextNoteContentFragment"
         tools:layout="@layout/fragment_textnote" />
+    <fragment
+        android:id="@+id/nav_sharedNotes"
+        android:name="com.example.my_notes.ui.sharedNotes.SharedNotesFragment"
+        android:label="fragment_shared_notes2"
+        tools:layout="@layout/fragment_shared_notes2" >
+        <action
+            android:id="@+id/action_nav_sharedNotes_to_textNoteContentFragment"
+            app:destination="@id/textNoteContentFragment" />
+        <action
+            android:id="@+id/action_nav_sharedNotes_to_imageNoteFragment"
+            app:destination="@id/imageNoteFragment" />
+    </fragment>
 </navigation>

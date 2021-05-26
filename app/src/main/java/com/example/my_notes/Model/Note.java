@@ -2,6 +2,7 @@ package com.example.my_notes.Model;
 
 import com.example.my_notes.DatabaseAdapter;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.Date;
 
@@ -11,7 +12,11 @@ public class Note {
     private final String DEFAULT_TITLE = "Titol per defecte";
 
     //Atributs
-    private String title, id, owner, folderId;
+    private String title;
+    private String id;
+    private String owner;
+    private String folderId;
+    private ArrayList<String> shared;
     private final Date creation_date;
     private Date modify_date;
 
@@ -52,6 +57,25 @@ public class Note {
     public Note(String title, String folderId, String id, String owner, Date creation, Date modify){
         this.title = title;
         this.folderId = folderId;
+        this.id = id;
+        this.owner = owner;
+        this.creation_date = creation;
+        this.modify_date = modify;
+    }
+
+    //Compartir nota
+    public Note(String title, String folderId, String id, String owner, ArrayList<String> shared, Date creation, Date modify){
+        this.title = title;
+        this.folderId = folderId;
+        this.id = id;
+        this.owner = owner;
+        this.shared = shared;
+        this.creation_date = creation;
+        this.modify_date = modify;
+    }
+
+    public Note(String title, String id, String owner, Date creation, Date modify){
+        this.title = title;
         this.id = id;
         this.owner = owner;
         this.creation_date = creation;

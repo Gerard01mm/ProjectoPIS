@@ -15,21 +15,35 @@
     tools:context=".Content.ImageNoteContentFragment">
 
 
-    <LinearLayout
-        android:id="@+id/layout_textNote"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:background="#FAD2D2"
-        android:gravity="right"
-        android:orientation="horizontal">
+        android:gravity="right">
 
         <ImageView
             android:id="@+id/saveImageNoteContent"
-            android:layout_width="44dp"
-            android:layout_height="41dp"
+            android:layout_width="35dp"
+            android:layout_height="34dp"
+            android:layout_alignParentRight="true"
             android:layout_gravity="right"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:src="@drawable/ic_baseline_save_24" />
-    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/shareImage"
+            android:layout_width="38dp"
+            android:layout_height="37dp"
+            android:layout_gravity="right"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/outline_people_black_24dp" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/addImage"

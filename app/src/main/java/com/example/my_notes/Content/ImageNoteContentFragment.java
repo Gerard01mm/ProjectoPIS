@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -21,9 +23,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.my_notes.R;
 import com.example.my_notes.Utils.UriUtils.UriUtils;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 import com.example.my_notes.Model.ImageNoteContent;
 import com.example.my_notes.Model.NotesContent;
@@ -31,8 +35,10 @@ import com.example.my_notes.Model.NotesContent;
 import static android.app.Activity.RESULT_OK;
 
 public class ImageNoteContentFragment extends Fragment {
-    private ImageView image, saveImageNote;
-    private String noteId, noteFolderId, lastSegment, textWriten, imagepathset, textset;
+    private ImageView image, saveImageNote, shareImage2;
+    private String noteId, noteFolderId, lastSegment, textWriten, imagepathset, textset, title;
+    private TextInputEditText userShareEmail;
+    private Button cancelShare, acceptShare;
     private EditText text;
     private ImageNoteContentViewModel imageNoteContentViewModel;
     private Context parentContext;
@@ -48,6 +54,7 @@ public class ImageNoteContentFragment extends Fragment {
         if (getArguments() != null){
             noteId = getArguments().getString("noteId");
             noteFolderId = getArguments().getString("folderId");
+            title = getArguments().getString("title");
         }
 
         imageNoteContentViewModel = new ViewModelProvider(this,
@@ -63,8 +70,48 @@ public class ImageNoteContentFragment extends Fragment {
         });
 
         text = root.findViewById(R.id.editTextImageNote);
-
         saveImageNote = root.findViewById(R.id.saveImageNoteContent);
+        shareImage2 = root.findViewById(R.id.shareImage);
+
+        shareImage2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder shareNote = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogshare = inflater.inflate(R.layout.dialogshare, null);
+
+                shareNote.setTitle("With which user do you want to share the note? ");
+                userShareEmail = (TextInputEditText) dialogshare.findViewById(R.id.userShareEmail);
+                cancelShare = (Button) dialogshare.findViewById(R.id.cancelButton);
+                acceptShare = (Button) dialogshare.findViewById(R.id.acceptButton);
+
+                AlertDialog content = shareNote.create();
+                content.setView(dialogshare);
+
+                acceptShare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean emailCorrect = true;
+                        Pattern pattern = Patterns.EMAIL_ADDRESS;
+                        emailCorrect = pattern.matcher(userShareEmail.getText().toString()).matches();
+                        if(!emailCorrect){
+                            userShareEmail.setError("Incorrect email format!");
+                        }else{
+                            imageNoteContentViewModel.checkEmail(userShareEmail.getText().toString(), noteId, noteFolderId, textWriten, title, userShareEmail, content);
+                        }
+                    }
+                });
+
+                cancelShare.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        content.dismiss();
+                    }
+                });
+                content.show();
+            }
+        });
+
         saveImageNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,10 +24,15 @@ import com.example.my_notes.R;
 
 import com.example.my_notes.Model.NotesContent;
 import com.example.my_notes.Model.TextNoteContent;
+import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.regex.Pattern;
 
 public class TextNoteContentFragment extends Fragment {
-    private ImageView shareText, saveTextNote;
-    private String noteId, noteFolderId, lastSegment, textWriten, imagepathset, textset;
+    private ImageView image, saveTextNote, shareImage2, shareText;
+    private String noteId, noteFolderId, lastSegment, textWriten, imagepathset, textset, title, tipus;
+    private TextInputEditText userShareEmail;
+    private Button cancelShare, acceptShare;
     private EditText text;
     private TextNoteContentViewModel textNoteContentViewModel;
     private Context parentContext;
@@ -38,15 +46,66 @@ public class TextNoteContentFragment extends Fragment {
         if (getArguments() != null){
             noteId = getArguments().getString("noteId");
             noteFolderId = getArguments().getString("folderId");
+            title = getArguments().getString("title");
+            tipus = getArguments().getString("tipus");
         }
 
         textNoteContentViewModel = new ViewModelProvider(this,
                 new TextNoteContentViewModelFactory(requireActivity().getApplication(), noteId, noteFolderId)).get(TextNoteContentViewModel.class);
 
-
         text = root.findViewById(R.id.editTextTextNote);
 
-        saveTextNote = root.findViewById(R.id.saveTextNoteContent);
+        shareImage2 = root.findViewById(R.id.shareImage);
+        saveTextNote = root.findViewById(R.id.saveImageNoteContent);
+        shareText = root.findViewById(R.id.shareText);
+
+        //Si la dada passada pel Bunddle és String = "shared", deshabilitem els botons del xtml.
+        if(tipus.equals("shared")){
+            shareImage2.setVisibility(View.INVISIBLE);
+            saveTextNote.setVisibility(View.INVISIBLE);
+            shareText.setVisibility(View.INVISIBLE);
+            text.setKeyListener(null);
+        }
+
+        shareImage2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder shareNote = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogshare = inflater.inflate(R.layout.dialogshare, null);
+
+                shareNote.setTitle("With which user do you want to share the note? ");
+                userShareEmail = (TextInputEditText) dialogshare.findViewById(R.id.userShareEmail);
+                cancelShare = (Button) dialogshare.findViewById(R.id.cancelButton);
+                acceptShare = (Button) dialogshare.findViewById(R.id.acceptButton);
+
+                AlertDialog content = shareNote.create();
+                content.setView(dialogshare);
+
+                acceptShare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean emailCorrect = true;
+                        Pattern pattern = Patterns.EMAIL_ADDRESS;
+                        emailCorrect = pattern.matcher(userShareEmail.getText().toString()).matches();
+                        if(!emailCorrect){
+                            userShareEmail.setError("Incorrect email format!");
+                        }else{
+                            textNoteContentViewModel.checkEmail(userShareEmail.getText().toString(), noteId, noteFolderId, textWriten, title, userShareEmail, content);
+                        }
+                    }
+                });
+
+                cancelShare.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        content.dismiss();
+                    }
+                });
+                content.show();
+            }
+        });
+
         saveTextNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +130,6 @@ public class TextNoteContentFragment extends Fragment {
             }
         });
 
-        shareText = root.findViewById(R.id.shareText);
         shareText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

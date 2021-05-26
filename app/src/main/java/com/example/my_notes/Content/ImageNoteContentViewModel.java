@@ -1,5 +1,6 @@
 package com.example.my_notes.Content;
 
+import android.app.AlertDialog;
 import android.app.Application;
 
 import androidx.lifecycle.MutableLiveData;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 import com.example.my_notes.Model.ImageNoteContent;
 import com.example.my_notes.Model.NotesContent;
+import com.google.android.material.textfield.TextInputEditText;
 
 
 public class ImageNoteContentViewModel extends ViewModel implements DatabaseAdapter.vmInterface {
@@ -45,6 +47,9 @@ public class ImageNoteContentViewModel extends ViewModel implements DatabaseAdap
         return imageNoteContent;
     }
 
+    public void checkEmail(String idUser, String noteId, String noteFolderId, String textWriten, String title, TextInputEditText userEmail, AlertDialog content){
+        adapter.checkEmailImatge(idUser, noteId, noteFolderId, textWriten, title, userEmail, content);
+    }
     @Override
     public void setCollection(ArrayList ac) {
         imageNoteContent.setValue((ImageNoteContent) ac.get(0));

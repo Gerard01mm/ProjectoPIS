@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.my_notes.DatabaseAdapter;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TextNote extends Note {
@@ -19,24 +20,40 @@ public class TextNote extends Note {
         super(title, folderId);
     }
 
+    //Notas compartidas
+    public TextNote(String title, String id, String folderId, String owner, ArrayList<String> shared,
+                    Date creation, Date modify){
+        super(title, folderId, id, owner, shared, creation, modify);
+    }
+
     public TextNote(String title, String id, String folderId, String owner,
                      Date creation, Date modify){
         super(title, folderId, id, owner, creation, modify);
     }
 
     public void saveTextNote(){
-        Log.d("saveTextNote", "adapter-> saveTextNote");
+        //Log.d("saveTextNote", "adapter-> saveTextNote");
         adapter.saveTextNote(getTitle(), getId() , getFolderId() , getOwner(),
                 getCreation_date(), getModify_date());
     }
 
     public void updateTextNote(){
-        Log.d("updateNote", "adapter-> updateNote");
+        //Log.d("updateNote", "adapter-> updateNote");
         adapter.updateTextNote(getTitle(), getFolderId(), getId(), getOwner(), getCreation_date(), new Date());
     }
 
     public void deleteTextNote(){
-        Log.d("deleteNote", "adapter-> deleteNote");
+        //Log.d("deleteNote", "adapter-> deleteNote");
         adapter.deleteTextNote(getId(), getFolderId());
+    }
+
+    /*Amb aquest mètode cridem a un del baseAdapter*/
+    public void deleteSharedTextNote(){
+        adapter.deleteSharedTextNote(getId(), getFolderId());
+    }
+
+    /*Amb aquest mètode cridem a un del baseAdapter*/
+    public void deleteSharedImageNote(){
+        adapter.deleteSharedImageNote(getId(), getFolderId());
     }
 }

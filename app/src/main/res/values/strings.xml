@@ -17,7 +17,7 @@
     <string name="menu_notes">Note Folders</string>
     <string name="menu_calendar">Calendar</string>
     <string name="menu_notelist">Notes</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_sharedNotes">Shared Notes</string>
 
     <!---ESTELA Strings de las layouts login_user y register_user-->
     <string name="app_name_mayus">MY NOTES</string>
@@ -80,5 +80,10 @@
 
     <!--Etiquetas de las notificaciones-->
     <string name="notify_channel">RemidnersChannel</string>
+
+    <!--Etiquetas compartir nota-->
+    <string name="aceptarShare">Accept</string>
+    <string name="cancelShare">Cancel</string>
+    <string name="sharedcard">Shared by: </string>
 
 </resources>

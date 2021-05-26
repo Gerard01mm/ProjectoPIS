@@ -7,38 +7,56 @@
     android:orientation="vertical"
     tools:context=".Content.TextNoteContentFragment">
 
-<LinearLayout
-        android:id="@+id/layout_textNote"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:background="#FAD2D2"
-        android:gravity="right"
-        android:orientation="horizontal">
+        android:gravity="right">
 
-    <ImageView
-        android:id="@+id/shareText"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginRight="325dp"
-        android:layout_weight="1"
-        android:src="?attr/actionModeShareDrawable" />
-
-    <ImageView
-            android:id="@+id/saveTextNoteContent"
-            android:layout_width="44dp"
-            android:layout_height="41dp"
+        <ImageView
+            android:id="@+id/shareText"
+            android:layout_width="38dp"
+            android:layout_height="34dp"
             android:layout_gravity="right"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@id/shareImage"
+            android:src="@drawable/share" />
+
+        <ImageView
+            android:id="@+id/saveImageNoteContent"
+            android:layout_width="35dp"
+            android:layout_height="34dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:src="@drawable/ic_baseline_save_24" />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/shareImage"
+            android:layout_width="38dp"
+            android:layout_height="37dp"
+            android:layout_gravity="right"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/outline_people_black_24dp" />
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/editTextTextNote"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="10dp"
         android:gravity="top"
         android:hint="@string/textImageNote"
-        android:inputType="textMultiLine"/>
+        android:inputType="textMultiLine" />
 
 
 
