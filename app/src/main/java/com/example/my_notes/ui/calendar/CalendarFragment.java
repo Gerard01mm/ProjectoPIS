@@ -220,9 +220,8 @@ public class CalendarFragment extends Fragment{
                                     @Override
                                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
                                         mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                        System.out.println("HORA " + mCalendar.get(Calendar.HOUR_OF_DAY));
                                         mCalendar.set(Calendar.MINUTE, minute);
-                                        System.out.println("MINUTO " + mCalendar.get(Calendar.MINUTE));
+                                        mCalendar.set(Calendar.SECOND, 0);
                                         //mCalendar.set(Calendar.SECOND, 0);
                                         String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(mCalendar.getTime());
                                         dateReminder.setText(time);

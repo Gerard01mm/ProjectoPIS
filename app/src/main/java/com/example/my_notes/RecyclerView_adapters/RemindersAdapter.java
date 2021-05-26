@@ -205,7 +205,6 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
                             //En cas que tinguessim ja un alarma configurada
                             if (selected.getAlarmPendingIntent() != null){
                                 //Cancelem l'antiga alarma
-                                System.out.println("CANCELEM L'ANTIGA ALARMA");
                                 alarmManager.cancel(selected.getAlarmPendingIntent());
                             }
 
@@ -238,6 +237,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
                                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
                                         mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                         mCalendar.set(Calendar.MINUTE, minute);
+                                        mCalendar.set(Calendar.SECOND, 0);
                                         String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(mCalendar.getTime());
                                         alert.setText(time);
 
