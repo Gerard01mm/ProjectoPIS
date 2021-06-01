@@ -130,11 +130,12 @@ public class CalendarFragment extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         calendarViewModel =
                 new ViewModelProvider(this).get(CalendarViewModel.class);
         View root = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-         this.alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
+        this.alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
 
         //Emmagatzem el context del pare
         this.parentContext = root.getContext();
@@ -167,6 +168,13 @@ public class CalendarFragment extends Fragment{
         this.add_reminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                adress = null;
+                country = null;
+                locality = null;
+                countrycode = null;
+                longitude = null;
+                latitude = null;
 
 
                 AlertDialog.Builder tit = new AlertDialog.Builder(getActivity());
@@ -252,7 +260,7 @@ public class CalendarFragment extends Fragment{
 
                             if (longitude == null || latitude == null || adress.equals("")) {
                                 Toast.makeText(getContext(), "Saving reminder with no location", Toast.LENGTH_SHORT).show();
-                                GeoLocation.getAdress(adress, getContext(), new GeoHandler());
+
                             }
 
                             PendingIntent pendingIntent = null;
