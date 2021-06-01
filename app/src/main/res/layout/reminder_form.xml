@@ -57,44 +57,6 @@
 
     </com.google.android.material.textfield.TextInputEditText>
 
-    <!--
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:id="@+id/mapfragmentcontainer"
-            android:layout_marginTop="20dp"
-            android:layout_height="150dp"
-            android:orientation="vertical"
-            android:tag="fragmentContainer">
-
-            <fragment
-                android:id="@+id/mapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                class="com.google.android.gms.maps.SupportMapFragment" />
-        </LinearLayout>
-
-        <fragment
-            class="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:id="@+id/mapp"
-            android:layout_marginTop="20dp"
-            android:layout_height="150dp" />
-
-          <RelativeLayout
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content">
-
-              <com.google.android.gms.maps.MapView
-                  android:id="@+id/mapView"
-                  android:layout_width="match_parent"
-                  android:layout_marginTop="20dp"
-                  android:layout_height="150dp"
-                  tools:context=".MainActivity">
-
-              </com.google.android.gms.maps.MapView>
-          </RelativeLayout>
-      -->
-
     <Button
         android:id="@+id/checklocbutton"
         android:layout_width="match_parent"
@@ -123,8 +85,9 @@
         android:id="@+id/add_alarm_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/alarm_black_24dp"
-        android:contentDescription="@string/form_description">
+        android:backgroundTint="#FFFFFF"
+        android:contentDescription="@string/form_description"
+        app:srcCompat="@drawable/alarm_black_24dp">
     </ImageButton>
 
     <TextView

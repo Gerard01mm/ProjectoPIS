@@ -247,7 +247,8 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
                                         //mCalendar.set(Calendar.DAY_OF_YEAR, calendar.getSelectedDate().getDay());
                                         mCalendar.set(Calendar.YEAR, calendar.getSelectedDate().getYear());
                                         mCalendar.set(Calendar.MONTH, calendar.getSelectedDate().getMonth());
-                                        mCalendar.set(Calendar.DAY_OF_MONTH, hourOfDay /*+ (calendar.getSelectedDate().getDay() - new CalendarDay().getDay()) * 24*/);
+                                        mCalendar.set(Calendar.DAY_OF_MONTH, calendar.getSelectedDate().getDay());
+                                        mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay /*+ (calendar.getSelectedDate().getDay() - new CalendarDay().getDay()) * 24*/);
                                         mCalendar.set(Calendar.MINUTE, minute);
                                         mCalendar.set(Calendar.SECOND, 0);
                                         String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(mCalendar.getTime());
