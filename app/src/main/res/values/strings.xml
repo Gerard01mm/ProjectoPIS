@@ -92,4 +92,6 @@
         <item>Sort by title</item>
     </string-array>
 
+    <string name="textNote">Text note</string>
+    <string name="imageNote">Image note</string>
 </resources>
