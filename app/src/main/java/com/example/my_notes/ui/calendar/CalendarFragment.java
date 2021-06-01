@@ -258,7 +258,7 @@ public class CalendarFragment extends Fragment{
                             Intent intent = null;
 
                             //En cas que hi hagi seleccionada una hora configurarà l'alarma
-                            if(mCalendar != null) {
+                            if(timeInMillis != null) {
 
                                 //Guardem el titol,d escripcio i id al intent
                                 intent = new Intent(requireContext(), AlarmReceiver.class);
@@ -277,6 +277,8 @@ public class CalendarFragment extends Fragment{
                                 System.out.println("TIME IN MILLIS" + mCalendar.getTimeInMillis());
 
                                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+
+                                timeInMillis = null;
                             }
 
                             calendarViewModel.addReminder(title, description, dateReminder.getText().toString(),
