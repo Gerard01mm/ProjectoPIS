@@ -32,6 +32,7 @@ public class AudioNote extends Note {
 
     public void updateAudioNote(){
         Log.d("updateAudioNote", "adapter-> updateAudioNote");
+        setModify_date();
         adapter.updateAudioNote(getId(), getTitle(), getOwner(), getFolderId(), getCreation_date(), getModify_date(), this.adress, this.audioName);
     }
 

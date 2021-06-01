@@ -39,6 +39,7 @@ public class TextNote extends Note {
 
     public void updateTextNote(){
         //Log.d("updateNote", "adapter-> updateNote");
+        setModify_date();
         adapter.updateTextNote(getTitle(), getFolderId(), getId(), getOwner(), getCreation_date(), new Date());
     }
 

@@ -40,6 +40,7 @@ public class ImageNote extends Note {
     }
     public void updateImageNote(){
         //Log.d("updateNote", "adapter-> updateNote");
+        setModify_date();
         adapter.updateImageNote(getTitle(), getFolderId(), getId(), getOwner(), getCreation_date(), new Date());
     }
 }

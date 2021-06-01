@@ -126,6 +126,10 @@ public class Note {
         return this.modify_date;
     }
 
+    public void setModify_date(){
+        this.modify_date = new Date();
+    }
+
 
     /**
      * Aquesta funció ens permetra recuperar el ID de la nota.

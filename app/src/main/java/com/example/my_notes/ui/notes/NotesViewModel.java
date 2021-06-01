@@ -14,6 +14,9 @@ import com.example.my_notes.Model.AudioNote;
 import com.example.my_notes.Model.ImageNote;
 import com.example.my_notes.Model.Note;
 import com.example.my_notes.Model.TextNote;
+import com.example.my_notes.Utils.ArrayListComparator.DateSorter;
+import com.example.my_notes.Utils.ArrayListComparator.ModifyDateSorter;
+import com.example.my_notes.Utils.ArrayListComparator.TitleSorter;
 
 public class NotesViewModel extends ViewModel implements DatabaseAdapter.vmInterface{
 
@@ -117,5 +120,27 @@ public class NotesViewModel extends ViewModel implements DatabaseAdapter.vmInter
     }
     public Note getNote(int idx){
         return mNotes.getValue().get(idx);
+    }
+
+    public void sortByCreationDate() {
+        if (mNotes.getValue() != null) {
+            mNotes.getValue().sort(new DateSorter());
+            mNotes.setValue(mNotes.getValue());
+        }
+    }
+
+    public void sortByModifyDate() {
+        if (mNotes.getValue() != null){
+            mNotes.getValue().sort(new ModifyDateSorter());
+            mNotes.setValue(mNotes.getValue());
+        }
+
+    }
+
+    public void sortByTitle() {
+        if (mNotes.getValue() != null) {
+            mNotes.getValue().sort(new TitleSorter());
+            mNotes.setValue(mNotes.getValue());
+        }
     }
 }

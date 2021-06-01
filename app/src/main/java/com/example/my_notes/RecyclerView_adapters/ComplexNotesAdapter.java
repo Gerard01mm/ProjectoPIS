@@ -105,6 +105,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     @Override
                     public void onClick(View v) {
                         TextNote t = (TextNote) localDataSet.get(position);
+                        t.setModify_date();
                         Bundle bundle = new Bundle();
                         bundle.putString("noteId", t.getId());
                         bundle.putString("folderId", t.getFolderId());
@@ -122,6 +123,7 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     @Override
                     public void onClick(View v) {
                         ImageNote n = (ImageNote) localDataSet.get(position);
+                        n.setModify_date();
                         Bundle bundle = new Bundle();
                         bundle.putString("noteId", n.getId());
                         bundle.putString("folderId", n.getFolderId());

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -189,9 +190,15 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
                             @Override
                             public void onChooseColor(int idx,int color) {
                                 NoteFolder n = localDataSet.get(position);
-                                n.setColor(color);
-                                n.updateFolder();
-                                notifyDataSetChanged();
+                                if(color != 0){
+                                    n.setColor(color);
+                                    n.updateFolder();
+                                    notifyDataSetChanged();
+                                }else{
+                                    n.setColor(Color.parseColor("#ffffff"));
+                                    n.updateFolder();
+                                    notifyDataSetChanged();
+                                }
                             }
 
                             @Override
@@ -201,7 +208,8 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
                         })
                         .setRoundColorButton(true)
                         .setColumns(5)
-                        .setTitle("Choose a new folder color")
+                        .setTitle("Choose a new folder color or press OK without selecting any color for " +
+                                "choosing white")
                         .show();
                     }
                 });

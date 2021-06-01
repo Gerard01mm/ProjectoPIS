@@ -1,13 +1,13 @@
 package com.example.my_notes.Utils.ArrayListComparator;
 
-import java.util.Comparator;
-
 import com.example.my_notes.Model.Note;
 
-public class DateSorter extends Sorter {
+import java.util.Comparator;
+
+public class TitleSorter extends Sorter {
 
     @Override
     public int compare(Note o1, Note o2) {
-        return o1.getCreation_date().compareTo(o2.getCreation_date());
+        return o1.getTitle().compareTo(o2.getTitle());
     }
 }

@@ -86,4 +86,10 @@
     <string name="cancelShare">Cancel</string>
     <string name="sharedcard">Shared by: </string>
 
+    <string-array name="Sort">
+        <item>Sort by creation date</item>
+        <item>Sort by last modify date</item>
+        <item>Sort by title</item>
+    </string-array>
+
 </resources>

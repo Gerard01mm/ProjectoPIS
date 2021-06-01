@@ -63,8 +63,13 @@ public class FolderFragment extends Fragment {
                     colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
                         @Override
                         public void onChooseColor(int position,int color) {
-                            String input_text = input.getText().toString();
-                            folderViewModel.addFolder(input_text, color);
+                            if (color != 0){
+                                String input_text = input.getText().toString();
+                                folderViewModel.addFolder(input_text, color);
+                            }else{
+                                String input_text = input.getText().toString();
+                                folderViewModel.addFolder(input_text, Color.parseColor("#ffffff"));
+                            }
                         }
 
                         @Override

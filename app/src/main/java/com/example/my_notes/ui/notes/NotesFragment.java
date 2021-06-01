@@ -11,9 +11,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.my_notes.R;
@@ -50,6 +52,7 @@ public class NotesFragment extends Fragment {
     private MediaRecorder recorder;
     private boolean isRecording = false;
     private int backgroundColor;
+    private Spinner spinner_sort;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -70,6 +73,29 @@ public class NotesFragment extends Fragment {
         parentContext = root.getContext();
         layoutManager = new LinearLayoutManager(parentContext);
         nRecyclerView.setLayoutManager(layoutManager);
+
+        spinner_sort = root.findViewById(R.id.spinner_sort);
+        spinner_sort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        notesViewModel.sortByCreationDate();
+                        break;
+                    case 1:
+                        notesViewModel.sortByModifyDate();
+                        break;
+                    case 2:
+                        notesViewModel.sortByTitle();
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         fab = root.findViewById(R.id.extended_fab_notes);
         fabText = root.findViewById(R.id.extended_fab_textNote);
