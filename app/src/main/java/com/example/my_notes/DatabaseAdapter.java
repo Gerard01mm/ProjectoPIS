@@ -693,6 +693,48 @@ public class DatabaseAdapter{
                 });
     }
 
+
+    /**
+     * Aquesta funció retorna el número total de recordatoris que té un usuari. Servirà per
+     * recuperar el id correcte i evitar que es solapin les notificacions
+     * @return Numero de recordatoris que tingui un usuari
+     */
+    public int getNumberOfReminders(){
+        int[] counter = {0};
+        db.collection("reminders")
+                .whereEqualTo("owner", getCurrentUser())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            //ArrayList<Reminder> retrieved_ac = new ArrayList<>();
+                            for (QueryDocumentSnapshot reminder : task.getResult()){
+                                counter[0]++;
+                                //Log.d(TAG, reminder.getId() + " => " + reminder.getData());
+                                /*
+                                retrieved_ac.add(new Reminder(reminder.getString("title"),
+                                        reminder.getString("description"),
+                                        reminder.getString("alert"),
+                                        reminder.getString("date"),
+                                        reminder.getString("id"),
+                                        reminder.getString("owner"),
+                                        reminder.getDouble("longitude"),
+                                        reminder.getDouble("latitude"),
+                                        reminder.getString("country"),
+                                        reminder.getString("locality"),
+                                        reminder.getString("countrycode")));*/
+                            }
+                        }
+                        else{
+                            Log.d(TAG,"Error getting reminders: ", task.getException());
+                        }
+                    }
+                });
+
+        return counter[0];
+    }
+
     /* Mètode que agafa les notes que siguin compartides amb el currentUser mirant el camp
      * "shared" que és un array, per veure si conté el correu electronic del usuuari actual. */
     public void getCollectionNotesBySharedToUser(){
@@ -706,8 +748,8 @@ public class DatabaseAdapter{
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            ArrayList<String> userShared = new ArrayList<String>();
                             for (QueryDocumentSnapshot note : task.getResult()) {
-                                ArrayList<String> userShared = new ArrayList<String>();
                                 userShared = (ArrayList<String>) note.get("shared");
                                 sharedNotes.add(new TextNote( note.getString("title"),
                                         note.getString("id"), note.getString("folderId"),

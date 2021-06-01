@@ -27,6 +27,8 @@ import com.example.my_notes.Notify.AlarmReceiver;
 import com.example.my_notes.R;
 import com.example.my_notes.Model.Reminder;
 import com.google.android.material.textfield.TextInputEditText;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -53,6 +55,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
     private AlarmManager alarmManager;
     private Long timeInMillis = null;
     private int ID;
+    private MaterialCalendarView calendar;
 
     private String icon1 = null, icon2 = null, icon3 = null, desc1 = null, desc2 = null, desc3 = null;
 
@@ -94,12 +97,13 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
      * @param current Context
      * @param reminders Llistat de reminders.
      */
-    public RemindersAdapter(Context current, ArrayList<Reminder> reminders, Activity act, AlarmManager alarmManager, int ID){
+    public RemindersAdapter(Context current, ArrayList<Reminder> reminders, Activity act, AlarmManager alarmManager, int ID, MaterialCalendarView calendar){
         this.parentContext = current;
         this.localDataSet = reminders;
         this.parentActivity = act;
         this.alarmManager = alarmManager;
         this.ID = ID;
+        this.calendar = calendar;
     }
 
 
@@ -145,22 +149,25 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
                 if (selected.getLongitude() == null && selected.getLatitude() == null){
                     LinearLayout linearLayout = (LinearLayout) vista.findViewById(R.id.allLocation);
                     linearLayout.setVisibility(View.INVISIBLE);
-                }else{
-                getClimaData(selected.getLatitude(), selected.getLongitude(), selected.getCountrycode(), vista);
-                TextView loc = (TextView) vista.findViewById(R.id.textViewInfoLoc);
-                String s = null;
-                DecimalFormat numberFormat = new DecimalFormat("#.000");
-                if (selected.getLocality() == null){
-                    s = "\n" + selected.getCountry() + "\nLatitude: " + numberFormat.format(selected.getLatitude().doubleValue()) +
+                }
+                else{
+                    getClimaData(selected.getLatitude(), selected.getLongitude(), selected.getCountrycode(), vista);
+                    TextView loc = (TextView) vista.findViewById(R.id.textViewInfoLoc);
+                    String s = null;
+                    DecimalFormat numberFormat = new DecimalFormat("#.000");
+
+                    if (selected.getLocality() == null){
+                        s = "\n" + selected.getCountry() + "\nLatitude: " + numberFormat.format(selected.getLatitude().doubleValue()) +
                             "\nLongitude: " + numberFormat.format(selected.getLongitude().doubleValue()) + "\n";
-                }else{
-                    s = "\n" + selected.getLocality() + ", " + selected.getCountry() +
+                    }
+
+                    else{
+                        s = "\n" + selected.getLocality() + ", " + selected.getCountry() +
                             "\nLatitude: " + numberFormat.format(selected.getLatitude().doubleValue()) +
                             "\nLongitude: " + numberFormat.format(selected.getLongitude().doubleValue()) + "\n";
+                    }
+                    loc.setText(s);
                 }
-
-                loc.setText(s);
-            }
 
 
                 TextInputEditText title = (TextInputEditText)vista.findViewById(R.id.reminder_title_content);
@@ -213,6 +220,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
                             intent.putExtra(TITLE_KEY, selected.getTitle());
                             intent.putExtra(CONTENT_KEY, selected.getDescription());
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(parentContext, ID, intent, 0);
+                            ID++;
 
                             selected.setAlarmIntent(intent);
                             selected.setAlarmPendingIntent(pendingIntent);
@@ -235,7 +243,11 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
                                 new TimePickerDialog(parentActivity, new TimePickerDialog.OnTimeSetListener() {
                                     @Override
                                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-                                        mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                        //Añadir año
+                                        //mCalendar.set(Calendar.DAY_OF_YEAR, calendar.getSelectedDate().getDay());
+                                        mCalendar.set(Calendar.YEAR, calendar.getSelectedDate().getYear());
+                                        mCalendar.set(Calendar.MONTH, calendar.getSelectedDate().getMonth());
+                                        mCalendar.set(Calendar.DAY_OF_MONTH, hourOfDay /*+ (calendar.getSelectedDate().getDay() - new CalendarDay().getDay()) * 24*/);
                                         mCalendar.set(Calendar.MINUTE, minute);
                                         mCalendar.set(Calendar.SECOND, 0);
                                         String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(mCalendar.getTime());

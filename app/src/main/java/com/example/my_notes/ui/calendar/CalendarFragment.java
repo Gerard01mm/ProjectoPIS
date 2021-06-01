@@ -123,9 +123,8 @@ public class CalendarFragment extends Fragment{
     private Double longitude = null;
     private Double latitude = null;
     private final String EMPTY_INPUT = "Text area is empty";
-    private int flags = 0;
     private int ID = 0;
-    private long timeInMillis;
+    private Long timeInMillis = null;
     private AlarmManager alarmManager;
 
 
@@ -152,7 +151,6 @@ public class CalendarFragment extends Fragment{
         this.calendar.setSelectedDate(today);
         this.calendarViewModel.remindersDaySelected(today.toString());
 
-        this.calendar.setSelectedDate(new CalendarDay());
         this.calendar.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
@@ -204,7 +202,6 @@ public class CalendarFragment extends Fragment{
                         else {
                             adress = location.getText().toString();
                             GeoLocation.getAdress(adress, getContext(), new GeoHandler());
-
                         }
                     }
                 });
@@ -219,10 +216,19 @@ public class CalendarFragment extends Fragment{
                                 new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                                     @Override
                                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-                                        mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                        //mCalendar.set(Calendar.DAY_OF_YEAR, calendar.getSelectedDate().getDay() - new CalendarDay().getDay());
+
+                                        Log.d(TAG, calendar.getSelectedDate().getDay() + "");
+                                        Log.d(TAG, new CalendarDay().getDay() + "");
+
+                                        //System.out.println("EL valor del dia es " + mCalendar.get(Calendar.DAY_OF_YEAR));
+                                        mCalendar.set(Calendar.YEAR, calendar.getSelectedDate().getYear());
+                                        mCalendar.set(Calendar.MONTH, calendar.getSelectedDate().getMonth());
+                                        mCalendar.set(Calendar.DAY_OF_MONTH, calendar.getSelectedDate().getDay());
+                                        mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay /*+ (calendar.getSelectedDate().getDay() - new CalendarDay().getDay()) * 24*/);
                                         mCalendar.set(Calendar.MINUTE, minute);
                                         mCalendar.set(Calendar.SECOND, 0);
-                                        //mCalendar.set(Calendar.SECOND, 0);
+
                                         String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(mCalendar.getTime());
                                         dateReminder.setText(time);
                                         Log.d("MainActivity", "Selected time is " + time);
@@ -263,9 +269,8 @@ public class CalendarFragment extends Fragment{
 
                                 pendingIntent = PendingIntent.getBroadcast(requireContext(), ID , intent, 0);
 
-                                //Incremerntem el id i els flags per evitar solapaments.
+                                //Incremerntem el id per evitar solapaments.
                                 ID++;
-                                flags++;
 
                                 System.out.println("HORA SELECCIONADA " + mCalendar.get(Calendar.HOUR_OF_DAY) +"\nMINUTO SELECCIONADO " + mCalendar.get(Calendar.MINUTE));
 
@@ -291,6 +296,7 @@ public class CalendarFragment extends Fragment{
 
         createNotificationChannel();
         setLiveDataObservers();
+        this.ID = this.setID(); // AJustem l'id per evitar solapaments amb altres recordatoris
         return root;
     }
 
@@ -305,7 +311,7 @@ public class CalendarFragment extends Fragment{
 
             @Override
             public void onChanged(ArrayList<Reminder> reminders) {
-                RemindersAdapter newAdapter = new RemindersAdapter(parentContext, reminders, getActivity(), alarmManager, ID);
+                RemindersAdapter newAdapter = new RemindersAdapter(parentContext, reminders, getActivity(), alarmManager, ID, calendar);
                 reminder_list.swapAdapter(newAdapter, false);
                 newAdapter.notifyDataSetChanged();
             }
@@ -369,4 +375,11 @@ public class CalendarFragment extends Fragment{
         }
     }
 
+    /**
+     * Aquesta funció servirà per ajustar l'id dels recordatoris per evitar solapaments
+     * @return Valor del id
+     */
+    private int setID(){
+        return this.calendarViewModel.getNumberOfReminders();
+    }
 }

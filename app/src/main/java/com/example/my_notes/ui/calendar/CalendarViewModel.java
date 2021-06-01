@@ -46,6 +46,16 @@ public class CalendarViewModel extends ViewModel implements DatabaseAdapter.vmIn
 
 
     /**
+     * Aquesta funció s'encarregad e cridar a la funcio getNumberOfReminders del databse
+     * per poder recuperar el id i evitar solapaments en les notificacions
+     * @return numero de recordatoris d'un usuari
+     */
+    public int getNumberOfReminders(){
+        return this.da.getNumberOfReminders();
+    }
+
+
+    /**
      * Aquesta funció ens retorna la llista de Toast
      * @return MutableLiveData de Toast.
      */
