@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class ImageNoteContentFragment extends Fragment {
     private ImageView image, saveImageNote, shareImage2;
-    private String noteId, noteFolderId, lastSegment, textWriten, imagepathset, textset, title;
+    private String noteId, noteFolderId, lastSegment, textWriten, imagepathset, textset, title, tipus;
     private TextInputEditText userShareEmail;
     private Button cancelShare, acceptShare;
     private EditText text;
@@ -55,23 +56,32 @@ public class ImageNoteContentFragment extends Fragment {
             noteId = getArguments().getString("noteId");
             noteFolderId = getArguments().getString("folderId");
             title = getArguments().getString("title");
+            tipus = getArguments().getString("tipus");
         }
 
         imageNoteContentViewModel = new ViewModelProvider(this,
                 new ImageNoteContentViewModelFactory(requireActivity().getApplication(), noteId, noteFolderId)).get(ImageNoteContentViewModel.class);
 
-
-        image = root.findViewById(R.id.addImage);
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                carregarImatge();
-            }
-        });
-
         text = root.findViewById(R.id.editTextImageNote);
         saveImageNote = root.findViewById(R.id.saveImageNoteContent);
         shareImage2 = root.findViewById(R.id.shareImage);
+
+        //Si la dada passada pel Bunddle és String = "shared", deshabilitem els botons del xtml.
+        if(tipus.equals("shared")){
+            shareImage2.setVisibility(View.INVISIBLE);
+            saveImageNote.setVisibility(View.INVISIBLE);
+            text.setKeyListener(null);
+        } else {
+
+            image = root.findViewById(R.id.addImage);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    carregarImatge();
+                }
+            });
+
+        }
 
         shareImage2.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -166,6 +176,13 @@ public class ImageNoteContentFragment extends Fragment {
                 if(imageNoteContent.getImagepath() != null){
                     File f = new File(imageNoteContent.getImagepath());
                     Uri uri = Uri.fromFile(f);
+                    if(f.exists()){
+                        Log.d("IMAAAGEEE NOOOTEE -------------------->", "Existe el fichero");
+                        System.out.println("Exxistee el fichero");
+                    }else{
+                        Log.d("IMAAAGEEE NOOOTEE -------------------->", "Pues no existe");
+                        System.out.println("Pues no existe");
+                    }
                     image.setImageURI(uri);
                 }
                 text.setText(imageNoteContent.getTextNote());

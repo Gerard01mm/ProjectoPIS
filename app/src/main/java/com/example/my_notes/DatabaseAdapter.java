@@ -775,7 +775,7 @@ public class DatabaseAdapter{
                             for (QueryDocumentSnapshot note : task.getResult()) {
                                 ArrayList<String> userShared = new ArrayList<String>();
                                 userShared = (ArrayList<String>) note.get("shared");
-                                notesInFolder.add(new ImageNote( note.getString("title"),
+                                sharedNotes.add(new ImageNote( note.getString("title"),
                                         note.getString("id"), note.getString("folderId"),
                                         note.getString("owner"), userShared, note.getDate("creation"),
                                         note.getDate("modify")));
@@ -1404,7 +1404,7 @@ public class DatabaseAdapter{
                 });
     }
 
-    public void deleteImageNoteContent (String id, String folderId) {
+public void deleteImageNoteContent (String id, String folderId) {
         Log.d(TAG, "saveImageNoteContent");
         // Add a new document with a generated ID
         db.collection("content")

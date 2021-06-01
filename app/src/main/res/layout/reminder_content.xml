@@ -1,233 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="350dp"
     android:layout_height="wrap_content"
-    android:padding="20dp"
     android:orientation="vertical"
+    android:padding="20dp"
     android:paddingRight="30dp">
 
     <!--Titulo-->
 
-    <TextView
-        android:text="@string/form_title"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </TextView>
+        android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/reminder_title_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </com.google.android.material.textfield.TextInputEditText>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/form_description"
+                android:textSize="@dimen/formDescriptionSize"
+                android:textStyle="bold"></TextView>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reminder_descp_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/form_title"
+                android:textSize="@dimen/formDescriptionSize"
+                android:textStyle="bold"></TextView>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reminder_title_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="27dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/change_alarm"
+                    android:textSize="@dimen/formDescriptionSize"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:id="@+id/alertTextView"
+                    android:layout_width="81dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:padding="5dp"
+                    android:textAlignment="textStart">
+
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/change_alarm_button"
+                    android:layout_width="28dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/form_description"
+                    app:srcCompat="@drawable/alarm_black_24dp">
+
+                </ImageView>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:id="@+id/allLocation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="33dp"
+                    android:text="@string/location"
+                    android:textSize="@dimen/formDescriptionSize"
+                    android:textStyle="bold"></TextView>
+
+                <ImageView
+                    android:id="@+id/flag"
+                    android:layout_width="93dp"
+                    android:layout_height="50dp"
+                    app:srcCompat="@drawable/ic_baseline_flag_24" />
+
+                <TextView
+                    android:id="@+id/textViewInfoLoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <Space
+                        android:id="@+id/sp2"
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/lizq" />
+
+                    <Space
+                        android:id="@+id/sp1"
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/lcen" />
+
+                    <LinearLayout
+                        android:id="@+id/lcen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/sp2"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/dia2"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:textAlignment="center" />
+
+                        <ImageView
+                            android:id="@+id/icon2"
+                            android:layout_width="93dp"
+                            android:layout_height="93dp"
+                            app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+
+                        <TextView
+                            android:id="@+id/infodia2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/sp1"
+                        android:foregroundGravity="right"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/dia3"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:textAlignment="center" />
+
+                        <ImageView
+                            android:id="@+id/icon3"
+                            android:layout_width="93dp"
+                            android:layout_height="93dp"
+                            app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+
+                        <TextView
+                            android:id="@+id/infodia3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lizq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/dia1"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:textAlignment="center" />
+
+                        <ImageView
+                            android:id="@+id/icon1"
+                            android:layout_width="93dp"
+                            android:layout_height="93dp"
+                            app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+
+                        <TextView
+                            android:id="@+id/infodia1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/reminder_delete_button"
+                    android:layout_width="41dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    app:srcCompat="@drawable/delete_black_24dp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/reminder_delete_button"
+                    android:layout_marginStart="-46dp"
+                    android:layout_marginEnd="-264dp"
+                    android:layout_toEndOf="@+id/reminder_delete_button" />
+
+                <ImageView
+                    android:id="@+id/reminder_save_button"
+                    android:layout_width="41dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center|right|center_vertical"
+                    android:layout_marginEnd="7dp"
+                    app:srcCompat="@drawable/save_black_24dp">
+
+                </ImageView>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 
 
     <!--Description-->
-    <TextView
-        android:text="@string/form_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </TextView>
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/reminder_descp_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </com.google.android.material.textfield.TextInputEditText>
-
-    <LinearLayout
-        android:id="@+id/allLocation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/location"></TextView>
-
-        <ImageView
-            android:id="@+id/flag"
-            android:layout_width="93dp"
-            android:layout_height="50dp"
-            app:srcCompat="@drawable/ic_baseline_flag_24" />
-
-        <TextView
-            android:id="@+id/textViewInfoLoc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <Space
-                android:id="@+id/sp2"
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/lizq" />
-
-            <Space
-                android:id="@+id/sp1"
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/lcen" />
-
-            <LinearLayout
-                android:id="@+id/lcen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/sp2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/dia2"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:textAlignment="center" />
-
-                <ImageView
-                    android:id="@+id/icon2"
-                    android:layout_width="93dp"
-                    android:layout_height="93dp"
-                    app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
-
-                <TextView
-                    android:id="@+id/infodia2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/sp1"
-                android:foregroundGravity="right"
-                android:gravity="right"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/dia3"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:textAlignment="center" />
-
-                <ImageView
-                    android:id="@+id/icon3"
-                    android:layout_width="93dp"
-                    android:layout_height="93dp"
-                    app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
-
-                <TextView
-                    android:id="@+id/infodia3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lizq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/dia1"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:textAlignment="center" />
-
-                <ImageView
-                    android:id="@+id/icon1"
-                    android:layout_width="93dp"
-                    android:layout_height="93dp"
-                    app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
-
-                <TextView
-                    android:id="@+id/infodia1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/change_alarm"
-        android:textSize="@dimen/formDescriptionSize">
-    </TextView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/alertTextView"
-            android:layout_width="285dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left">
-
-        </TextView>
-
-        <ImageView
-            android:id="@+id/change_alarm_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/form_description"
-            app:srcCompat="@drawable/alarm_black_24dp">
-
-        </ImageView>
-
-    </LinearLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="41dp" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/reminder_delete_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/delete_black_24dp" />
-
-        <Space
-            android:layout_width="262dp"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:id="@+id/reminder_save_button"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_gravity="right"
-            app:srcCompat="@drawable/save_black_24dp">
-
-        </ImageView>
-    </LinearLayout>
 
 </LinearLayout>

@@ -1,7 +1,6 @@
 package com.example.my_notes.RecyclerView_adapters;
 
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,7 +11,7 @@ import com.example.my_notes.R;
 
 public class ViewHolderImageNotes extends RecyclerView.ViewHolder {
     private ImageView typeImage, editImageNote;
-    private TextView imageNoteDate, imageNoteTitle;
+    private TextView imageNoteDate, imageNoteTitle, sharedBy, sharedEmail;
     private LinearLayout imageNoteLayout;
 
     public ViewHolderImageNotes(View v){
@@ -22,6 +21,21 @@ public class ViewHolderImageNotes extends RecyclerView.ViewHolder {
         this.imageNoteTitle = v.findViewById(R.id.imageNoteTitle);
         this.imageNoteLayout = v.findViewById(R.id.imagenote_layout);
         this.editImageNote = v.findViewById(R.id.editImageNote);
+    }
+    public ViewHolderImageNotes(View v, String nota){
+        super(v);
+        this.typeImage = v.findViewById(R.id.typeImage);
+        this.imageNoteDate = v.findViewById(R.id.imageNoteDate);
+        this.imageNoteTitle = v.findViewById(R.id.imageNoteTitle);
+        this.imageNoteLayout = v.findViewById(R.id.imagenote_layout);
+        this.editImageNote = v.findViewById(R.id.editImageNote);
+        this.sharedBy = v.findViewById(R.id.sharedBy);
+        this.sharedEmail = v.findViewById(R.id.sharedEmail);
+
+    }
+
+    public TextView getSharedEmail() {
+        return sharedEmail;
     }
 
     public ImageView getTypeImage() {

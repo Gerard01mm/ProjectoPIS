@@ -125,6 +125,8 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         Bundle bundle = new Bundle();
                         bundle.putString("noteId", n.getId());
                         bundle.putString("folderId", n.getFolderId());
+                        //Passo aquesta dada per saber si estem accedint desde la opcio del menu "shared" o "notes".
+                        bundle.putString("tipus", "notes");
                         Navigation.findNavController(v).navigate(R.id.action_nav_noteList_to_imageNoteFragment, bundle);
                     }
                 });

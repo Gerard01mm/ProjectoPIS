@@ -13,7 +13,7 @@
     app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:id="@+id/textnote_layout"
+        android:id="@+id/imagenote_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -22,7 +22,7 @@
 
 
         <ImageView
-            android:id="@+id/typeText"
+            android:id="@+id/typeImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
@@ -43,7 +43,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/NoteTitle"
+                android:id="@+id/imageNoteTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -52,7 +52,7 @@
                 android:textStyle="bold"></TextView>
 
             <TextView
-                android:id="@+id/NoteDate"
+                android:id="@+id/imageNoteDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

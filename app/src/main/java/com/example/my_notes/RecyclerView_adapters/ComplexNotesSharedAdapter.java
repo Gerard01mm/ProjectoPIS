@@ -35,7 +35,7 @@ public class ComplexNotesSharedAdapter extends RecyclerView.Adapter<RecyclerView
     //Atributs de la classe
     private ArrayList<Note> localDataSet;
     private final Context parentContext;
-    private final int TEXTNOTE = 0, IMAGENOTE = 1, AUDIONOTE = 2;
+    private final int TEXTNOTE = 0, IMAGENOTE = 1;
 
     private Runnable runnable;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -49,13 +49,10 @@ public class ComplexNotesSharedAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemViewType(int position) {
-        System.out.println(localDataSet.get(position).getId());
         if (localDataSet.get(position) instanceof TextNote) {
             return TEXTNOTE;
         } else if (localDataSet.get(position) instanceof ImageNote) {
             return IMAGENOTE;
-        }else if (localDataSet.get(position) instanceof AudioNote){
-            return AUDIONOTE;
         }
         return -1;
     }
@@ -68,14 +65,12 @@ public class ComplexNotesSharedAdapter extends RecyclerView.Adapter<RecyclerView
 
         switch (viewType) {
             case TEXTNOTE:
-                Log.d("COMPLEEX: ", "entroooo aquiiiiii");
                 View v1 = inflater.inflate(R.layout.textnoteshared_rv_card, parent, false);
                 viewHolder = new ViewHolderTextNotes(v1, "");
                 break;
             case IMAGENOTE:
-                Log.d("COMPLEEX: ", "entroooo 22222222");
                 View v2 = inflater.inflate(R.layout.imagenoteshared_rv_card, parent, false);
-                viewHolder = new ViewHolderImageNotes(v2);
+                viewHolder = new ViewHolderImageNotes(v2, "");
                 break;
             default:
                 break;
@@ -115,6 +110,9 @@ public class ComplexNotesSharedAdapter extends RecyclerView.Adapter<RecyclerView
                         bundle.putString("noteId", n.getId());
                         bundle.putString("folderId", n.getFolderId());
                         bundle.putString("title", n.getTitle());
+                        /*Passo aquesta dada per saber si estem accedint desde la opcio del menu "shared" o "notes".
+                         * Per a poder deshabilitar els ImageBottom a l'hora de obrir una nota compartida.*/
+                        bundle.putString("tipus", "shared");
                         Navigation.findNavController(v).navigate(R.id.action_nav_sharedNotes_to_imageNoteFragment, bundle);
                     }
                 });
@@ -180,7 +178,7 @@ public class ComplexNotesSharedAdapter extends RecyclerView.Adapter<RecyclerView
             String dateString = df.format(dateC);
             vh2.getImageNoteDate().setText(dateString);
             vh2.getImageNoteTitle().setText(inote.getTitle());
-
+            vh2.getSharedEmail().setText(inote.getOwner());
             vh2.getImageNoteLayout().setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.my_notes.Model.Note;
 import com.example.my_notes.R;
 
 public class ViewHolderTextNotes extends RecyclerView.ViewHolder {
@@ -17,17 +16,17 @@ public class ViewHolderTextNotes extends RecyclerView.ViewHolder {
 
     public ViewHolderTextNotes(View v){
         super(v);
-        this.typeText = v.findViewById(R.id.typeText);
+        this.typeText = v.findViewById(R.id.typeImage);
         this.NoteDate = v.findViewById(R.id.NoteDate);
-        this.NoteTitle = v.findViewById(R.id.NoteTitle);
+        this.NoteTitle = v.findViewById(R.id.imageNoteTitle2);
         this.textNoteLayout = v.findViewById(R.id.textnote_layout);
         this.editTextNote = v.findViewById(R.id.editTextNote);
     }
     public ViewHolderTextNotes(View v, String nota){
         super(v);
-        this.typeText = v.findViewById(R.id.typeText);
+        this.typeText = v.findViewById(R.id.typeImage);
         this.NoteDate = v.findViewById(R.id.NoteDate);
-        this.NoteTitle = v.findViewById(R.id.NoteTitle);
+        this.NoteTitle = v.findViewById(R.id.imageNoteTitle2);
         this.textNoteLayout = v.findViewById(R.id.textnote_layout);
         this.editTextNote = v.findViewById(R.id.editTextNote);
         this.sharedBy = v.findViewById(R.id.sharedBy);
