@@ -40,8 +40,6 @@ public class ComplexNotesSharedAdapter extends RecyclerView.Adapter<RecyclerView
     private Runnable runnable;
     private Handler handler = new Handler(Looper.getMainLooper());
 
-    private MediaPlayer player;
-
     public ComplexNotesSharedAdapter(Context current, ArrayList<Note> an){
         this.parentContext = current;
         this.localDataSet = an;

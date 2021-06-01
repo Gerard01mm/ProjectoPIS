@@ -21,7 +21,7 @@ public class ViewHolderAudioNotes extends RecyclerView.ViewHolder {
     public ViewHolderAudioNotes(View v){
         super(v);
         this.play_btn = v.findViewById(R.id.play_btn);
-        this.title = v.findViewById(R.id.NoteTitle);
+        this.title = v.findViewById(R.id.imageNoteTitle2);
         this.date = v.findViewById(R.id.NoteDate);
         this.pause_btn = v.findViewById(R.id.pause_btn);
         this.seekBar = v.findViewById(R.id.audioSeekBar);

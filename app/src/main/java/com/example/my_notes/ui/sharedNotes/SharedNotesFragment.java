@@ -70,7 +70,6 @@ public class SharedNotesFragment extends Fragment {
         final Observer<String> observerToast = new Observer<String>() {
             @Override
             public void onChanged(String t) {
-                //Log.d("SharedNotesFragment", "observer2");
                 Toast.makeText(parentContext, t, Toast.LENGTH_SHORT).show();
             }
         };

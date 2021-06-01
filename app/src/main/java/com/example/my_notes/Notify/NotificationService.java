@@ -32,7 +32,6 @@ public class NotificationService extends IntentService {
     private static int NOTIFICATION_ID = 1;
     Notification notification;
 
-
     public NotificationService(){
         super("SERVICE");
     }

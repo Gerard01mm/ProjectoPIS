@@ -50,7 +50,7 @@
 
         <activity
             android:name=".ui.calendar.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
 
         <uses-library
             android:name="org.apache.http.legacy"

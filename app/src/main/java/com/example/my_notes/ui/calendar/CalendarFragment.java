@@ -155,7 +155,7 @@ public class CalendarFragment extends Fragment{
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 String day = calendar.getSelectedDate().toString();
-                Log.d("DIA SELECCIONAT", "EL DIA PULSAT ÉS EL" + day);
+                Log.d("DIA SELECCIONAT", "EL DIA POLSAT ÉS EL" + day);
 
                 //Cridarem a la funció que refrescarà i mostrara el contingut dels reminders del dia
                 //Seleccionat
@@ -250,8 +250,9 @@ public class CalendarFragment extends Fragment{
                         if (title != null && description != null) {
                             String day = calendar.getSelectedDate().toString();
 
-                            if (longitude == null || latitude == null) {
+                            if (longitude == null || latitude == null || adress.equals("")) {
                                 Toast.makeText(getContext(), "Saving reminder with no location", Toast.LENGTH_SHORT).show();
+                                GeoLocation.getAdress(adress, getContext(), new GeoHandler());
                             }
 
                             PendingIntent pendingIntent = null;

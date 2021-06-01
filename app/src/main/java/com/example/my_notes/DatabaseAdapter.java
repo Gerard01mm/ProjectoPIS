@@ -13,6 +13,7 @@ import com.example.my_notes.Model.ImageNoteContent;
 import com.example.my_notes.Model.NotesContent;
 import com.example.my_notes.Model.TextNoteContent;
 import com.example.my_notes.Model.Reminder;
+import com.example.my_notes.Utils.UriUtils.UriUtils;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,10 +38,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import com.example.my_notes.Model.AudioNote;
@@ -48,6 +51,8 @@ import com.example.my_notes.Model.ImageNote;
 import com.example.my_notes.Model.Note;
 import com.example.my_notes.Model.NoteFolder;
 import com.example.my_notes.Model.TextNote;
+
+import org.jetbrains.annotations.NotNull;
 
 public class DatabaseAdapter{
     public static final String TAG = "DatabaseAdapter";
@@ -1146,12 +1151,41 @@ public class DatabaseAdapter{
                         if (!task.getResult().isEmpty()) {
                             ArrayList<NotesContent> retrieved_ac = new ArrayList<NotesContent>() ;
                             for (QueryDocumentSnapshot content : task.getResult()) {
-                                Log.d(TAG, content.getId() + " => " + content.getData());
-                                retrieved_ac.add(new ImageNoteContent(content.getString("id"),
-                                        content.getString("folderId"), content.getString("text"),
-                                        content.getString("imagepath")));
+                                if (content.getString("imagepath") != null && !content.getString("imagepath").equals("")){
+
+                                    StorageReference storageRef = storage.getReference().child("images" + Objects.requireNonNull(content.getString("imagepath")));
+                                    System.out.println(content.getString("imagepath"));
+                                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+
+                                            Log.d(TAG, content.getId() + " => " + content.getData());
+                                            retrieved_ac.add(new ImageNoteContent(content.getString("id"),
+                                                    content.getString("folderId"), content.getString("text"),
+                                                    uri.toString()));
+                                            listener.setCollection(retrieved_ac);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull @NotNull Exception e) {
+                                            e.printStackTrace();
+                                            Log.d(TAG, content.getId() + " => " + content.getData());
+                                            retrieved_ac.add(new ImageNoteContent(content.getString("id"),
+                                                    content.getString("folderId"), content.getString("text"),
+                                                    content.getString("imagepath")));
+                                            listener.setCollection(retrieved_ac);
+                                        }
+                                    });
+                                }else{
+                                    Log.d(TAG, content.getId() + " => " + content.getData());
+                                    retrieved_ac.add(new ImageNoteContent(content.getString("id"),
+                                            content.getString("folderId"), content.getString("text"),
+                                            content.getString("imagepath")));
+                                    listener.setCollection(retrieved_ac);
+                                }
+
+
                             }
-                            listener.setCollection(retrieved_ac);
 
                         } else {
                             Log.d(TAG, "Error getting image note: ", task.getException());

@@ -22,12 +22,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.my_notes.R;
 import com.example.my_notes.Utils.UriUtils.UriUtils;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import com.example.my_notes.Model.ImageNoteContent;
@@ -43,8 +44,6 @@ public class ImageNoteContentFragment extends Fragment {
     private EditText text;
     private ImageNoteContentViewModel imageNoteContentViewModel;
     private Context parentContext;
-
-    private StorageReference storageReference;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +64,7 @@ public class ImageNoteContentFragment extends Fragment {
         text = root.findViewById(R.id.editTextImageNote);
         saveImageNote = root.findViewById(R.id.saveImageNoteContent);
         shareImage2 = root.findViewById(R.id.shareImage);
+        image = root.findViewById(R.id.addImage);
 
         //Si la dada passada pel Bunddle és String = "shared", deshabilitem els botons del xtml.
         if(tipus.equals("shared")){
@@ -72,8 +72,6 @@ public class ImageNoteContentFragment extends Fragment {
             saveImageNote.setVisibility(View.INVISIBLE);
             text.setKeyListener(null);
         } else {
-
-            image = root.findViewById(R.id.addImage);
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -173,17 +171,15 @@ public class ImageNoteContentFragment extends Fragment {
             @Override
             public void onChanged(NotesContent notesContent) {
                 ImageNoteContent imageNoteContent = (ImageNoteContent) notesContent;
+                System.out.println("LLEGA");
                 if(imageNoteContent.getImagepath() != null){
-                    File f = new File(imageNoteContent.getImagepath());
+                    System.out.println(imageNoteContent.getImagepath());
+                    Glide.with(requireActivity())
+                        .load(imageNoteContent.getImagepath())
+                        .into(image);
+                    /*File f = new File(imageNoteContent.getImagepath());
                     Uri uri = Uri.fromFile(f);
-                    if(f.exists()){
-                        Log.d("IMAAAGEEE NOOOTEE -------------------->", "Existe el fichero");
-                        System.out.println("Exxistee el fichero");
-                    }else{
-                        Log.d("IMAAAGEEE NOOOTEE -------------------->", "Pues no existe");
-                        System.out.println("Pues no existe");
-                    }
-                    image.setImageURI(uri);
+                    image.setImageURI(uri);*/
                 }
                 text.setText(imageNoteContent.getTextNote());
             }
