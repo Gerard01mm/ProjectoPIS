@@ -22,7 +22,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         int id = id_value.getAndIncrement();
-        Log.d(TAG, "Valor del id: " + id);
+        //Log.d(TAG, "Valor del id: " + id);
 
         //Recuperem el titol i el contingut del recordatori
         String title = intent.getStringExtra(TITLE_KEY);
@@ -35,13 +35,13 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentText(content) //Afegeix el contingut de la notificació
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT); //Ajustem prioritat
 
-        Log.d(TAG, title);
-        Log.d(TAG, content);
+        //Log.d(TAG, title);
+        //Log.d(TAG, content);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
 
         notificationManagerCompat.notify(id, builder.build());
 
-        Log.d(TAG, "S'ha rebut la alarma");
+        //Log.d(TAG, "S'ha rebut la alarma");
     }
 }

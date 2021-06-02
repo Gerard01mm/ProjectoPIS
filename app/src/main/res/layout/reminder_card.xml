@@ -16,36 +16,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp">
-
-        </Space>
-
         <LinearLayout
             android:id="@+id/reminder_linear"
-            android:layout_width="418dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/reminder_title"
-                android:layout_width="318dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingStart="@dimen/leftPadding"
-                android:paddingLeft="@dimen/leftPadding"
-                android:paddingEnd="@dimen/rightPadding"
-                android:paddingRight="@dimen/rightPadding"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="5dp"
                 android:text="ESTO ES UNA PRUEBA"
                 android:textSize="@dimen/ReminderTitleSize"
-                android:textStyle="bold">
+                android:textStyle="bold" />
 
-            </TextView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5" />
 
             <ImageView
-                android:layout_width="51dp"
-                android:layout_height="51dp"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
                 android:contentDescription="@string/cd_ReminderCard"
                 android:paddingStart="@dimen/leftPadding"
                 android:paddingLeft="@dimen/leftPadding"
@@ -56,12 +54,6 @@
             </ImageView>
 
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp">
-
-        </Space>
 
     </LinearLayout>
 

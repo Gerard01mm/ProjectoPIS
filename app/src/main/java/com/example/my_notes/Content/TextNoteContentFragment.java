@@ -86,12 +86,15 @@ public class TextNoteContentFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         boolean emailCorrect = true;
+                        textWriten = text.getText().toString();
                         Pattern pattern = Patterns.EMAIL_ADDRESS;
                         emailCorrect = pattern.matcher(userShareEmail.getText().toString()).matches();
                         if(!emailCorrect){
                             userShareEmail.setError("Incorrect email format!");
                         }else{
                             textNoteContentViewModel.checkEmail(userShareEmail.getText().toString(), noteId, noteFolderId, textWriten, title, userShareEmail, content);
+                            textNoteContentViewModel.saveTextNoteContent(lastSegment, textWriten, noteId, noteFolderId);
+                            Toast.makeText(parentContext, "The note automatically saved", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

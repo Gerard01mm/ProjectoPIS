@@ -272,9 +272,9 @@ public class CalendarFragment extends Fragment{
                                 //Guardem el titol,d escripcio i id al intent
                                 intent = new Intent(requireContext(), AlarmReceiver.class);
                                 intent.putExtra(TITLE_KEY, title);
-                                Log.d("TITOL", title);
+                                //Log.d("TITOL", title);
                                 intent.putExtra(CONTENT_KEY, description);
-                                Log.d("CONTINGUT", description);
+                                //Log.d("CONTINGUT", description);
 
                                 pendingIntent = PendingIntent.getBroadcast(requireContext(), ID , intent, 0);
 

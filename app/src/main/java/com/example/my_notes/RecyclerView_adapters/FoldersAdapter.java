@@ -108,6 +108,61 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
         viewHolder.getFolder_title().setText(localDataSet.get(position).get_Title());
         viewHolder.getfCardView().setCardBackgroundColor(localDataSet.get(position).getColor());
 
+        ArrayList<String> colors = new ArrayList<>();
+        /*colors.add("#FFEFFF");
+        colors.add("#E6E6FA");
+        colors.add("#E0F8F5");
+        colors.add("#BEEDE5");
+        colors.add("#A7D9C9");
+
+        colors.add("#FFFFF0");
+        colors.add("#FAEBD7");
+        colors.add("#FAF0E6");
+        colors.add("#FFF0F5");
+        colors.add("#FFE4E1");
+
+        colors.add("#E0FFFF");
+        colors.add("#F0FFFF");
+        colors.add("#F0F8FF");
+        colors.add("#F0FFF0");
+        colors.add("#F5F5DC");*/
+
+        /*colors.add("#E6B0AA");
+        colors.add("#FADBD8");
+        colors.add("#C39BD3");
+        colors.add("#E8DAEF");
+        colors.add("#D6EAF8");
+
+        colors.add("#D4EFDF");
+        colors.add("#D5F5E3");
+        colors.add("#FCF3CF");
+        colors.add("#FDEBD0");
+        colors.add("#F6DDCC");
+
+        colors.add("#D6DBDF");
+        colors.add("#F0FFFF");
+        colors.add("#F0F8FF");
+        colors.add("#F0FFF0");
+        colors.add("#F5F5DC");*/
+
+        colors.add("#FFEBEE");
+        colors.add("#FCE4EC");
+        colors.add("#F3E5F5");
+        colors.add("#EDE7F6");
+        colors.add("#E8EAF6");
+
+        colors.add("#E3F2FD");
+        colors.add("#E0F7FA");
+        colors.add("#E0F2F1");
+        colors.add("#E8F5E9");
+        colors.add("#F9FBE7");
+
+        colors.add("#FFFDE7");
+        colors.add("#FFF8E1");
+        colors.add("#FFF3E0");
+        colors.add("#FBE9E7");
+        colors.add("#EFEBE9");
+
         LinearLayout folder_layout = viewHolder.getFolderLayout();
         folder_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,7 +260,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
                             public void onCancel(){
                                 dialog.cancel();
                             }
-                        })
+                        }).setColors(colors)
                         .setRoundColorButton(true)
                         .setColumns(5)
                         .setTitle("Choose a new folder color or press OK without selecting any color for " +

@@ -42,15 +42,15 @@ import java.util.Locale;
 import com.example.my_notes.Model.Note;
 
 public class NotesFragment extends Fragment {
-    private NotesViewModel notesViewModel;
+    protected NotesViewModel notesViewModel;
     // Floating button functionality
-    private FloatingActionButton fab, fabText, fabImage, fabVoice;
-    private Context parentContext;
-    private RecyclerView nRecyclerView;
-    private LinearLayoutManager layoutManager;
-    private String folderId, fileName, audioName;
-    private MediaRecorder recorder;
-    private boolean isRecording = false;
+    protected FloatingActionButton fab, fabText, fabImage, fabVoice;
+    protected Context parentContext;
+    protected RecyclerView nRecyclerView;
+    protected LinearLayoutManager layoutManager;
+    protected String folderId, fileName, audioName;
+    protected MediaRecorder recorder;
+    protected boolean isRecording = false;
     private int backgroundColor;
     private Spinner spinner_sort;
 
@@ -192,14 +192,14 @@ public class NotesFragment extends Fragment {
     }
 
     private void startRecording() {
-        Log.d("startRecording", "startRecording");
+        //Log.d("startRecording", "startRecording");
 
         recorder = new MediaRecorder();
         DateFormat df = new SimpleDateFormat("yyMMddHHmmss", Locale.GERMANY);
         String date = df.format(Calendar.getInstance().getTime());
         audioName = date+"3.gp";
         fileName =  getActivity().getExternalCacheDir().getAbsolutePath()+File.separator +audioName;
-        Log.d("startRecording", fileName);
+        //Log.d("startRecording", fileName);
 
         recorder.setOutputFile(fileName);
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -253,6 +253,13 @@ public class NotesFragment extends Fragment {
                 ComplexNotesAdapter newAdapter = new ComplexNotesAdapter(parentContext, notes);
                 nRecyclerView.swapAdapter(newAdapter, false);
                 newAdapter.notifyDataSetChanged();
+            }
+        };
+
+        final Observer<ArrayList<String>> observer1 = new Observer<ArrayList<String>>() {
+            @Override
+            public void onChanged(ArrayList<String> strings) {
+
             }
         };
 

@@ -27,7 +27,6 @@ import com.example.my_notes.Notify.AlarmReceiver;
 import com.example.my_notes.R;
 import com.example.my_notes.Model.Reminder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -143,6 +142,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
                 AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
                 LayoutInflater inflater = parentActivity.getLayoutInflater();
                 View vista  = inflater.inflate(R.layout.reminder_content, null);
+                builder.setTitle("Edit reminder");
                 AlertDialog content = builder.create();
                 content.setView(vista);
 

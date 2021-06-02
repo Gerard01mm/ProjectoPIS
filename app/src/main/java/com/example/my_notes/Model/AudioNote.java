@@ -26,18 +26,18 @@ public class AudioNote extends Note {
     }
 
     public void saveAudioNote(){
-        Log.d("saveAudioNote", "adapter-> saveAudioNote");
+        //Log.d("saveAudioNote", "adapter-> saveAudioNote");
         adapter.saveAudioNoteWithFile(getId(), getTitle(), getOwner(), getFolderId(), getCreation_date(), getModify_date(), this.adress, this.audioName);
     }
 
     public void updateAudioNote(){
-        Log.d("updateAudioNote", "adapter-> updateAudioNote");
+        //Log.d("updateAudioNote", "adapter-> updateAudioNote");
         setModify_date();
         adapter.updateAudioNote(getId(), getTitle(), getOwner(), getFolderId(), getCreation_date(), getModify_date(), this.adress, this.audioName);
     }
 
     public void removeAudioNote(){
-        Log.d("removeAudioNote", "adapter-> removeAudioNote");
+        //Log.d("removeAudioNote", "adapter-> removeAudioNote");
         adapter.removeAudioNote(getId());
     }
 }

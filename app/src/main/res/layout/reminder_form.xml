@@ -14,8 +14,8 @@
         android:layout_height="match_parent"
         android:padding="@dimen/formTitlePadding"
         android:text="@string/form_title"
-        android:textSize="@dimen/formTitleSize">
-    </TextView>
+        android:textSize="@dimen/formTitleSize"
+        android:textStyle="bold"></TextView>
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/dialog_title"
@@ -30,8 +30,8 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/formTitlePadding"
         android:text="@string/form_description"
-        android:textSize="@dimen/formDescriptionSize">
-    </TextView>
+        android:textSize="@dimen/formDescriptionSize"
+        android:textStyle="bold"></TextView>
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/dialog_description"
@@ -47,7 +47,8 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/formTitlePadding"
         android:text="@string/form_location"
-        android:textSize="@dimen/formDescriptionSize"/>
+        android:textSize="@dimen/formDescriptionSize"
+        android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/dialog_location"
@@ -78,23 +79,26 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/formTitlePadding"
         android:text="@string/form_alarm"
-        android:textSize="@dimen/formDescriptionSize">
-    </TextView>
+        android:textSize="@dimen/formDescriptionSize"
+        android:textStyle="bold"></TextView>
 
     <ImageButton
         android:id="@+id/add_alarm_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:backgroundTint="#AAA8A8"
         android:contentDescription="@string/form_description"
-        app:srcCompat="@drawable/alarm_black_24dp">
-    </ImageButton>
+        app:srcCompat="@drawable/alarm_black_24dp"></ImageButton>
 
     <TextView
         android:id="@+id/horaSelected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 </LinearLayout>
 
 

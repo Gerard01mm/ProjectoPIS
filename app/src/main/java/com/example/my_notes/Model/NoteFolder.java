@@ -160,17 +160,17 @@ public class NoteFolder {
     /*Funciones*/
 
     public void saveFolder(){
-        Log.d("saveFolder", "adapter-> saveFolder");
+        //Log.d("saveFolder", "adapter-> saveFolder");
         adapter.saveFolder(this.title, this.id, this.owner, this.color);
     }
 
     public void removeFolder(){
-        Log.d("removeFolder", "adapter-> removeFolder");
+        //Log.d("removeFolder", "adapter-> removeFolder");
         adapter.deleteFolder(this.id);
     }
 
     public void updateFolder(){
-        Log.d("updateFolder", "adapter-> updateFolder");
+        //Log.d("updateFolder", "adapter-> updateFolder");
         adapter.updateFolder(this.title, this.id, this.owner, this.color);
     }
 }

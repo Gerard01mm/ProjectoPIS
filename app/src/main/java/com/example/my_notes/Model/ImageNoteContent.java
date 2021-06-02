@@ -22,7 +22,7 @@ public class ImageNoteContent extends NotesContent{
     }
 
     public void saveContent(){
-        Log.d("saveImageNote", "adapter-> saveImageNote");
+        //Log.d("saveImageNote", "adapter-> saveImageNote");
         adapter.saveImageNoteContent(getNoteId(), getFolderId() , getTextNote() , imagepath);
     }
 }

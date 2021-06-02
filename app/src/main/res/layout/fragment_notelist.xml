@@ -10,13 +10,29 @@
     android:focusable="true"
     tools:context=".ui.notes.NotesFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_notes"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="651dp"
-        android:layout_gravity="bottom">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <Spinner
+            android:id="@+id/spinner_sort"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:entries="@array/Sort" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_notes"
+            android:layout_width="match_parent"
+            android:layout_height="659dp"
+            android:layout_gravity="bottom">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -80,11 +96,5 @@
             app:backgroundTint="@color/colorPrimaryDark"
             app:srcCompat="@drawable/ic_baseline_add_24" />
     </LinearLayout>
-
-    <Spinner
-        android:id="@+id/spinner_sort"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:entries="@array/Sort"/>
 
 </FrameLayout>

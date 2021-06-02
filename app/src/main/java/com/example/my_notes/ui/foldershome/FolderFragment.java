@@ -56,6 +56,61 @@ public class FolderFragment extends Fragment {
             final EditText input = new EditText(getActivity());
             mydialog.setView(input);
 
+            ArrayList<String> colors = new ArrayList<>();
+            /*colors.add("#FFEFFF");
+            colors.add("#E6E6FA");
+            colors.add("#E0F8F5");
+            colors.add("#BEEDE5");
+            colors.add("#A7D9C9");
+
+            colors.add("#FFFFF0");
+            colors.add("#FAEBD7");
+            colors.add("#FAF0E6");
+            colors.add("#FFF0F5");
+            colors.add("#FFE4E1");
+
+            colors.add("#E0FFFF");
+            colors.add("#F0FFFF");
+            colors.add("#F0F8FF");
+            colors.add("#F0FFF0");
+            colors.add("#F5F5DC");*/
+
+            /*colors.add("#FFAACC");
+            colors.add("#FFBBCC");
+            colors.add("#FFDDCC");
+            colors.add("#FFEECC");
+            colors.add("#FFFFCC");
+
+            colors.add("#CCAAFF");
+            colors.add("#CCCCFF");
+            colors.add("#CCDDFF");
+            colors.add("#CCEEFF");
+            colors.add("#CCFFFF");
+
+            colors.add("#CCAACC");
+            colors.add("#CCBBCC");
+            colors.add("#CCDDCC");
+            colors.add("#CCEECC");
+            colors.add("#CCFFCC");*/
+
+            colors.add("#FFEBEE");
+            colors.add("#FCE4EC");
+            colors.add("#F3E5F5");
+            colors.add("#EDE7F6");
+            colors.add("#E8EAF6");
+
+            colors.add("#E3F2FD");
+            colors.add("#E0F7FA");
+            colors.add("#E0F2F1");
+            colors.add("#E8F5E9");
+            colors.add("#F9FBE7");
+
+            colors.add("#FFFDE7");
+            colors.add("#FFF8E1");
+            colors.add("#FFF3E0");
+            colors.add("#FBE9E7");
+            colors.add("#EFEBE9");
+
             mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -77,7 +132,7 @@ public class FolderFragment extends Fragment {
                             String input_text = input.getText().toString();
                             folderViewModel.addFolder(input_text, Color.WHITE);
                         }
-                    })
+                    }).setColors(colors)
                     .setRoundColorButton(true)
                     .setColumns(5)
                     .setTitle("Choose a folder color or press cancel to create a white one")

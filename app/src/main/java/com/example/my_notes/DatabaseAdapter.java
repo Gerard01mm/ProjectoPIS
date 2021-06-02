@@ -69,6 +69,7 @@ public class DatabaseAdapter{
 
     private ArrayList<Note> notesInFolder;
     private ArrayList<Note> sharedNotes;
+    private ArrayList<String> sharedUsers;
 
     public DatabaseAdapter(vmInterface listener){
         DatabaseAdapter.listener = listener;
@@ -118,7 +119,7 @@ public class DatabaseAdapter{
     }
 
     /* Mètode que serveix per afegir un nou usuari en l'atribut "shared" de la nota que es un array, per
-     * compartir la nota amb més d'un usuari.*/
+     * compartir la nota amb més d'un usuari.DE TIPUS TEXT*/
     public void updateSharedUsers (String noteId, String noteFolderId, String idUser){
         db.collection("notes")
                 .document("roomTextNotes")
@@ -175,7 +176,7 @@ public class DatabaseAdapter{
                 });
     }
     /* Mètode que serveix per afegir un nou usuari en l'atribut "shared" de la nota que es un array, per
-     * compartir la nota amb més d'un usuari.*/
+     * compartir la nota amb més d'un usuari. DE TIPUS IMATGE*/
     public void updateSharedImageNote (String noteId, String noteFolderId, String idUser) {
 
         //Log.d(TAG, "updateImageNote");

@@ -21,10 +21,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_folder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="1dp">
+        android:layout_height="match_parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 

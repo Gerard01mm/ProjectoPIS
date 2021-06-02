@@ -283,21 +283,21 @@ public class Reminder {
 
 
     public void saveReminder(){
-        Log.d("saveReminder", "adapter-> saveReminder");
+        //Log.d("saveReminder", "adapter-> saveReminder");
         adapter.saveReminder(this.title, this.id, this.owner, this.date, this.description, this.reminder_alert,
                 this.longitude, this.latitude, this.country, this.locality, this.countrycode);
     }
 
 
     public void removeReminder(){
-        Log.d("removeReminder","adapter-> removeRemidner");
+        //Log.d("removeReminder","adapter-> removeRemidner");
         adapter.deleteReminder(this.id);
     }
 
 
 
     public void updateReminder(){
-        Log.d("updateReminder", "adapter-> updateFolder");
+        //Log.d("updateReminder", "adapter-> updateFolder");
         adapter.updateReminder(this.title, this.id, this.owner, this.date, this.description, this.reminder_alert,
                 this.longitude, this.latitude, this.country, this.locality, this.countrycode);
     }
