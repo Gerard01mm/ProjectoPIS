@@ -678,7 +678,7 @@ public class DatabaseAdapter{
                                 //Log.d(TAG, reminder.getId() + " => " + reminder.getData());
                                 retrieved_ac.add(new Reminder(reminder.getString("title"),
                                         reminder.getString("description"),
-                                        reminder.getString("alert"),
+                                        reminder.getString("alarm"),
                                         reminder.getString("date"),
                                         reminder.getString("id"),
                                         reminder.getString("owner"),
