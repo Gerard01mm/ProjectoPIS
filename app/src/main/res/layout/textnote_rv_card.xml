@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/NoteCardView"
     android:layout_width="match_parent"
-    android:layout_height="65dp"
+    android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="10dp"
@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center|right"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -24,9 +24,11 @@
         <LinearLayout
             android:id="@+id/textnote_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <!--Añadiremos una imagen del tipo de nota que sea-->
 
@@ -36,10 +38,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="left"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:baselineAlignBottom="false"
+                android:padding="5dp"
                 android:paddingLeft="10dp"
+                android:paddingTop="1dp"
                 android:paddingRight="10dp"
                 app:srcCompat="@drawable/text_snippet_black_24dp"
                 tools:ignore="VectorDrawableCompat">
@@ -86,6 +90,11 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.001" />
         </LinearLayout>
     </LinearLayout>
 

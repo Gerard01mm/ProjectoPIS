@@ -24,8 +24,8 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
     private final String REGISTER_ERROR = "An account this that email already exists";
     private final String NOT_CHECKED = "Check the Terms of Services";
     private final String EMPTY_INPUT = "Text area is empty";
-    private final String PSW_NOT_SAFE = "Password not safe";
-    private final String NEW_PSSW = "It must have more than 8 characters, a digit and an upper case";
+    private final String PSW_NOT_SAFE = "Password not safe\n" + "· More than 8 characters\n· One upper case\n· One digit";
+    //private final String NEW_PSSW = "It must have more than 8 characters, a digit and an upper case";
 
     private TextInputEditText email, name, password;
     private CheckBox privacity;
@@ -105,7 +105,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
 
             if (!validatePassword(this.password.getText().toString())){
                 password.setError(PSW_NOT_SAFE);
-                showErrorMessage(NEW_PSSW);
+                //showErrorMessage(NEW_PSSW);
                 error = true;
             }
 

@@ -33,6 +33,7 @@ import com.example.my_notes.Model.TextNote;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 /**
  * Aquesta classe s'utilitzarà per adaptar el contingut d'una carpeta i per mostrar les notes
@@ -76,12 +77,10 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         switch (viewType) {
             case TEXTNOTE:
-                Log.d("OnCreateViewholder----------------->", "entro en nota de texto");
                 View v1 = inflater.inflate(R.layout.textnote_rv_card, parent, false);
                 viewHolder = new ViewHolderTextNotes(v1);
                 break;
             case IMAGENOTE:
-                Log.d("OnCreateViewholder----------------->", "entro en imagen");
                 View v2 = inflater.inflate(R.layout.imagenote_rv_card, parent, false);
                 viewHolder = new ViewHolderImageNotes(v2);
                 break;
@@ -316,14 +315,19 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     final EditText input = new EditText(parentContext);
                     mydialog.setView(input);
 
-                    mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    mydialog.setNeutralButton("Accept", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String input_text = input.getText().toString();
-                            AudioNote an = (AudioNote)localDataSet.get(position);
-                            an.setTitle(input_text);
-                            an.updateAudioNote();
-                            notifyDataSetChanged();
+                             if (input_text.length() > 13){
+                                 Toast.makeText(parentContext, "You exceed the maximum characters (13)", Toast.LENGTH_SHORT).show();
+                                 input.setError("You exceed the maximum characters (13)");
+                             }else{
+                                 AudioNote an = (AudioNote)localDataSet.get(position);
+                                 an.setTitle(input_text);
+                                 an.updateAudioNote();
+                                 notifyDataSetChanged();
+                             }
                         }
                     });
                     mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

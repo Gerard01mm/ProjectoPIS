@@ -227,8 +227,8 @@ public class NotesFragment extends Fragment {
         Button saveButton = popupView.findViewById(R.id.save_button);
         saveButton.setOnClickListener((v) -> {
             String title = saveDescr.getEditText().getText().toString();
-            if(title.length() > 15){
-                saveDescr.setError("You exceed the maximum characters (15)");
+            if(title.length() > 13){
+                saveDescr.setError("You exceed the maximum characters (13)");
             }else{
                 notesViewModel.addAudioCard(title, fileName, folderId, audioName);
                 popupWindow.dismiss();

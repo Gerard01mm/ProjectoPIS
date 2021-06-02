@@ -71,6 +71,7 @@ public class ImageNoteContentFragment extends Fragment {
             shareImage2.setVisibility(View.INVISIBLE);
             saveImageNote.setVisibility(View.INVISIBLE);
             text.setKeyListener(null);
+            image.setOnKeyListener(null);
         } else {
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,11 +102,14 @@ public class ImageNoteContentFragment extends Fragment {
                     public void onClick(View v) {
                         boolean emailCorrect = true;
                         Pattern pattern = Patterns.EMAIL_ADDRESS;
+                        textWriten = text.getText().toString();
                         emailCorrect = pattern.matcher(userShareEmail.getText().toString()).matches();
                         if(!emailCorrect){
                             userShareEmail.setError("Incorrect email format!");
                         }else{
                             imageNoteContentViewModel.checkEmail(userShareEmail.getText().toString(), noteId, noteFolderId, textWriten, title, userShareEmail, content);
+                            imageNoteContentViewModel.saveImageNoteContent(lastSegment, textWriten, noteId, noteFolderId);
+                            Toast.makeText(parentContext, "The note automatically saved", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
