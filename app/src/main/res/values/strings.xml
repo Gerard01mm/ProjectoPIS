@@ -87,8 +87,8 @@
     <string name="sharedcard">Shared by: </string>
 
     <string-array name="Sort">
-        <item>Sort by creation date</item>
-        <item>Sort by last modify date</item>
+        <item>Sort by creation</item>
+        <item>Sort by last modified</item>
         <item>Sort by title</item>
     </string-array>
 

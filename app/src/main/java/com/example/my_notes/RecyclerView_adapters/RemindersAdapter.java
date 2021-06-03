@@ -56,7 +56,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
     private int ID;
     private MaterialCalendarView calendar;
 
-    private String icon1 = null, icon2 = null, icon3 = null, desc1 = null, desc2 = null, desc3 = null;
+    private String icon1 = null, icon2 = null, icon3 = null;
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private final TextView reminder_title;
@@ -376,41 +376,5 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.View
             }
         });
 
-        /*
-        Request request2 = new Request.Builder()
-                .url("https://www.weatherbit.io/static/img/icons/" + icon[0] + ".png")
-                .get()
-                .addHeader("x-rapidapi-key", "9ccdce2b87mshfb1a0d8ad72a9edp1ceab9jsne75320017c29")
-                .addHeader("x-rapidapi-host", "weatherbit-v1-mashape.p.rapidapi.com")
-                .build();
-
-
-        client.newCall(request2).enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-                Toast.makeText(parentContext, "Error accessing Weather API", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                if (response.isSuccessful()){
-                    System.out.println("entra");
-                    final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                    // Remember to set the bitmap in the main thread.
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            System.out.println("entra en el bitmap");
-                            ImageView clima = (ImageView) vista.findViewById(R.id.imageViewClima);
-                            clima.setImageBitmap(bitmap);
-                        }
-                    });
-                }else {
-                    System.out.println(" no entraen nitmap");
-                    System.out.println(response.code());
-                }
-            }
-        });
-        */
     }
 }
