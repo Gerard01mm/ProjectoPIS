@@ -83,41 +83,26 @@ public class ImageNoteContentFragment extends Fragment {
         shareImage2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder shareNote = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                View dialogshare = inflater.inflate(R.layout.dialogshare, null);
+                textWriten = text.getText().toString();
+                AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                mydialog.setTitle("Would you like to save your recent changes in the note first?");
 
-                shareNote.setTitle("With which user do you want to share the note? ");
-                userShareEmail = (TextInputEditText) dialogshare.findViewById(R.id.userShareEmail);
-                cancelShare = (Button) dialogshare.findViewById(R.id.cancelButton);
-                acceptShare = (Button) dialogshare.findViewById(R.id.acceptButton);
-                dialogSaveImage("Would you like to save your recent changes in the note first?");
-
-                AlertDialog content = shareNote.create();
-                content.setView(dialogshare);
-
-                acceptShare.setOnClickListener(new View.OnClickListener() {
+                mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        boolean emailCorrect = true;
-                        Pattern pattern = Patterns.EMAIL_ADDRESS;
-                        textWriten = text.getText().toString();
-                        emailCorrect = pattern.matcher(userShareEmail.getText().toString()).matches();
-                        if(!emailCorrect){
-                            userShareEmail.setError("Incorrect email format!");
-                        }else{
-                            imageNoteContentViewModel.checkEmail(userShareEmail.getText().toString(), noteId, noteFolderId, textWriten, title, userShareEmail, content);
-                        }
+                    public void onClick(DialogInterface dialog, int which) {
+                        imageNoteContentViewModel.saveImageNoteContent(lastSegment, textWriten, noteId, noteFolderId);
+                        Toast.makeText(parentContext, "Saved note", Toast.LENGTH_SHORT).show();
+                        dialogShare();
                     }
                 });
-
-                cancelShare.setOnClickListener(new View.OnClickListener(){
+                mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        content.dismiss();
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        dialogShare();
                     }
                 });
-                content.show();
+                mydialog.show();
             }
         });
 
@@ -125,23 +110,25 @@ public class ImageNoteContentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 textWriten = text.getText().toString();
-                dialogSaveImage("Save note? ");
-                //AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
-                //mydialog.setTitle("Save note? ");
+                AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                mydialog.setTitle("Save note?");
 
-                /*mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         imageNoteContentViewModel.saveImageNoteContent(lastSegment, textWriten, noteId, noteFolderId);
+                        Toast.makeText(parentContext, "Saved note", Toast.LENGTH_SHORT).show();
+                        dialogShare();
                     }
                 });
                 mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
+                        dialogShare();
                     }
                 });
-                mydialog.show();*/
+                mydialog.show();
             }
         });
 
@@ -149,25 +136,40 @@ public class ImageNoteContentFragment extends Fragment {
         return root;
     }
 
-    public void dialogSaveImage(String titulo){
+    public void dialogShare(){
+        AlertDialog.Builder shareNote = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View dialogshare = inflater.inflate(R.layout.dialogshare, null);
+        shareNote.setTitle("With which user do you want to share the note? ");
+        userShareEmail = (TextInputEditText) dialogshare.findViewById(R.id.userShareEmail);
+        cancelShare = (Button) dialogshare.findViewById(R.id.cancelButton);
+        acceptShare = (Button) dialogshare.findViewById(R.id.acceptButton);
 
-        AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
-        mydialog.setTitle(titulo);
+        AlertDialog content = shareNote.create();
+        content.setView(dialogshare);
 
-        mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+        acceptShare.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                imageNoteContentViewModel.saveImageNoteContent(lastSegment, textWriten, noteId, noteFolderId);
-                Toast.makeText(parentContext, "Saved note", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                boolean emailCorrect = true;
+                Pattern pattern = Patterns.EMAIL_ADDRESS;
+                textWriten = text.getText().toString();
+                emailCorrect = pattern.matcher(userShareEmail.getText().toString()).matches();
+                if(!emailCorrect){
+                    userShareEmail.setError("Incorrect email format!");
+                }else{
+                    imageNoteContentViewModel.checkEmail(userShareEmail.getText().toString(), noteId, noteFolderId, textWriten, title, userShareEmail, content);
+                }
             }
         });
-        mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+        cancelShare.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onClick(View v) {
+                content.dismiss();
             }
         });
-        mydialog.show();
+        content.show();
     }
 
     public void carregarImatge(){
