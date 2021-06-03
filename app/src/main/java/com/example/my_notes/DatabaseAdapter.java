@@ -97,7 +97,6 @@ public class DatabaseAdapter{
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            //Log.d(TAG, "signInAnonymously:success");
                             listener.setToast("Authentication successful.");
                             user = mAuth.getCurrentUser();
                         } else {
@@ -179,7 +178,6 @@ public class DatabaseAdapter{
      * compartir la nota amb més d'un usuari. DE TIPUS IMATGE*/
     public void updateSharedImageNote (String noteId, String noteFolderId, String idUser) {
 
-        //Log.d(TAG, "updateImageNote");
         db.collection("notes")
                 .document("roomImageNotes")
                 .collection("imageNotes")
@@ -286,7 +284,6 @@ public class DatabaseAdapter{
     }
 
     public void getCollectionFolders(){
-        //Log.d(TAG,"getFolders");
         db.collection("folders")
             .get()
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -295,7 +292,6 @@ public class DatabaseAdapter{
                     if (task.isSuccessful()) {
                         ArrayList<NoteFolder> retrieved_ac = new ArrayList<NoteFolder>() ;
                         for (QueryDocumentSnapshot folder : task.getResult()) {
-                            //Log.d(TAG, folder.getId() + " => " + folder.getData());
                             retrieved_ac.add(new NoteFolder( folder.getString("title"),
                                 folder.getString("owner"), folder.getLong("color").intValue(),
                                 folder.getString("id")));
@@ -310,7 +306,6 @@ public class DatabaseAdapter{
     }
 
     public void getCollectionFoldersByUser(){
-        //Log.d(TAG,"getFoldersByUser");
         db.collection("folders")
                 .whereEqualTo("owner", getCurrentUser())
                 .get()
@@ -320,7 +315,6 @@ public class DatabaseAdapter{
                         if (task.isSuccessful()) {
                             ArrayList<NoteFolder> retrieved_ac = new ArrayList<NoteFolder>() ;
                             for (QueryDocumentSnapshot folder : task.getResult()) {
-                                //Log.d(TAG, folder.getId() + " => " + folder.getData());
                                 retrieved_ac.add(new NoteFolder( folder.getString("title"),
                                         folder.getString("owner"), folder.getLong("color").intValue(),
                                         folder.getString("id")));
@@ -343,7 +337,6 @@ public class DatabaseAdapter{
         folder.put("owner", owner);
         folder.put("color", color);
 
-        //Log.d(TAG, "saveFolder");
         // Add a new document with a generated ID
         db.collection("folders")
             .add(folder)
@@ -351,7 +344,6 @@ public class DatabaseAdapter{
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
                     String f_id = documentReference.getId();
-                    Log.d(TAG, "DocumentSnapshot added with ID: " + f_id);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
@@ -372,7 +364,6 @@ public class DatabaseAdapter{
         newfolder.put("id", id);
         newfolder.put("owner", owner);
         newfolder.put("color", color);
-        //Log.d(TAG, "updateFolder");
         db.collection("folders")
                 .whereEqualTo("id", id)
                 .get()
@@ -439,7 +430,6 @@ public class DatabaseAdapter{
         reminder.put("locality", locality);
         reminder.put("countrycode", countrycode);
 
-        //Log.d(TAG, "saveReminder");
 
         db.collection("reminders")
             .add(reminder)
@@ -476,7 +466,6 @@ public class DatabaseAdapter{
         reminder.put("locality", locality);
         reminder.put("countrycode", countrycode);
 
-        //Log.d(TAG, "updateReminder");
 
         db.collection("reminders")
                 .whereEqualTo("id", id)
@@ -592,7 +581,6 @@ public class DatabaseAdapter{
         newAudioNote.put("url", url);
         newAudioNote.put("audioName", audioName);
 
-        //Log.d(TAG, "updateAudioNote");
         db.collection("notes").document("roomAudioNotes").collection("audioNotes")
                 .whereEqualTo("id", id)
                 .get()
@@ -664,7 +652,6 @@ public class DatabaseAdapter{
     }
 
     public void getCollectionReminderByUserAndDay(String date){
-        //Log.d(TAG, "getRemindersByUserAndDay");
         db.collection("reminders")
                 .whereEqualTo("owner", getCurrentUser())
                 .whereEqualTo("date", date)
@@ -675,7 +662,6 @@ public class DatabaseAdapter{
                         if (task.isSuccessful()){
                             ArrayList<Reminder> retrieved_ac = new ArrayList<>();
                             for (QueryDocumentSnapshot reminder : task.getResult()){
-                                //Log.d(TAG, reminder.getId() + " => " + reminder.getData());
                                 retrieved_ac.add(new Reminder(reminder.getString("title"),
                                         reminder.getString("description"),
                                         reminder.getString("alarm"),
@@ -688,8 +674,6 @@ public class DatabaseAdapter{
                                         reminder.getString("locality"),
                                         reminder.getString("countrycode")));
                             }
-
-                            System.out.println("Numero de notes del dia: " + date + retrieved_ac.size());
                             listener.setCollection(retrieved_ac);
                         }
                         else{
@@ -714,22 +698,8 @@ public class DatabaseAdapter{
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
-                            //ArrayList<Reminder> retrieved_ac = new ArrayList<>();
                             for (QueryDocumentSnapshot reminder : task.getResult()){
                                 counter[0]++;
-                                //Log.d(TAG, reminder.getId() + " => " + reminder.getData());
-                                /*
-                                retrieved_ac.add(new Reminder(reminder.getString("title"),
-                                        reminder.getString("description"),
-                                        reminder.getString("alert"),
-                                        reminder.getString("date"),
-                                        reminder.getString("id"),
-                                        reminder.getString("owner"),
-                                        reminder.getDouble("longitude"),
-                                        reminder.getDouble("latitude"),
-                                        reminder.getString("country"),
-                                        reminder.getString("locality"),
-                                        reminder.getString("countrycode")));*/
                             }
                         }
                         else{
@@ -744,7 +714,6 @@ public class DatabaseAdapter{
     /* Mètode que agafa les notes que siguin compartides amb el currentUser mirant el camp
      * "shared" que és un array, per veure si conté el correu electronic del usuuari actual. */
     public void getCollectionNotesBySharedToUser(){
-        //Log.d(TAG,"getCollectionNotesBySharedToUser");
         db.collection("notes")
                 .document("roomTextNotes")
                 .collection("textNotes")
@@ -761,7 +730,6 @@ public class DatabaseAdapter{
                                         note.getString("id"), note.getString("folderId"),
                                         note.getString("owner"), userShared, note.getDate("creation"),
                                         note.getDate("modify")));
-                                Log.d("AAADAPTEEER TEXTOO: ", "Supuestamente cogo una de texto");
                             }
                         } else {
                             Log.d(TAG, "Error getting notes: ", task.getException());
@@ -785,7 +753,6 @@ public class DatabaseAdapter{
                                         note.getString("id"), note.getString("folderId"),
                                         note.getString("owner"), userShared, note.getDate("creation"),
                                         note.getDate("modify")));
-                                Log.d("AAADAPTEEER IMAGEEN: ", "Supuestamente cogo la imagen");
                             }
                             sharedNotes.sort(new DateSorter());
                             listener.setCollection(sharedNotes);
@@ -798,7 +765,6 @@ public class DatabaseAdapter{
     }
 
     public void getCollectionNotesByFolderAndUser(String folderId){
-        //Log.d(TAG,"getNotesByFolderAndUser");
         db.collection("notes")
                 .document("roomImageNotes")
                 .collection("imageNotes")
@@ -810,7 +776,6 @@ public class DatabaseAdapter{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot note : task.getResult()) {
-                                //Log.d(TAG, note.getId() + " => " + note.getData());
                                 notesInFolder.add(new ImageNote( note.getString("title"),
                                         note.getString("id"), note.getString("folderId"),
                                         note.getString("owner"), note.getDate("creation"),
@@ -835,7 +800,6 @@ public class DatabaseAdapter{
                         if (task.isSuccessful()) {
 
                             for (QueryDocumentSnapshot note : task.getResult()) {
-                                //Log.d(TAG, note.getId() + " => " + note.getData());
                                 notesInFolder.add(new AudioNote( note.getString("title"),
                                         note.getString("id"), note.getString("url"), note.getString("folderId"),
                                         note.getString("owner"), note.getDate("creation_date"),
@@ -859,7 +823,6 @@ public class DatabaseAdapter{
                         if (task.isSuccessful()) {
 
                             for (QueryDocumentSnapshot note : task.getResult()) {
-                                //Log.d(TAG, note.getId() + " => " + note.getData());
                                 notesInFolder.add(new TextNote( note.getString("title"),
                                         note.getString("id"), note.getString("folderId"),
                                         note.getString("owner"), note.getDate("creation"),
@@ -884,7 +847,6 @@ public class DatabaseAdapter{
         textNote.put("creation", creation);
         textNote.put("modify", modify);
 
-        //Log.d(TAG, "updateTextNote");
         db.collection("notes")
                 .document("roomTextNotes")
                 .collection("textNotes")
@@ -928,7 +890,6 @@ public class DatabaseAdapter{
         imageNote.put("creation", creation);
         imageNote.put("modify", modify);
 
-        //Log.d(TAG, "updateImageNote");
         db.collection("notes")
                 .document("roomImageNotes")
                 .collection("imageNotes")
@@ -1033,7 +994,6 @@ public class DatabaseAdapter{
 
     public void saveImageNoteContent (String id, String folderId, String text, String imagepath) {
         // Create a new user with a first and last name
-        //System.out.println("Directori de la imatge:" + imagepath);
         Map<String, Object> noteContent = new HashMap<>();
         noteContent.put("id", id);
         noteContent.put("folderId", folderId);
@@ -1155,7 +1115,6 @@ public class DatabaseAdapter{
                                 if (content.getString("imagepath") != null && !content.getString("imagepath").equals("")){
 
                                     StorageReference storageRef = storage.getReference().child("images" + Objects.requireNonNull(content.getString("imagepath")));
-                                    System.out.println(content.getString("imagepath"));
                                     storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
@@ -1206,7 +1165,6 @@ public class DatabaseAdapter{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot note : task.getResult()) {
-                                System.out.println("nota image"+note);
                                 deleteImageNoteContent(note.getString("id"), note.getString("folderId"));
                                 note.getReference().delete();
                             }
@@ -1405,7 +1363,6 @@ public class DatabaseAdapter{
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             for (QueryDocumentSnapshot noteC : task.getResult()) {
-                                System.out.println(noteC);
                                 noteC.getReference().delete();
                             }
 
@@ -1454,7 +1411,6 @@ public void deleteImageNoteContent (String id, String folderId) {
                         if (task.isSuccessful()){
                             for (QueryDocumentSnapshot noteC : task.getResult()) {
                                 if(noteC.getString("imagepath") != null){
-                                    System.out.println("Entra en el if");
                                     deleteImageFromStorage(noteC.getString("imagepath"));
                                 }
                                 noteC.getReference().delete();

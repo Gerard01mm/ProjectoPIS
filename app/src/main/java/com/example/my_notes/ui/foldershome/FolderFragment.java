@@ -57,41 +57,6 @@ public class FolderFragment extends Fragment {
             mydialog.setView(input);
 
             ArrayList<String> colors = new ArrayList<>();
-            /*colors.add("#FFEFFF");
-            colors.add("#E6E6FA");
-            colors.add("#E0F8F5");
-            colors.add("#BEEDE5");
-            colors.add("#A7D9C9");
-
-            colors.add("#FFFFF0");
-            colors.add("#FAEBD7");
-            colors.add("#FAF0E6");
-            colors.add("#FFF0F5");
-            colors.add("#FFE4E1");
-
-            colors.add("#E0FFFF");
-            colors.add("#F0FFFF");
-            colors.add("#F0F8FF");
-            colors.add("#F0FFF0");
-            colors.add("#F5F5DC");*/
-
-            /*colors.add("#FFAACC");
-            colors.add("#FFBBCC");
-            colors.add("#FFDDCC");
-            colors.add("#FFEECC");
-            colors.add("#FFFFCC");
-
-            colors.add("#CCAAFF");
-            colors.add("#CCCCFF");
-            colors.add("#CCDDFF");
-            colors.add("#CCEEFF");
-            colors.add("#CCFFFF");
-
-            colors.add("#CCAACC");
-            colors.add("#CCBBCC");
-            colors.add("#CCDDCC");
-            colors.add("#CCEECC");
-            colors.add("#CCFFCC");*/
 
             colors.add("#FFEBEE");
             colors.add("#FCE4EC");

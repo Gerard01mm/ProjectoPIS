@@ -192,14 +192,12 @@ public class NotesFragment extends Fragment {
     }
 
     private void startRecording() {
-        //Log.d("startRecording", "startRecording");
 
         recorder = new MediaRecorder();
         DateFormat df = new SimpleDateFormat("yyMMddHHmmss", Locale.GERMANY);
         String date = df.format(Calendar.getInstance().getTime());
         audioName = date+"3.gp";
         fileName =  getActivity().getExternalCacheDir().getAbsolutePath()+File.separator +audioName;
-        //Log.d("startRecording", fileName);
 
         recorder.setOutputFile(fileName);
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);

@@ -60,7 +60,6 @@ public class SharedNotesFragment extends Fragment {
         final Observer<ArrayList<Note>> observer = new Observer<ArrayList<Note>>() {
             @Override
             public void onChanged(ArrayList<Note> notes) {
-                //Log.d("SharedNotesFragment", "observer");
                 ComplexNotesSharedAdapter newAdapter = new ComplexNotesSharedAdapter(parentContext, notes);
                 nRecyclerView.swapAdapter(newAdapter, false);
                 newAdapter.notifyDataSetChanged();

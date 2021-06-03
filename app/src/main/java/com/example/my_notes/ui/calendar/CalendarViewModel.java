@@ -119,7 +119,6 @@ public class CalendarViewModel extends ViewModel implements DatabaseAdapter.vmIn
      * @param date data seleccionada al calendari
      */
     public void remindersDaySelected(String date){
-        //Log.d("Dia seleccionat: " + date, "Carregant els reminders del dia seleccionat");
         this.da.getCollectionReminderByUserAndDay(date);
     }
 

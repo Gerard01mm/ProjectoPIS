@@ -229,7 +229,6 @@ public class CalendarFragment extends Fragment{
                                         Log.d(TAG, calendar.getSelectedDate().getDay() + "");
                                         Log.d(TAG, new CalendarDay().getDay() + "");
 
-                                        //System.out.println("EL valor del dia es " + mCalendar.get(Calendar.DAY_OF_YEAR));
                                         mCalendar.set(Calendar.YEAR, calendar.getSelectedDate().getYear());
                                         mCalendar.set(Calendar.MONTH, calendar.getSelectedDate().getMonth());
                                         mCalendar.set(Calendar.DAY_OF_MONTH, calendar.getSelectedDate().getDay());
@@ -272,18 +271,12 @@ public class CalendarFragment extends Fragment{
                                 //Guardem el titol,d escripcio i id al intent
                                 intent = new Intent(requireContext(), AlarmReceiver.class);
                                 intent.putExtra(TITLE_KEY, title);
-                                //Log.d("TITOL", title);
                                 intent.putExtra(CONTENT_KEY, description);
-                                //Log.d("CONTINGUT", description);
 
                                 pendingIntent = PendingIntent.getBroadcast(requireContext(), ID , intent, 0);
 
                                 //Incremerntem el id per evitar solapaments.
                                 ID++;
-
-                                System.out.println("HORA SELECCIONADA " + mCalendar.get(Calendar.HOUR_OF_DAY) +"\nMINUTO SELECCIONADO " + mCalendar.get(Calendar.MINUTE));
-
-                                System.out.println("TIME IN MILLIS" + mCalendar.getTimeInMillis());
 
                                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
 
@@ -368,10 +361,8 @@ public class CalendarFragment extends Fragment{
                     longitude = bundle.getDouble("longitude");
                     locality = bundle.getString("locality");
                     countrycode = bundle.getString("countrycode");
-                    System.out.println("NOT NULL");
                     break;
                 default:
-                    System.out.println("Null bundle");
             }
             latAndLong.setText(getString(R.string.complete_address, country, latitude, longitude));
             if (latitude == null || longitude == null){

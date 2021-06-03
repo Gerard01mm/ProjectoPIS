@@ -12,7 +12,6 @@ public class TextNoteContent extends NotesContent{
     }
 
     public void saveContent(){
-        //Log.d("saveTextNoteContent", "adapter-> saveImageNote");
         adapter.saveTextNoteContent(getNoteId(), getFolderId() , getTextNote());
     }
 }

@@ -58,7 +58,6 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        //System.out.println(localDataSet.get(position).getId());
         if (localDataSet.get(position) instanceof TextNote) {
             return TEXTNOTE;
         } else if (localDataSet.get(position) instanceof ImageNote) {
@@ -385,7 +384,6 @@ public class ComplexNotesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.player = new MediaPlayer();
             AudioNote an = (AudioNote) localDataSet.get(position);
             String fileName = an.getAdress();
-            //Log.d("startPlaying", fileName);
             player.setDataSource(fileName);
             player.prepare();
             player.start();

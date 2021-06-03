@@ -193,9 +193,7 @@ public class ImageNoteContentFragment extends Fragment {
             @Override
             public void onChanged(NotesContent notesContent) {
                 ImageNoteContent imageNoteContent = (ImageNoteContent) notesContent;
-                System.out.println("LLEGA");
                 if(imageNoteContent.getImagepath() != null){
-                    System.out.println(imageNoteContent.getImagepath());
                     Glide.with(requireActivity())
                         .load(imageNoteContent.getImagepath())
                         .into(image);

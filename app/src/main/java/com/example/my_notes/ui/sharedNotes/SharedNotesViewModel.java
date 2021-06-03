@@ -36,7 +36,6 @@ public class SharedNotesViewModel extends ViewModel implements DatabaseAdapter.v
 
     @Override
     public void setCollection(ArrayList ac) {
-        //Log.d("SharedNotesViewModel", "setCollection");
         mNotes.setValue(ac);
     }
 

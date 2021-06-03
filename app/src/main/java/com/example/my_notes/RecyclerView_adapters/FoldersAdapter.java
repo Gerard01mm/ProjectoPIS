@@ -109,41 +109,6 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
         viewHolder.getfCardView().setCardBackgroundColor(localDataSet.get(position).getColor());
 
         ArrayList<String> colors = new ArrayList<>();
-        /*colors.add("#FFEFFF");
-        colors.add("#E6E6FA");
-        colors.add("#E0F8F5");
-        colors.add("#BEEDE5");
-        colors.add("#A7D9C9");
-
-        colors.add("#FFFFF0");
-        colors.add("#FAEBD7");
-        colors.add("#FAF0E6");
-        colors.add("#FFF0F5");
-        colors.add("#FFE4E1");
-
-        colors.add("#E0FFFF");
-        colors.add("#F0FFFF");
-        colors.add("#F0F8FF");
-        colors.add("#F0FFF0");
-        colors.add("#F5F5DC");*/
-
-        /*colors.add("#E6B0AA");
-        colors.add("#FADBD8");
-        colors.add("#C39BD3");
-        colors.add("#E8DAEF");
-        colors.add("#D6EAF8");
-
-        colors.add("#D4EFDF");
-        colors.add("#D5F5E3");
-        colors.add("#FCF3CF");
-        colors.add("#FDEBD0");
-        colors.add("#F6DDCC");
-
-        colors.add("#D6DBDF");
-        colors.add("#F0FFFF");
-        colors.add("#F0F8FF");
-        colors.add("#F0FFF0");
-        colors.add("#F5F5DC");*/
 
         colors.add("#FFEBEE");
         colors.add("#FCE4EC");
@@ -184,9 +149,6 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ViewHold
                     public void onClick(DialogInterface dialog, int which) {
                         NoteFolder n = localDataSet.get(position);
                         n.removeFolder();
-                        /*for (NoteFolder i: localDataSet){
-                            System.out.println(i.get_Title());
-                        }*/
                         localDataSet.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, localDataSet.size());
