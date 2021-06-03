@@ -84,7 +84,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
                 emailCorrect = pattern.matcher(this.email.getText().toString()).matches();
                 if(!emailCorrect){
                     email.setError("Incorrect email format");
-                    error = false;
+                    error = true;
                 }
             }
             //En el cas que estigui buit el EditText de la contrassenya.

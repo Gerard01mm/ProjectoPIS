@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -27,8 +27,6 @@ import com.example.my_notes.R;
 import com.example.my_notes.Utils.UriUtils.UriUtils;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.File;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import com.example.my_notes.Model.ImageNoteContent;
@@ -93,6 +91,7 @@ public class ImageNoteContentFragment extends Fragment {
                 userShareEmail = (TextInputEditText) dialogshare.findViewById(R.id.userShareEmail);
                 cancelShare = (Button) dialogshare.findViewById(R.id.cancelButton);
                 acceptShare = (Button) dialogshare.findViewById(R.id.acceptButton);
+                dialogSaveImage("Would you like to save your recent changes in the note first?");
 
                 AlertDialog content = shareNote.create();
                 content.setView(dialogshare);
@@ -108,8 +107,6 @@ public class ImageNoteContentFragment extends Fragment {
                             userShareEmail.setError("Incorrect email format!");
                         }else{
                             imageNoteContentViewModel.checkEmail(userShareEmail.getText().toString(), noteId, noteFolderId, textWriten, title, userShareEmail, content);
-                            imageNoteContentViewModel.saveImageNoteContent(lastSegment, textWriten, noteId, noteFolderId);
-                            Toast.makeText(parentContext, "The note automatically saved", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -127,12 +124,12 @@ public class ImageNoteContentFragment extends Fragment {
         saveImageNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 textWriten = text.getText().toString();
-                AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
-                mydialog.setTitle("Save note? ");
+                dialogSaveImage("Save note? ");
+                //AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+                //mydialog.setTitle("Save note? ");
 
-                mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                /*mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         imageNoteContentViewModel.saveImageNoteContent(lastSegment, textWriten, noteId, noteFolderId);
@@ -144,12 +141,33 @@ public class ImageNoteContentFragment extends Fragment {
                         dialog.cancel();
                     }
                 });
-                mydialog.show();
+                mydialog.show();*/
             }
         });
 
         setLiveDataObservers(root);
         return root;
+    }
+
+    public void dialogSaveImage(String titulo){
+
+        AlertDialog.Builder mydialog = new AlertDialog.Builder(parentContext);
+        mydialog.setTitle(titulo);
+
+        mydialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                imageNoteContentViewModel.saveImageNoteContent(lastSegment, textWriten, noteId, noteFolderId);
+                Toast.makeText(parentContext, "Saved note", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        mydialog.show();
     }
 
     public void carregarImatge(){

@@ -9,8 +9,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="146dp"
-        android:background="#FFFFFF"
+        android:layout_height="177dp"
+        android:background="@color/black"
         android:backgroundTint="#FFFFFF">
 
         <com.google.android.material.textfield.TextInputLayout
