@@ -197,7 +197,6 @@ public class ImageNoteContentFragment extends Fragment {
             public void onChanged(NotesContent notesContent) {
                 ImageNoteContent imageNoteContent = (ImageNoteContent) notesContent;
                 if(imageNoteContent.getImagepath() != null){
-                    lastSegment = imageNoteContent.getImagepath();
                     Glide.with(parentContext)
                         .load(imageNoteContent.getImagepath())
                         .into(image);
