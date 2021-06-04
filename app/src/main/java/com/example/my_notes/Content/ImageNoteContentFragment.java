@@ -184,7 +184,8 @@ public class ImageNoteContentFragment extends Fragment {
             Glide.with(parentContext)
                     .load(UriUtils.getPathFromUri(parentContext, path))
                     .into(image);
-            lastSegment = UriUtils.getPathFromUri(parentContext, path);
+            lastSegment = UriUtils.getPathFromUri(parentContext, path);;
+            System.out.println("ES AKI:" + UriUtils.getPathFromUri(parentContext, path));
         }
     }
 
@@ -202,6 +203,7 @@ public class ImageNoteContentFragment extends Fragment {
                         .into(image);
                 }
                 text.setText(imageNoteContent.getTextNote());
+                System.out.println("ES realment AKI:" + lastSegment);
             }
         };
 

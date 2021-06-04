@@ -29,7 +29,6 @@ public class ViewHolderAudioNotes extends RecyclerView.ViewHolder {
         this.editbtn = v.findViewById(R.id.edit_btn);
     }
 
-
     public TextView getDate() {
         return date;
     }
