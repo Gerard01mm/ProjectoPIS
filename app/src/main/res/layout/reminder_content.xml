@@ -121,6 +121,40 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/lizq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/dia1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:textAlignment="center" />
+
+                        <ImageView
+                            android:id="@+id/icon1"
+                            android:layout_width="93dp"
+                            android:layout_height="93dp"
+                            app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+
+                        <TextView
+                            android:id="@+id/infodia1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:id="@+id/sp1"
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
                         android:id="@+id/lcen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -183,39 +217,6 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <Space
-                        android:id="@+id/sp1"
-                        android:layout_width="10dp"
-                        android:layout_height="wrap_content" />
-
-                    <LinearLayout
-                        android:id="@+id/lizq"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/dia1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:textAlignment="center" />
-
-                        <ImageView
-                            android:id="@+id/icon1"
-                            android:layout_width="93dp"
-                            android:layout_height="93dp"
-                            app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
-
-                        <TextView
-                            android:id="@+id/infodia1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textAlignment="center"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
