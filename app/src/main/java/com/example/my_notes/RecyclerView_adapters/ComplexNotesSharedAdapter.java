@@ -187,7 +187,7 @@ public class ComplexNotesSharedAdapter extends RecyclerView.Adapter<RecyclerView
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ImageNote i = (ImageNote) localDataSet.get(position);
-                            i.deleteImageNote();
+                            i.deleteSharedImageNote();
                             localDataSet.remove(position);
                             notifyItemRemoved(position);
                             notifyItemRangeChanged(position, localDataSet.size());

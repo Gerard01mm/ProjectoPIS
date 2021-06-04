@@ -254,13 +254,6 @@ public class NotesFragment extends Fragment {
             }
         };
 
-        final Observer<ArrayList<String>> observer1 = new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(ArrayList<String> strings) {
-
-            }
-        };
-
         final Observer<String> observerToast = new Observer<String>() {
             @Override
             public void onChanged(String t) {

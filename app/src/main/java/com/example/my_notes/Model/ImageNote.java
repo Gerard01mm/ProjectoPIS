@@ -36,6 +36,11 @@ public class ImageNote extends Note {
     public void deleteImageNote(){
         adapter.deleteImageNote(getId(), getFolderId());
     }
+
+    /*Amb aquest mètode cridem a un del baseAdapter*/
+    public void deleteSharedImageNote(){
+        adapter.deleteSharedImageNote(getId(), getFolderId());
+    }
     public void updateImageNote(){
         setModify_date();
         adapter.updateImageNote(getTitle(), getFolderId(), getId(), getOwner(), getCreation_date(), new Date());
