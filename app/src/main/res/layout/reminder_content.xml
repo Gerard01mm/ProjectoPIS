@@ -21,12 +21,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/form_description"
+                android:text="@string/form_title"
                 android:textSize="@dimen/formDescriptionSize"
                 android:textStyle="bold"></TextView>
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/reminder_descp_content"
+                android:id="@+id/reminder_title_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -35,12 +35,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/form_title"
+                android:text="@string/form_description"
                 android:textSize="@dimen/formDescriptionSize"
                 android:textStyle="bold"></TextView>
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/reminder_title_content"
+                android:id="@+id/reminder_descp_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
