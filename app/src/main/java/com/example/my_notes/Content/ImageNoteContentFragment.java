@@ -118,14 +118,12 @@ public class ImageNoteContentFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         imageNoteContentViewModel.saveImageNoteContent(lastSegment, textWriten, noteId, noteFolderId);
                         Toast.makeText(parentContext, "Saved note", Toast.LENGTH_SHORT).show();
-                        dialogShare();
                     }
                 });
                 mydialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        dialogShare();
                     }
                 });
                 mydialog.show();
@@ -183,8 +181,10 @@ public class ImageNoteContentFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
             Uri path = data.getData();
-            image.setImageURI(path);
-            lastSegment = UriUtils.getPathFromUri(parentContext, path);;
+            Glide.with(parentContext)
+                    .load(UriUtils.getPathFromUri(parentContext, path))
+                    .into(image);
+            lastSegment = UriUtils.getPathFromUri(parentContext, path);
         }
     }
 
@@ -196,12 +196,10 @@ public class ImageNoteContentFragment extends Fragment {
             public void onChanged(NotesContent notesContent) {
                 ImageNoteContent imageNoteContent = (ImageNoteContent) notesContent;
                 if(imageNoteContent.getImagepath() != null){
-                    Glide.with(requireActivity())
+                    lastSegment = imageNoteContent.getImagepath();
+                    Glide.with(parentContext)
                         .load(imageNoteContent.getImagepath())
                         .into(image);
-                    /*File f = new File(imageNoteContent.getImagepath());
-                    Uri uri = Uri.fromFile(f);
-                    image.setImageURI(uri);*/
                 }
                 text.setText(imageNoteContent.getTextNote());
             }
