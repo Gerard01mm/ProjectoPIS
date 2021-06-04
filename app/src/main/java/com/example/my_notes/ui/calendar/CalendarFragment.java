@@ -74,8 +74,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.my_notes.R;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.rtchagas.pingplacepicker.PingPlacePicker;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
