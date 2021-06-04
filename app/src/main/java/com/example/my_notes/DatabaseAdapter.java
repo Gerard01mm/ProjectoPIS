@@ -1032,6 +1032,38 @@ public class DatabaseAdapter{
                 });
     }
 
+    public void updateImageNoteContent (String id, String folderId, String text) {
+        // Create a new user with a first and last name
+        Map<String, Object> noteContent = new HashMap<>();
+        noteContent.put("id", id);
+        noteContent.put("folderId", folderId);
+        noteContent.put("text", text);
+        noteContent.put("owner", getCurrentUser());
+        Log.d(TAG, "saveImageNoteContent");
+        // Add a new document with a generated ID
+        db.collection("content")
+                .document("roomImageNoteContent")
+                .collection("ImageNoteContent")
+                .whereEqualTo("id", id)
+                .whereEqualTo("folderId", folderId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.getResult().isEmpty()){
+                            for (QueryDocumentSnapshot noteC : task.getResult()) {
+                                Log.d(TAG, noteC.getId() + " => " + noteC.getData());
+                                noteC.getReference().update(noteContent);
+                            }
+
+                        } else {
+                            db.collection("content").document("roomImageNoteContent")
+                                    .collection("ImageNoteContent").add(noteContent);
+                        }
+                    }
+                });
+    }
+
     public void saveImageInNote (String imagepath) {
         File fitxer = new File(imagepath);
         Uri file = Uri.fromFile(fitxer);

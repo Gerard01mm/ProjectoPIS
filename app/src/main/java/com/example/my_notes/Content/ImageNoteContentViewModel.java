@@ -36,7 +36,11 @@ public class ImageNoteContentViewModel extends ViewModel implements DatabaseAdap
     public void saveImageNoteContent(String path, String text, String idNote, String idFolder){
         ImageNoteContent im = new ImageNoteContent(idNote, idFolder, text, path);
         imageNoteContent.setValue(im);
-        im.saveContent();
+        if (path == null){
+            im.updateContent();
+        }else{
+            im.saveContent();
+        }
     }
 
     public MutableLiveData<String> getmToast() {

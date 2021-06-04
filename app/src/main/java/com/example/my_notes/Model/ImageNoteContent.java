@@ -24,4 +24,8 @@ public class ImageNoteContent extends NotesContent{
     public void saveContent(){
         adapter.saveImageNoteContent(getNoteId(), getFolderId() , getTextNote() , imagepath);
     }
+
+    public void updateContent(){
+        adapter.updateImageNoteContent(getNoteId(), getFolderId(), getTextNote());
+    }
 }
